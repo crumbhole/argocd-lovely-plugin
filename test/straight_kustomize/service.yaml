@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: its10605-squid
+  labels:
+    app: its10605-squid
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: snowflake-proxy.wpscloud.co.uk
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 3128
+    name: http
+  type: LoadBalancer
+  selector:
+    app: its10605-squid

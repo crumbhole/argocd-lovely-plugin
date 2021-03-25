@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: its10605-squid
+spec:
+  selector:
+    matchLabels:
+      app: its10605-squid
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: its10605-squid
+    spec:
+      containers:
+      - env:
+        - name: SQUID_USERNAME
+          value: database
+        - name: SQUID_PASSWORD
+          value: ul9YA4O4k62o3VAlOCQ8U117GERtHF
+        image: docker.worldprogramming.com/byumov/http-proxy-with-auth
+        name: squid
+        resources:
+          requests:
+            cpu: "0.1"
+            memory: 128Mi
+        ports:
+        - containerPort: 3128
+        volumeMounts:
+          - name: squidconf
+            mountPath: /etc/squid/squid.conf
+            subPath: squid.conf
+            readOnly: true
+      volumes:
+        - name: squidconf
+          configMap:
+            name: squid.conf

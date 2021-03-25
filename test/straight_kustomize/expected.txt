@@ -1,0 +1,89 @@
+apiVersion: v1
+data:
+  squid.conf: |
+    cache_log stdio:/dev/stdout
+    access_log stdio:/dev/stdout
+    cache_store_log stdio:/dev/stdout
+
+    auth_param basic program /usr/lib/squid/basic_ncsa_auth /etc/squid/squid_passwd
+    acl all src all
+    acl ncsa_users proxy_auth REQUIRED
+    acl SSL_ports port 443          # SSL
+    acl Safe_ports port 80          # http
+    acl Safe_ports port 21          # ftp
+    acl Safe_ports port 443         # https
+    acl Safe_ports port 70          # gopher
+    acl Safe_ports port 210         # wais
+    acl Safe_ports port 1025-65535  # unregistered ports
+    acl Safe_ports port 280         # http-mgmt
+    acl Safe_ports port 488         # gss-http
+    acl Safe_ports port 591         # filemaker
+    acl Safe_ports port 777         # multiling http
+    acl Safe_ports port 5190        # ICQ
+    acl CONNECT method CONNECT
+
+    http_access allow ncsa_users
+    http_access allow !Safe_ports
+    http_access allow !SSL_ports
+    http_access deny all
+    http_port 3128
+    dns_v4_first on
+kind: ConfigMap
+metadata:
+  name: squid.conf-4hk6ccd4c5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: snowflake-proxy.wpscloud.co.uk
+  labels:
+    app: its10605-squid
+  name: its10605-squid
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 3128
+  selector:
+    app: its10605-squid
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: its10605-squid
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: its10605-squid
+  template:
+    metadata:
+      labels:
+        app: its10605-squid
+    spec:
+      containers:
+      - env:
+        - name: SQUID_USERNAME
+          value: database
+        - name: SQUID_PASSWORD
+          value: ul9YA4O4k62o3VAlOCQ8U117GERtHF
+        image: docker.worldprogramming.com/byumov/http-proxy-with-auth
+        name: squid
+        ports:
+        - containerPort: 3128
+        resources:
+          requests:
+            cpu: "0.1"
+            memory: 128Mi
+        volumeMounts:
+        - mountPath: /etc/squid/squid.conf
+          name: squidconf
+          readOnly: true
+          subPath: squid.conf
+      volumes:
+      - configMap:
+          name: squid.conf-4hk6ccd4c5
+        name: squidconf

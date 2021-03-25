@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: testoauth
+spec:
+  selector:
+    app: testoauth
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5678
