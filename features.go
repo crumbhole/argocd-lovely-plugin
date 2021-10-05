@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func vaultEnabled() bool {
+func VaultEnabled() bool {
 	// Set DISABLE_VAULT to anything to disable vault
 	disabled, err := strconv.ParseBool(os.Getenv(`LOVELY_DISABLE_VAULT`))
 	if err != nil {

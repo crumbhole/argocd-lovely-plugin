@@ -4,9 +4,7 @@ package main
 // is the way argocd allows you to control plugins
 import (
 	"log"
-	"os"
 	"os/exec"
-	"strconv"
 )
 
 const vaultBin = `argo-vault-replacer`
@@ -16,11 +14,7 @@ type vaultProcessor struct{}
 func (_ vaultProcessor) enabled(_ string) bool {
 	// Set DISABLE_VAULT to anything to disable vault
 	if _, err := exec.LookPath(vaultBin); err == nil {
-		disabled, err := strconv.ParseBool(os.Getenv(`LOVELY_DISABLE_VAULT`))
-		if err != nil {
-			return true
-		}
-		return !disabled
+		return VaultEnabled()
 	}
 	return false
 }

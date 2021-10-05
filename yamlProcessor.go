@@ -3,10 +3,14 @@ package main
 import (
 	"io/ioutil"
 	"log"
+	"os"
+	"path/filepath"
 	"regexp"
 )
 
-type yamlProcessor struct{}
+type yamlProcessor struct {
+	output string
+}
 
 func (_ yamlProcessor) enabled(_ string) bool {
 	// Always enabled, to pick up if nothing else worked
@@ -21,29 +25,37 @@ func (y yamlProcessor) init(path string) error {
 	return nil
 }
 
+func (v *yamlProcessor) scanFile(path string, info os.FileInfo, err error) error {
+	if err != nil {
+		return err
+	}
+	if info.IsDir() {
+		return nil
+	}
+	yamlRegexp := regexp.MustCompile(`\.ya?ml$`)
+	if yamlRegexp.MatchString(info.Name()) {
+		log.Printf("YAML processing %s\n", info.Name())
+		yamlcontent, err := ioutil.ReadFile(info.Name())
+		if err != nil {
+			return err
+		}
+		v.output += "---\n"
+		v.output += string(yamlcontent)
+	}
+	return nil
+}
+
 func (v yamlProcessor) process(input *string, path string) (*string, error) {
 	if !v.enabled(path) {
 		return input, DisabledProcessorError
 	}
 	if input == nil {
-		yamlRegexp := regexp.MustCompile(`\.ya?ml$`)
-		files, err := ioutil.ReadDir(path) // Sorted already, so stable
+		v.output = ""
+		err := filepath.Walk(path, v.scanFile)
 		if err != nil {
 			return nil, err
 		}
-		output := ""
-		for _, f := range files {
-			if !f.IsDir() && yamlRegexp.MatchString(f.Name()) {
-				log.Printf("YAML processing %s\n", f.Name())
-				yamlcontent, err := ioutil.ReadFile(f.Name())
-				if err != nil {
-					return nil, err
-				}
-				output += "---\n"
-				output += string(yamlcontent)
-			}
-		}
-		return &output, nil
+		return &v.output, nil
 	}
 	return input, nil
 }
