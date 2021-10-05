@@ -7,6 +7,7 @@ import (
 )
 
 type Processor interface {
+	name() string
 	enabled(path string) bool
 	init(path string) error
 	process(input *string, path string) (*string, error)

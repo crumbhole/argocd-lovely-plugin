@@ -11,6 +11,10 @@ const vaultBin = `argo-vault-replacer`
 
 type vaultProcessor struct{}
 
+func (_ vaultProcessor) name() string {
+	return "vault"
+}
+
 func (_ vaultProcessor) enabled(_ string) bool {
 	// Set DISABLE_VAULT to anything to disable vault
 	if _, err := exec.LookPath(vaultBin); err == nil {

@@ -27,7 +27,7 @@ func checkDir(c Collection, path string) error {
 		return err
 	}
 	if out != string(expected) {
-		return fmt.Errorf("Expected %s and got %s", expected, out)
+		return fmt.Errorf("Expected >\n%s\n< and got >\n%s\n<", expected, out)
 	}
 	return nil
 }

@@ -11,6 +11,10 @@ const kustomizeIntermediateFilename = `_lovely_resource.yaml`
 
 type kustomizeProcessor struct{}
 
+func (_ kustomizeProcessor) name() string {
+	return "kustomize"
+}
+
 func (_ kustomizeProcessor) enabled(path string) bool {
 	return reFileInDir(path, regexp.MustCompile(`^kustomization\.ya?ml$`))
 }
@@ -27,7 +31,7 @@ func (k kustomizeProcessor) process(input *string, path string) (*string, error)
 	if !k.enabled(path) {
 		return input, DisabledProcessorError
 	}
-	if input == nil {
+	if input != nil {
 		// Reading from 'stdin' - so put this on disk for kustomize
 		intermediateFile, err := os.Create(path + "/" + kustomizeIntermediateFilename)
 		if err != nil {

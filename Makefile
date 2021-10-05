@@ -10,6 +10,9 @@ clean:
 test:
 	go test ./...
 
+test_verbose:
+	go test -v ./...
+
 build/argocd-lovely-plugin: $(DEPS)
 	mkdir -p build
 	go build -o build ./...

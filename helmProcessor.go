@@ -22,6 +22,10 @@ type Dependencies struct {
 
 type helmProcessor struct{}
 
+func (_ helmProcessor) name() string {
+	return "helm"
+}
+
 func (_ helmProcessor) enabled(path string) bool {
 	return reFileInDir(path, regexp.MustCompile(`^Chart\.ya?ml$`))
 }

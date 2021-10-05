@@ -27,6 +27,9 @@ func (d *PackageDirectories) IsDirectory(path string) bool {
 }
 
 func (d *PackageDirectories) KnownSubDirectory(path string) bool {
+	if d.IsDirectory(path) {
+		return true
+	}
 	for _, dir := range d.dirs {
 		if match, _ := filepath.Match(dir+"/*", path); match {
 			return true
