@@ -32,7 +32,7 @@ func (_ helmProcessor) enabled(path string) bool {
 
 func (h helmProcessor) addRepo(name string, url string) error {
 	log.Printf("Helm repo add %s %s\n", name, url)
-	cmd := exec.Command(`helm`, `repo`, `add`, name, url)
+	cmd := exec.Command(HelmBinary(), `repo`, `add`, name, url)
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 	_, err := cmd.Output()
@@ -69,10 +69,8 @@ func (h helmProcessor) init(path string) error {
 	if !h.enabled(path) {
 		return DisabledProcessorError
 	}
-	//	cmd := exec.Command(`helm`, `repo`, `add` name, url)
-	// cmd.Dir := path
 	h.addRepos(path)
-	cmd := exec.Command(`helm`, `dependency`, `build`)
+	cmd := exec.Command(HelmBinary(), `dependency`, `build`)
 	cmd.Dir = path
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
@@ -87,7 +85,7 @@ func (h helmProcessor) process(input *string, path string) (*string, error) {
 	if !h.enabled(path) {
 		return input, DisabledProcessorError
 	}
-	cmd := exec.Command(`helm`,
+	cmd := exec.Command(HelmBinary(),
 		`template`,
 		`-n`,
 		os.Getenv(`ARGOCD_APP_NAMESPACE`),

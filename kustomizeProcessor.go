@@ -67,7 +67,7 @@ func (k kustomizeProcessor) process(input *string, path string) (*string, error)
 		}
 	}
 	log.Printf("Kustomize processing %s\n", path)
-	out, err := exec.Command(`kustomize`, `build`, path).Output()
+	out, err := exec.Command(KustomizeBinary(), `build`, path).Output()
 	if err != nil {
 		log.Printf("Kustomize processing %s error %v\n", path, err)
 		return nil, err

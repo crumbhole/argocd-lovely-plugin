@@ -30,7 +30,7 @@ data:
     dns_v4_first on
 kind: ConfigMap
 metadata:
-  name: squid.conf-4hk6ccd4c5
+  name: squid.conf-gd4648db9b
 ---
 apiVersion: v1
 kind: Service
@@ -85,5 +85,5 @@ spec:
           subPath: squid.conf
       volumes:
       - configMap:
-          name: squid.conf-4hk6ccd4c5
+          name: squid.conf-gd4648db9b
         name: squidconf
