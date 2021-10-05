@@ -1,0 +1,7 @@
+apiVersion: v2
+version: 1.0.0
+name: rbac-manager
+dependencies:
+- name: rbac-manager
+  version: 1.7.0
+  repository: https://charts.fairwinds.com/stable

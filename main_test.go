@@ -27,6 +27,7 @@ func checkDir(c Collection, path string) error {
 		return err
 	}
 	if out != string(expected) {
+		ioutil.WriteFile(path+"/got.txt", []byte(out), 0444)
 		return fmt.Errorf("Expected >\n%s\n< and got >\n%s\n<", expected, out)
 	}
 	return nil

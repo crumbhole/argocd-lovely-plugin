@@ -55,7 +55,7 @@ func (h helmProcessor) addRepos(path string) error {
 		if err != nil {
 			continue
 		}
-		log.Printf("Requirements %s, %s\n", reqsFile, yamlcontent)
+		//log.Printf("Requirements %s, %s\n", reqsFile, yamlcontent)
 		var deps Dependencies
 		err = yaml.Unmarshal(yamlcontent, &deps)
 		for _, dep := range deps.Dependencies {
@@ -72,7 +72,6 @@ func (h helmProcessor) init(path string) error {
 	//	cmd := exec.Command(`helm`, `repo`, `add` name, url)
 	// cmd.Dir := path
 	h.addRepos(path)
-	log.Printf("Helm init %s\n", path)
 	cmd := exec.Command(`helm`, `dependency`, `build`)
 	cmd.Dir = path
 	var stderr bytes.Buffer
@@ -88,7 +87,6 @@ func (h helmProcessor) process(input *string, path string) (*string, error) {
 	if !h.enabled(path) {
 		return input, DisabledProcessorError
 	}
-	log.Printf("Helm processing %s\n", path)
 	cmd := exec.Command(`helm`,
 		`template`,
 		`-n`,

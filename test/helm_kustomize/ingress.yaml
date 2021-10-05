@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    nginx.ingress.kubernetes.io/auth-signin: https://$host/oauth2/start?rd=$escaped_request_uri
+    nginx.ingress.kubernetes.io/auth-url: https://$host/oauth2/auth
+  name: testoauth
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: testoauth.wpscloud.co.uk
+    http:
+      paths:
+      - backend:
+          serviceName: testoauth
+          servicePort: http
+        path: /
+  tls:
+  - hosts:
+    - testoauth.wpscloud.co.uk
+    secretName: testoauth-tls-secret

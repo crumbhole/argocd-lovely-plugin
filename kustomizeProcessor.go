@@ -1,10 +1,13 @@
 package main
 
 import (
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
 	"regexp"
+	"sigs.k8s.io/kustomize/api/types"
 )
 
 const kustomizeIntermediateFilename = `_lovely_resource.yaml`
@@ -37,25 +40,36 @@ func (k kustomizeProcessor) process(input *string, path string) (*string, error)
 		if err != nil {
 			return nil, err
 		}
-		defer intermediateFile.Close()
 		if _, err := intermediateFile.WriteString(*input); err != nil {
+			intermediateFile.Close()
 			return nil, err
 		}
-		kustomizationFile, err := os.OpenFile(path+"/kustomization.yaml", os.O_APPEND|os.O_WRONLY, 0644)
+		intermediateFile.Close()
+		kustContents, err := ioutil.ReadFile(path + "/kustomization.yaml")
+		if err != nil {
+			return nil, err
+		}
+		var kust types.Kustomization
+		err = yaml.Unmarshal(kustContents, &kust)
+		kust.Resources = append(kust.Resources, kustomizeIntermediateFilename)
+
+		kustomizationFile, err := os.OpenFile(path+"/kustomization.yaml", os.O_WRONLY, 0644)
 		if err != nil {
 			return nil, err
 		}
 		defer kustomizationFile.Close()
-		if _, err := kustomizationFile.WriteString("resources:"); err != nil {
+		kustYaml, err := yaml.Marshal(&kust)
+		if err != nil {
 			return nil, err
 		}
-		if _, err := kustomizationFile.WriteString("- " + kustomizeIntermediateFilename); err != nil {
+		if _, err := kustomizationFile.Write(kustYaml); err != nil {
 			return nil, err
 		}
 	}
 	log.Printf("Kustomize processing %s\n", path)
 	out, err := exec.Command(`kustomize`, `build`, path).Output()
 	if err != nil {
+		log.Printf("Kustomize processing %s error %v\n", path, err)
 		return nil, err
 	}
 	outstr := string(out)
