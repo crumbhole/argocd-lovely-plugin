@@ -1,0 +1,21 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: testoauth
+spec:
+  selector:
+    matchLabels:
+      app: testoauth
+  template:
+    metadata:
+      labels:
+        app: testoauth
+    spec:
+      containers:
+      - name: testoauth
+        image: hashicorp/http-echo
+        args:
+          - -text=Hello
+        ports:
+        - name: http
+          containerPort: 5678
