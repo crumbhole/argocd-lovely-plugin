@@ -1,13 +1,11 @@
 # argocd-lovely-plugin
 An [Argo CD](https://argoproj.github.io/argo-cd/) plugin to perform various manipulations in a sensible order to ultimately output YAML for Argo CD to put into your cluster. If you use it as the reader in a unix pipe, it will instead read from stdin. It will still under some circumstances taint the current directory with files so expects to be run in a directory it can mess up.
 
-<img src="assets/images/argocd-vault-replacer-diagram.png">
-
 ## Why?
 - Allows for better GitOps with one argo application per real application
   - Process a helm chart through kustomize more easily
   - Trivially add some extra resources to a helm chart by popping them in a directory along side your main one
-  - Use argo-vault-replacer to pull secrets from [Hashicorp Vault](https://www.vaultproject.io/)
+  - Use argo-vault-replacer to pull secrets from [Hashicorp Vault](https://www.vaultproject.io/) as a plugin to this one to combine secrets and helm/kustomize more easily
 - DRY (Don't repeat yourself) more
   - Allows ArgoCD to kustomize per application
   - Combines particularly well with [application sets](https://argocd-applicationset.readthedocs.io/en/stable/) to allow broadly similar things to be partially modified by the application.
@@ -20,7 +18,7 @@ You can use [our Kustomization example](https://github.com/crumbhole/argocd-vaul
 
 ## General configuration
 Lovely is designed for minimal configuration and to do the right thing. The following environment variables can be used to change some behaviour:
-- LOVELY_DISABLE_VAULT: Set to true to prevent processing by the argo-vault-replacer plugin. If you never want to do this just never install argo-vault-replacer.
+- LOVELY_PLUGINS: Set to a comma separated list of binaries to run, in the same way as argocd expects plugins. stdin->plugin->stdout processing yaml. Each plugin is executed with bash -c <plugin and parameters>, so you can pass parameters as hoped for.
 - LOVELY_KUSTOMIZE_PATH: Set to a path or binary name to use for kustomize.
 - LOVELY_HELM_PATH: Set to a path or binary name to use for helm.
 

@@ -4,16 +4,20 @@ package main
 // is the way argocd allows you to control plugins
 import (
 	"os"
-	"strconv"
+	"strings"
 )
 
-func VaultEnabled() bool {
-	// Set LOVELY_DISABLE_VAULT to anything to disable vault
-	disabled, err := strconv.ParseBool(os.Getenv(`LOVELY_DISABLE_VAULT`))
-	if err != nil {
-		return true
+func Plugins() []string {
+	// Set LOVELY_PLUGINS to a comma separated list of plugins to run
+	pluginsText, got := os.LookupEnv(`LOVELY_PLUGINS`)
+	if got {
+		plugins := strings.Split(pluginsText, `,`)
+		for i, plugin := range plugins {
+			plugins[i] = strings.TrimSpace(plugin)
+		}
+		return plugins
 	}
-	return !disabled
+	return make([]string, 0)
 }
 
 func KustomizeBinary() string {

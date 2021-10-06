@@ -12,7 +12,7 @@ var processors = []Processor{
 	helmProcessor{},
 	kustomizeProcessor{},
 	yamlProcessor{},
-	vaultProcessor{},
+	pluginProcessor{},
 }
 
 type Collection struct {
