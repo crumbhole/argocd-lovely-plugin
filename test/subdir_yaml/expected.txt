@@ -1,57 +1,50 @@
 ---
-kind: Deployment
 apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: testoauth
+  name: nginx-deployment
+  labels:
+    app: nginx
 spec:
+  replicas: 3
   selector:
     matchLabels:
-      app: testoauth
+      app: nginx
   template:
     metadata:
       labels:
-        app: testoauth
+        app: nginx
     spec:
       containers:
-      - name: testoauth
-        image: hashicorp/http-echo
-        args:
-          - -text=Hello
+      - name: nginx
+        image: nginx:1.14.2
         ports:
-        - name: http
-          containerPort: 5678
+        - containerPort: 80
 ---
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
-  name: testoauth
+  name: nginx
 spec:
   selector:
-    app: testoauth
+    app: nginx
   ports:
-    - name: http
+    - protocol: TCP
       port: 80
-      targetPort: 5678
+      targetPort: 80
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-production
-    nginx.ingress.kubernetes.io/auth-signin: https://$host/oauth2/start?rd=$escaped_request_uri
-    nginx.ingress.kubernetes.io/auth-url: https://$host/oauth2/auth
-  name: testoauth
+  name: minimal-ingress
 spec:
-  ingressClassName: nginx
   rules:
-  - host: testoauth.wpscloud.co.uk
-    http:
+  - http:
       paths:
-      - backend:
-          serviceName: testoauth
-          servicePort: http
-        path: /
-  tls:
-  - hosts:
-    - testoauth.wpscloud.co.uk
-    secretName: testoauth-tls-secret
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx
+            port:
+              number: 80

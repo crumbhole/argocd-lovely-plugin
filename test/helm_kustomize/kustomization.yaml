@@ -5,10 +5,10 @@ resources:
 - ingress.yaml
 
 replicas:
-- name: test-rbac-manager
+- name: test-hello-world
   count: 5
 
 configMapGenerator:
-- name: squid.conf
+- name: index.html
   files:
-  - squid.conf
+  - index.html

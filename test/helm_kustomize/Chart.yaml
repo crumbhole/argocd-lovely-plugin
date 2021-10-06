@@ -1,7 +1,7 @@
 apiVersion: v2
 version: 1.0.0
-name: rbac-manager
+name: hello-world
 dependencies:
-- name: rbac-manager
-  version: 1.7.0
-  repository: https://charts.fairwinds.com/stable
+- name: hello-world
+  version: 0.1.0
+  repository: https://helm.github.io/examples

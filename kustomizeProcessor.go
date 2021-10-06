@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
@@ -67,10 +68,9 @@ func (k kustomizeProcessor) process(input *string, path string) (*string, error)
 		}
 	}
 	log.Printf("Kustomize processing %s\n", path)
-	out, err := exec.Command(KustomizeBinary(), `build`, path).Output()
+	out, err := exec.Command(KustomizeBinary(), `build`, path).CombinedOutput()
 	if err != nil {
-		log.Printf("Kustomize processing %s error %v\n", path, err)
-		return nil, err
+		return nil, errors.New(string(out))
 	}
 	outstr := string(out)
 	return &outstr, nil

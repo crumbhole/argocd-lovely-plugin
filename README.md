@@ -23,3 +23,7 @@ Lovely is designed for minimal configuration and to do the right thing. The foll
 - LOVELY_DISABLE_VAULT: Set to true to prevent processing by the argo-vault-replacer plugin. If you never want to do this just never install argo-vault-replacer.
 - LOVELY_KUSTOMIZE_PATH: Set to a path or binary name to use for kustomize.
 - LOVELY_HELM_PATH: Set to a path or binary name to use for helm.
+
+## What can I do with it?
+
+Have a look at the [test suite](test/README.md) for a lot of examples of how you can use this to make nice git repos for your applications.

@@ -1,11 +1,11 @@
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
-  name: testoauth
+  name: nginx
 spec:
   selector:
-    app: testoauth
+    app: nginx
   ports:
-    - name: http
+    - protocol: TCP
       port: 80
-      targetPort: 5678
+      targetPort: 80

@@ -1,21 +1,21 @@
-kind: Deployment
 apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: testoauth
+  name: nginx-deployment
+  labels:
+    app: nginx
 spec:
+  replicas: 3
   selector:
     matchLabels:
-      app: testoauth
+      app: nginx
   template:
     metadata:
       labels:
-        app: testoauth
+        app: nginx
     spec:
       containers:
-      - name: testoauth
-        image: hashicorp/http-echo
-        args:
-          - -text=Hello
+      - name: nginx
+        image: nginx:1.14.2
         ports:
-        - name: http
-          containerPort: 5678
+        - containerPort: 80
