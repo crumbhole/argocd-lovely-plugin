@@ -6,13 +6,11 @@ RUN apt update && apt install -y curl wget unzip
 RUN curl -s https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
 # Install Kustomize
-RUN curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+RUN curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash && mv /go/kustomize /usr/local/bin
 
 ADD . /build
 WORKDIR /build
-RUN go vet ./...
-RUN go test ./...
-RUN go build -o build/argocd-lovely-plugin
+RUN make -j4
 
 FROM alpine as putter
 COPY --from=builder /build/build/argocd-lovely-plugin .

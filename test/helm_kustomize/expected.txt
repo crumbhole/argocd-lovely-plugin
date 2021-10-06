@@ -11,7 +11,8 @@ metadata:
 ---
 apiVersion: v1
 data:
-  index.html: "<!DOCTYPE html>\n<html>\n<head>\n<title>Hello</title>\n</head>\n<body>\n\n<h1>World</h1>\n<p>Hello world.</p>\n\n</body>\n</html> \n"
+  index.html: "<!DOCTYPE html>\n<html>\n<head>\n<title>Hello</title>\n</head>\n<body>\n\n<h1>World</h1>\n<p>Hello
+    world.</p>\n\n</body>\n</html> \n"
 kind: ConfigMap
 metadata:
   name: index.html-g9575k5952
