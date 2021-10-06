@@ -1,0 +1,54 @@
+# .github/workflows/release.yaml
+name: Release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  releases-matrix:
+    name: Release Go Binary
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # build and publish in parallel: linux/386, linux/amd64, windows/386, windows/amd64, darwin/386, darwin/amd64
+        goos: [linux, darwin]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: wangyoucao577/go-release-action@v1.14
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        goos: ${{ matrix.goos }}
+        goarch: amd64
+        goversion: "https://golang.org/dl/go1.15.8.linux-amd64.tar.gz"
+        binary_name: "argocd-lovely-plugin"
+        extra_files: LICENSE README.md
+  push_to_registry:
+    name: Push Docker image to GitHub Packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Get git tag
+        uses: little-core-labs/get-git-tag@v3.0.1
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.CR_PAT }}
+      - name: Push to GitHub Packages
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          platforms: linux/amd64, linux/arm64
+          tags: |
+            ghcr.io/crumbhole/argocd-lovely-plugin:${{ env.GIT_TAG_NAME }}
+            ghcr.io/crumbhole/argocd-lovely-plugin:stable
+            ghcr.io/crumbhole/argocd-lovely-plugin:latest
