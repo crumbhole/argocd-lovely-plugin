@@ -33,3 +33,21 @@ func HelmBinary() string {
 	}
 	return helm
 }
+
+func HelmValues() string {
+	// Set LOVELY_HELM_VALUES to some yaml you'd like overlayed on any values.yaml files used by helm
+	helm, got := os.LookupEnv(`LOVELY_HELM_VALUES`)
+	if !got {
+		return ``
+	}
+	return helm
+}
+
+func KustomizeExtra() string {
+	// Set LOVELY_KUSTOMIZE_EXTRA to some yaml you'd like overlayed on any kustomization.yaml files used
+	kustomize, got := os.LookupEnv(`LOVELY_KUSTOMIZE_EXTRA`)
+	if !got {
+		return ``
+	}
+	return kustomize
+}

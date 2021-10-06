@@ -8,6 +8,8 @@ replicas:
 - name: test-hello-world
   count: 5
 
+
+
 configMapGenerator:
 - name: index.html
   files:
