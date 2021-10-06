@@ -9,6 +9,7 @@ clean:
 
 get: $(DEPS)
 	go get ./...
+	go get github.com/otiai10/copy
 
 test: get
 	go test ./...
