@@ -2,44 +2,47 @@ package main
 
 import (
 	"errors"
-	"gopkg.in/yaml.v2"
+	//yaml2 "gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
+	"sigs.k8s.io/kustomize/kyaml/yaml"
+	"sigs.k8s.io/kustomize/kyaml/yaml/merge2"
 )
 
-func MergeYaml(path string, overlaytext string) error {
-	if overlaytext == `` {
+// Performs a json patch and a strategic merge, both if needed to some yaml on disk
+// Performs the strategic merge FIRST, followed by the json patch.
+// This is supposed to be Kubernetes strategic merge and RFC6902 patching
+// Accepts these patches as yaml. Will write a file to disk from these if
+// the file does not already exist, strategic merge patching an on disk
+// file will effectively create it.
+
+func MergeYaml(path string, mergetext string, patchtext string) error {
+	if mergetext == `` && patchtext == `` {
 		return nil
 	}
 
-	var base map[string]interface{}
+	//	var base map[string]interface{}
 	var basetext []byte = []byte(``)
+	var newtext string
+
 	_, err := os.Stat(path)
 	if !errors.Is(err, os.ErrNotExist) {
 		basetext, err = ioutil.ReadFile(path)
 		if err != nil {
 			return err
 		}
-		if err := yaml.Unmarshal(basetext, &base); err != nil {
+		// Could allow access to infer and merge options. Need use cases.
+		newtext, err = merge2.MergeStrings(mergetext, string(basetext), false, yaml.MergeOptions{
+			ListIncreaseDirection: yaml.MergeOptionsListAppend,
+		})
+		if err != nil {
 			return err
 		}
 	} else {
-		base = make(map[string]interface{})
-	}
-	var overlay map[string]interface{}
-	if err := yaml.Unmarshal([]byte(overlaytext), &overlay); err != nil {
-		return err
+		newtext = mergetext
 	}
 
-	for k, v := range overlay {
-		base[k] = v
-	}
-
-	newtext, err := yaml.Marshal(base)
-	if err != nil {
-		return err
-	}
-	if err := ioutil.WriteFile(path, newtext, 0644); err != nil {
+	if err := ioutil.WriteFile(path, []byte(newtext), 0644); err != nil {
 		return err
 	}
 	return nil

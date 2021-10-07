@@ -38,18 +38,36 @@ func HelmBinary() string {
 	return helm
 }
 
-func HelmValues() string {
-	// Set LOVELY_HELM_VALUES to some yaml you'd like overlayed on any values.yaml files used by helm
-	helm, got := os.LookupEnv(`LOVELY_HELM_VALUES`)
+func HelmMerge() string {
+	// Set LOVELY_HELM_MERGE to some yaml you'd like strategic merged into any values.yaml files used by helm
+	helm, got := os.LookupEnv(`LOVELY_HELM_MERGE`)
 	if !got {
 		return ``
 	}
 	return helm
 }
 
-func KustomizeExtra() string {
-	// Set LOVELY_KUSTOMIZE_EXTRA to some yaml you'd like overlayed on any kustomization.yaml files used
-	kustomize, got := os.LookupEnv(`LOVELY_KUSTOMIZE_EXTRA`)
+func HelmPatch() string {
+	// Set LOVELY_HELM_PATCH to some yaml you'd like json6902 patched into any values.yaml files used by helm
+	helm, got := os.LookupEnv(`LOVELY_HELM_PATCH`)
+	if !got {
+		return ``
+	}
+	return helm
+}
+
+func KustomizeMerge() string {
+	// Set LOVELY_KUSTOMIZE_MERGE to some yaml you'd like strategic merged on any kustomization.yaml files used by kustomize
+	kustomize, got := os.LookupEnv(`LOVELY_KUSTOMIZE_MERGE`)
+	if !got {
+		return ``
+	}
+	return kustomize
+}
+
+func KustomizePatch() string {
+	// Set LOVELY_KUSTOMIZE_PATCH to some yaml you'd like json6902 patched on any kustomization.yaml files used by kustomize
+	kustomize, got := os.LookupEnv(`LOVELY_KUSTOMIZE_PATCH`)
 	if !got {
 		return ``
 	}

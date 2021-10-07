@@ -85,7 +85,10 @@ func (h helmProcessor) process(input *string, path string) (*string, error) {
 	if !h.enabled(path) {
 		return input, DisabledProcessorError
 	}
-	MergeYaml(path+"/values.yaml", HelmValues())
+	err := MergeYaml(path+"/values.yaml", HelmMerge(), HelmPatch())
+	if err != nil {
+		return nil, err
+	}
 	cmd := exec.Command(HelmBinary(),
 		`template`,
 		`-n`,

@@ -36,7 +36,10 @@ func (k kustomizeProcessor) process(input *string, path string) (*string, error)
 		return input, DisabledProcessorError
 	}
 	kustYamlPath := path + "/kustomization.yaml"
-	MergeYaml(kustYamlPath, KustomizeExtra())
+	err := MergeYaml(kustYamlPath, KustomizeMerge(), KustomizePatch())
+	if err != nil {
+		return nil, err
+	}
 	if input != nil {
 		// Reading from 'stdin' - so put this on disk for kustomize
 		intermediateFile, err := os.Create(path + "/" + kustomizeIntermediateFilename)
