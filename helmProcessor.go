@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
-	"log"
 	"os"
 	"os/exec"
 	"regexp"
@@ -31,7 +30,6 @@ func (_ helmProcessor) enabled(path string) bool {
 }
 
 func (h helmProcessor) addRepo(name string, url string) error {
-	log.Printf("Helm repo add %s %s\n", name, url)
 	cmd := exec.Command(HelmBinary(), `--registry-config`, `/tmp/.helm/registry.json`, `--repository-cache`, `/tmp/.helm/cache/repository`, `--repository-config`, `/tmp/.helm/repositories.json`, `repo`, `add`, name, url)
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
@@ -55,7 +53,6 @@ func (h helmProcessor) addRepos(path string) error {
 		if err != nil {
 			continue
 		}
-		//log.Printf("Requirements %s, %s\n", reqsFile, yamlcontent)
 		var deps Dependencies
 		err = yaml.Unmarshal(yamlcontent, &deps)
 		for _, dep := range deps.Dependencies {

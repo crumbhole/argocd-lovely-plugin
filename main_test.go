@@ -95,7 +95,6 @@ func TestDirectories(t *testing.T) {
 	for _, d := range dirs {
 		if d.IsDir() {
 			t.Run(d.Name(), func(t *testing.T) {
-				t.Logf("Testing dir %s", testsPathCopy+d.Name())
 				err := checkDir(c, testsPathCopy+d.Name())
 				if err != nil {
 					t.Error(err)

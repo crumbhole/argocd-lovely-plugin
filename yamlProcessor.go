@@ -2,7 +2,6 @@ package main
 
 import (
 	"io/ioutil"
-	//"log"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -38,7 +37,6 @@ func (v *yamlProcessor) scanFile(path string, info os.FileInfo, err error) error
 	}
 	yamlRegexp := regexp.MustCompile(`\.ya?ml$`)
 	if yamlRegexp.MatchString(info.Name()) {
-		//log.Printf("YAML processing %s\n", path)
 		yamlcontent, err := ioutil.ReadFile(path)
 		if err != nil {
 			return err
@@ -61,6 +59,5 @@ func (v yamlProcessor) process(input *string, path string) (*string, error) {
 		}
 		return &v.output, nil
 	}
-	//log.Printf("YAML returning input\n")
 	return input, nil
 }

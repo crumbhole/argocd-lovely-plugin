@@ -59,7 +59,6 @@ func (c *Collection) processOneDir(path string) (string, error) {
 	var result *string = nil
 	for _, processor := range processors {
 		if processor.enabled(path) {
-			log.Printf("Processing %s with %s\n", path, processor.name())
 			out, err := processor.process(result, path)
 			if err != nil {
 				return "", err
@@ -84,7 +83,6 @@ func (c *Collection) initAllDirs() error {
 func (c *Collection) initOneDir(path string) error {
 	for _, processor := range processors {
 		if processor.enabled(path) {
-			log.Printf("Init %s with %s\n", path, processor.name())
 			err := processor.init(path)
 			if err != nil {
 				return err

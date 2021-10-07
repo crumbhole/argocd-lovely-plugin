@@ -6,7 +6,6 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"log"
 	"os/exec"
 )
 
@@ -25,7 +24,6 @@ func (v pluginProcessor) init(path string) error {
 		return DisabledProcessorError
 	}
 	for _, plugin := range Plugins() {
-		log.Printf("Plugin %s processing %s\n", plugin, path)
 		cmd := exec.Command(`bash`, `-c`, plugin)
 		cmd.Dir = path
 		out, err := cmd.CombinedOutput()
@@ -42,7 +40,6 @@ func (v pluginProcessor) process(input *string, path string) (*string, error) {
 	}
 	currentText := *input
 	for _, plugin := range Plugins() {
-		log.Printf("Plugin %s processing %s\n", plugin, path)
 		cmd := exec.Command(`bash`, `-c`, plugin)
 		cmd.Dir = path
 		stdin, err := cmd.StdinPipe()
