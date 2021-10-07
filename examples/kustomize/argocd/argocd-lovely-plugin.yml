@@ -7,7 +7,7 @@ spec:
   template:
     spec:
       containers:
-      - name: argocd-lovely-plugin
+      - name: argocd-repo-server
         volumeMounts:
         - name: custom-tools
           mountPath: /usr/local/bin/argocd-lovely-plugin
