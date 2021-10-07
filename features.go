@@ -20,6 +20,19 @@ func Plugins() []string {
 	return make([]string, 0)
 }
 
+func PluginsInit() []string {
+	// Set LOVELY_PLUGINS_INIT to a comma separated list of plugins to run during init
+	pluginsText, got := os.LookupEnv(`LOVELY_PLUGINS_INIT`)
+	if got {
+		plugins := strings.Split(pluginsText, `,`)
+		for i, plugin := range plugins {
+			plugins[i] = strings.TrimSpace(plugin)
+		}
+		return plugins
+	}
+	return make([]string, 0)
+}
+
 func KustomizeBinary() string {
 	// Set LOVELY_KUSTOMIZE_PATH to the path to the kustomize binary
 	kustomize, got := os.LookupEnv(`LOVELY_KUSTOMIZE_PATH`)

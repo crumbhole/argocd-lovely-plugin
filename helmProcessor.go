@@ -76,7 +76,7 @@ func (h helmProcessor) init(path string) error {
 	cmd.Stderr = &stderr
 	_, err := cmd.Output()
 	if err != nil {
-		return fmt.Errorf("%s: %v", err, stderr)
+		return fmt.Errorf("%s: %s", err, stderr.String())
 	}
 	return nil
 }
@@ -100,7 +100,7 @@ func (h helmProcessor) process(input *string, path string) (*string, error) {
 	cmd.Stderr = &stderr
 	out, err := cmd.Output()
 	if err != nil {
-		return nil, fmt.Errorf("%s: %v", err, stderr)
+		return nil, fmt.Errorf("%s: %s", err, stderr.String())
 	}
 	outstr := string(out)
 	return &outstr, nil
