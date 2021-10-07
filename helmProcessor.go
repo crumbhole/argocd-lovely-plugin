@@ -32,7 +32,7 @@ func (_ helmProcessor) enabled(path string) bool {
 
 func (h helmProcessor) addRepo(name string, url string) error {
 	log.Printf("Helm repo add %s %s\n", name, url)
-	cmd := exec.Command(HelmBinary(), `repo`, `add`, name, url)
+	cmd := exec.Command(HelmBinary(), `--registry-config`, `/tmp/.helm/registry.json`, `--repository-cache`, `/tmp/.helm/cache/repository`, `--repository-config`, `/tmp/.helm/repositories.json`, `repo`, `add`, name, url)
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 	_, err := cmd.Output()
@@ -70,7 +70,7 @@ func (h helmProcessor) init(path string) error {
 		return DisabledProcessorError
 	}
 	h.addRepos(path)
-	cmd := exec.Command(HelmBinary(), `dependency`, `build`)
+	cmd := exec.Command(HelmBinary(), `--registry-config`, `/tmp/.helm/registry.json`, `--repository-cache`, `/tmp/.helm/cache/repository`, `--repository-config`, `/tmp/.helm/repositories.json`, `dependency`, `build`)
 	cmd.Dir = path
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
@@ -89,7 +89,7 @@ func (h helmProcessor) process(input *string, path string) (*string, error) {
 	if err != nil {
 		return nil, err
 	}
-	cmd := exec.Command(HelmBinary(),
+	cmd := exec.Command(HelmBinary(), `--registry-config`, `/tmp/.helm/registry.json`, `--repository-cache`, `/tmp/.helm/cache/repository`, `--repository-config`, `/tmp/.helm/repositotries.json`,
 		`template`,
 		`-n`,
 		os.Getenv(`ARGOCD_APP_NAMESPACE`),
