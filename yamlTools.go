@@ -1,10 +1,8 @@
 package main
 
 import (
-	"errors"
 	jsonpatch "github.com/evanphx/json-patch"
 	"io/ioutil"
-	"os"
 	kyamlyaml "sigs.k8s.io/kustomize/kyaml/yaml"
 	"sigs.k8s.io/kustomize/kyaml/yaml/merge2"
 	yaml "sigs.k8s.io/yaml"
@@ -22,16 +20,13 @@ func MergeYaml(path string, mergetext string, patchtext string) error {
 		return nil
 	}
 
-	//	var base map[string]interface{}
-	var basetext []byte = []byte(``)
+	basetext, err := ioutil.ReadFile(path)
+	if err != nil {
+		return err
+	}
 	var mergedtext string
 
-	_, err := os.Stat(path)
-	if !errors.Is(err, os.ErrNotExist) {
-		basetext, err = ioutil.ReadFile(path)
-		if err != nil {
-			return err
-		}
+	if mergetext != `` {
 		// Could allow access to infer and merge options. Need use cases.
 		mergedtext, err = merge2.MergeStrings(mergetext, string(basetext), false, kyamlyaml.MergeOptions{
 			ListIncreaseDirection: kyamlyaml.MergeOptionsListAppend,
@@ -40,7 +35,7 @@ func MergeYaml(path string, mergetext string, patchtext string) error {
 			return err
 		}
 	} else {
-		mergedtext = mergetext
+		mergedtext = string(basetext)
 	}
 
 	if patchtext != `` {
