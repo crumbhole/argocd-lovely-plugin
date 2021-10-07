@@ -6,6 +6,6 @@ resources:
 - service.yaml
 
 configMapGenerator:
-- name: squid.conf
+- name: index.html
   files:
-  - squid.conf
+  - index.html

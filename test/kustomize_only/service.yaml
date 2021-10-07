@@ -1,17 +1,18 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: its10605-squid
+  name: test-hello-world
   labels:
-    app: its10605-squid
-  annotations:
-    external-dns.alpha.kubernetes.io/hostname: snowflake-proxy.wpscloud.co.uk
+    app.kubernetes.io/name: hello-world
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.16.0"
 spec:
+  type: ClusterIP
   ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 3128
-    name: http
-  type: LoadBalancer
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
   selector:
-    app: its10605-squid
+    app.kubernetes.io/name: hello-world
+    app.kubernetes.io/instance: test
