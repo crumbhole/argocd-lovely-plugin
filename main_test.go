@@ -78,7 +78,11 @@ func TestDirectories(t *testing.T) {
 			return copy.Replace
 		},
 	}
-	err := copy.Copy(testsPath, testsPathCopy, opt)
+	err := os.RemoveAll(testsPathCopy)
+	if err != nil {
+		t.Error(err)
+	}
+	err = copy.Copy(testsPath, testsPathCopy, opt)
 	if err != nil {
 		t.Error(err)
 	}
