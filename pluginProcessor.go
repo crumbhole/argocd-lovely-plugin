@@ -23,7 +23,7 @@ func (v pluginProcessor) init(path string) error {
 	if !v.enabled(path) {
 		return DisabledProcessorError
 	}
-	for _, plugin := range Plugins() {
+	for _, plugin := range PluginsInit() {
 		cmd := exec.Command(`bash`, `-c`, plugin)
 		cmd.Dir = path
 		out, err := cmd.CombinedOutput()
