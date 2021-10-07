@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -139,5 +140,5 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	print(output)
+	fmt.Println(output)
 }
