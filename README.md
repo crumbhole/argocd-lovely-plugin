@@ -14,7 +14,7 @@ An [Argo CD](https://argoproj.github.io/argo-cd/) plugin to perform various mani
 - Helm is no longer special, and is just a templating tool. This is the case for any use of modified helm charts in ArgoCD. We cannot run hooks or anything any more. You don't get helm specific support in ArgoCD.
 
 # Installing as an Argo CD Plugin
-You can use [our Kustomization example](https://github.com/crumbhole/argocd-vault-replacer/tree/main/examples/kustomize/argocd) to install Argo CD and to bootstrap the installation of the plugin at the same time. However the steps below will detail what is required should you wish to do things more manually.
+You can use [our Kustomization example](https://github.com/crumbhole/argocd-lovely-plugin/tree/main/examples/kustomize/argocd) to install Argo CD and to bootstrap the installation of the plugin at the same time. However the steps below will detail what is required should you wish to do things more manually.
 
 ## General configuration
 Lovely is designed for minimal configuration and to do the right thing. The following environment variables can be used to change some behaviour:
