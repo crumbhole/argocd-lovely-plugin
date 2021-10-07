@@ -2,11 +2,12 @@ package main
 
 import (
 	"errors"
-	//yaml2 "gopkg.in/yaml.v2"
+	jsonpatch "github.com/evanphx/json-patch"
 	"io/ioutil"
 	"os"
-	"sigs.k8s.io/kustomize/kyaml/yaml"
+	kyamlyaml "sigs.k8s.io/kustomize/kyaml/yaml"
 	"sigs.k8s.io/kustomize/kyaml/yaml/merge2"
+	yaml "sigs.k8s.io/yaml"
 )
 
 // Performs a json patch and a strategic merge, both if needed to some yaml on disk
@@ -23,7 +24,7 @@ func MergeYaml(path string, mergetext string, patchtext string) error {
 
 	//	var base map[string]interface{}
 	var basetext []byte = []byte(``)
-	var newtext string
+	var mergedtext string
 
 	_, err := os.Stat(path)
 	if !errors.Is(err, os.ErrNotExist) {
@@ -32,17 +33,39 @@ func MergeYaml(path string, mergetext string, patchtext string) error {
 			return err
 		}
 		// Could allow access to infer and merge options. Need use cases.
-		newtext, err = merge2.MergeStrings(mergetext, string(basetext), false, yaml.MergeOptions{
-			ListIncreaseDirection: yaml.MergeOptionsListAppend,
+		mergedtext, err = merge2.MergeStrings(mergetext, string(basetext), false, kyamlyaml.MergeOptions{
+			ListIncreaseDirection: kyamlyaml.MergeOptionsListAppend,
 		})
 		if err != nil {
 			return err
 		}
 	} else {
-		newtext = mergetext
+		mergedtext = mergetext
 	}
 
-	if err := ioutil.WriteFile(path, []byte(newtext), 0644); err != nil {
+	if patchtext != `` {
+		patch, err := jsonpatch.DecodePatch([]byte(patchtext))
+		if err != nil {
+			return err
+		}
+		jsontext, err := yaml.YAMLToJSON([]byte(mergedtext))
+		if err != nil {
+			return err
+		}
+
+		modifiedjson, err := patch.Apply(jsontext)
+		if err != nil {
+			return err
+		}
+
+		patchedtext, err := yaml.JSONToYAML(modifiedjson)
+		if err != nil {
+			return err
+		}
+		mergedtext = string(patchedtext)
+	}
+
+	if err := ioutil.WriteFile(path, []byte(mergedtext), 0644); err != nil {
 		return err
 	}
 	return nil
