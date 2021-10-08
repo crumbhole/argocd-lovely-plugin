@@ -5,7 +5,7 @@ An [Argo CD](https://argoproj.github.io/argo-cd/) plugin to perform various mani
 - Allows for better GitOps with one argo application per real application
   - Process a helm chart through kustomize more easily
   - Trivially add some extra resources to a helm chart by popping them in a directory along side your main one
-  - Use argo-vault-replacer to pull secrets from [Hashicorp Vault](https://www.vaultproject.io/) as a plugin to this one to combine secrets and helm/kustomize more easily
+  - Use [argo-vault-replacer](https://github.com/crumbhole/argocd-vault-replacer) to pull secrets from [Hashicorp Vault](https://www.vaultproject.io/) as a plugin to this one to combine secrets and helm/kustomize more easily
 - DRY (Don't repeat yourself) more
   - Allows ArgoCD to kustomize per application
   - Combines particularly well with [application sets](https://argocd-applicationset.readthedocs.io/en/stable/) to allow broadly similar things to be partially modified by the application.
