@@ -12,6 +12,10 @@ spec:
         - name: custom-tools
           mountPath: /usr/local/bin/argocd-lovely-plugin
           subPath: argocd-lovely-plugin
+        # Environment Variables are optional
+        env:
+          - name: LOVELY_PLUGINS
+            value: argocd-vault-replacer
       volumes:
       - name: custom-tools
         emptyDir: {}
