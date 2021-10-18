@@ -67,11 +67,19 @@ func (h helmProcessor) init(path string) error {
 		return DisabledProcessorError
 	}
 	h.addRepos(path)
+	err := os.RemoveAll("charts")
+	if err != nil {
+		return err
+	}
+	err = os.RemoveAll("Chart.lock")
+	if err != nil {
+		return err
+	}
 	cmd := exec.Command(HelmBinary(), `--registry-config`, `/tmp/.helm/registry.json`, `--repository-cache`, `/tmp/.helm/cache/repository`, `--repository-config`, `/tmp/.helm/repositories.json`, `dependency`, `build`)
 	cmd.Dir = path
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
-	_, err := cmd.Output()
+	_, err = cmd.Output()
 	if err != nil {
 		return fmt.Errorf("%s: %s", err, stderr.String())
 	}
