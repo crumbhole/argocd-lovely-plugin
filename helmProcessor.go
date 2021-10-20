@@ -29,15 +29,24 @@ func (_ helmProcessor) enabled(path string) bool {
 	return reFileInDir(path, regexp.MustCompile(`^Chart\.ya?ml$`))
 }
 
-func (h helmProcessor) addRepo(name string, url string) error {
-	cmd := exec.Command(HelmBinary(), `--registry-config`, `/tmp/.helm/registry.json`, `--repository-cache`, `/tmp/.helm/cache/repository`, `--repository-config`, `/tmp/.helm/repositories.json`, `repo`, `add`, name, url)
+func (h helmProcessor) helmDo(path string, params ...string) (string, error) {
+	baseParams := [6]string{`--registry-config`, `/tmp/.helm/registry.json`, `--repository-cache`, `/tmp/.helm/cache/repository`, `--repository-config`, `/tmp/.helm/repositories.json`}
+	cmdArray := append(baseParams[:], params[:]...)
+	cmd := exec.Command(HelmBinary(), cmdArray...)
+	cmd.Dir = path
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
-	_, err := cmd.Output()
+	out, err := cmd.Output()
+	//	fmt.Printf("Output from %v in %s is %s\n", params, path, out)
 	if err != nil {
-		return fmt.Errorf("%s: %v", err, stderr)
+		return string(out), fmt.Errorf("%s: %v", err, stderr)
 	}
-	return nil
+	return string(out), nil
+}
+
+func (h helmProcessor) repoEnsure(path string, name string, url string) error {
+	_, err := h.helmDo(path, `repo`, `add`, name, url)
+	return err
 }
 
 var requirementsFiles = [...]string{
@@ -47,7 +56,7 @@ var requirementsFiles = [...]string{
 	`Chart.yml`,
 }
 
-func (h helmProcessor) addRepos(path string) error {
+func (h helmProcessor) reposEnsure(path string) error {
 	for _, reqsFile := range requirementsFiles {
 		yamlcontent, err := ioutil.ReadFile(path + "/" + reqsFile)
 		if err != nil {
@@ -56,34 +65,23 @@ func (h helmProcessor) addRepos(path string) error {
 		var deps Dependencies
 		err = yaml.Unmarshal(yamlcontent, &deps)
 		for _, dep := range deps.Dependencies {
-			h.addRepo(dep.Name, dep.Repository)
+			h.repoEnsure(path, dep.Name, dep.Repository)
 		}
 	}
-	return nil
+	// Add won't cause an update, so we do an update as well.
+	// This is a sledgehammer update all as per-repo update isn't in until helm 3.7
+	// and argo ships with 3.6
+	_, err := h.helmDo(path, `repo`, `update`)
+	return err
 }
 
 func (h helmProcessor) init(path string) error {
 	if !h.enabled(path) {
 		return DisabledProcessorError
 	}
-	h.addRepos(path)
-	err := os.RemoveAll("charts")
-	if err != nil {
-		return err
-	}
-	err = os.RemoveAll("Chart.lock")
-	if err != nil {
-		return err
-	}
-	cmd := exec.Command(HelmBinary(), `--registry-config`, `/tmp/.helm/registry.json`, `--repository-cache`, `/tmp/.helm/cache/repository`, `--repository-config`, `/tmp/.helm/repositories.json`, `dependency`, `build`)
-	cmd.Dir = path
-	var stderr bytes.Buffer
-	cmd.Stderr = &stderr
-	_, err = cmd.Output()
-	if err != nil {
-		return fmt.Errorf("%s: %s", err, stderr.String())
-	}
-	return nil
+	h.reposEnsure(path)
+	_, err := h.helmDo(path, `dependency`, `build`)
+	return err
 }
 
 func (h helmProcessor) process(input *string, path string) (*string, error) {
@@ -94,19 +92,10 @@ func (h helmProcessor) process(input *string, path string) (*string, error) {
 	if err != nil {
 		return nil, err
 	}
-	cmd := exec.Command(HelmBinary(), `--registry-config`, `/tmp/.helm/registry.json`, `--repository-cache`, `/tmp/.helm/cache/repository`, `--repository-config`, `/tmp/.helm/repositotries.json`,
-		`template`,
+	out, err := h.helmDo(path, `template`,
 		`-n`,
 		os.Getenv(`ARGOCD_APP_NAMESPACE`),
 		os.Getenv(`ARGOCD_APP_NAME`),
 		`.`)
-	cmd.Dir = path
-	var stderr bytes.Buffer
-	cmd.Stderr = &stderr
-	out, err := cmd.Output()
-	if err != nil {
-		return nil, fmt.Errorf("%s: %s", err, stderr.String())
-	}
-	outstr := string(out)
-	return &outstr, nil
+	return &out, nil
 }
