@@ -39,16 +39,21 @@ func MergeYaml(path string, mergetext string, patchtext string) error {
 	}
 
 	if patchtext != `` {
-		patch, err := jsonpatch.DecodePatch([]byte(patchtext))
+		patchjson, err := yaml.YAMLToJSON([]byte(patchtext))
+		if err != nil {
+			// May not be yaml. Let decode patch whine.
+			patchjson = []byte(patchtext)
+		}
+		patch, err := jsonpatch.DecodePatch(patchjson)
 		if err != nil {
 			return err
 		}
-		jsontext, err := yaml.YAMLToJSON([]byte(mergedtext))
+		jsonmergedtext, err := yaml.YAMLToJSON([]byte(mergedtext))
 		if err != nil {
 			return err
 		}
 
-		modifiedjson, err := patch.Apply(jsontext)
+		modifiedjson, err := patch.Apply(jsonmergedtext)
 		if err != nil {
 			return err
 		}

@@ -23,10 +23,16 @@ Lovely is designed for minimal configuration and to do the right thing. The foll
 - LOVELY_HELM_PATH: Set to a path or binary name to use for helm.
 
 ## Helm variation
-- LOVELY_HELM_VALUES: to some yaml you'd like overlayed on any values.yaml files used by helm. This will override any settings in values.yaml that already exist. You cannot use this to append to existing yaml lists.
+- LOVELY_HELM_MERGE: to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) merged into any values.yaml used by helm.
+- LOVELY_HELM_PATCH: to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any values.yaml used by helm.
+
+There is no way to modify any other helm files at this time.
 
 ## Kustomize
-- LOVELY_KUSTOMIZE_EXTRAS: to some yaml you'd like overlayed on any kustomization.yaml files used by kustomize. This will override any settings in kustomization.yaml that already exist. You cannot use this to append to existing yaml lists.
+- LOVELY_KUSTOMIZE_MERGE: to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) merged into any kustomization.yaml found.
+- LOVELY_KUSTOMIZE_PATCH: to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any kustomization.yaml found.
+
+There is no way to modify any other files, that's what kustomize itself is for.
 
 ## What can I do with it?
 Have a look at the [test suite](test/README.md) for a lot of examples of how you can use this to make nice git repos for your applications.
