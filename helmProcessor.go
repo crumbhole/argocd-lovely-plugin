@@ -39,7 +39,7 @@ func (h helmProcessor) helmDo(path string, params ...string) (string, error) {
 	out, err := cmd.Output()
 	//	fmt.Printf("Output from %v in %s is %s\n", params, path, out)
 	if err != nil {
-		return string(out), fmt.Errorf("%s: %v", err, stderr)
+		return string(out), fmt.Errorf("%s: %v", err, stderr.String())
 	}
 	return string(out), nil
 }
