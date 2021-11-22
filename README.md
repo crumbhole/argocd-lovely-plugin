@@ -25,6 +25,7 @@ Lovely is designed for minimal configuration and to do the right thing. The foll
 ## Helm variation
 - LOVELY_HELM_MERGE: to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) merged into any values.yaml used by helm.
 - LOVELY_HELM_PATCH: to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any values.yaml used by helm.
+- ARGOCD_APP_NAME: This can be used to set the helm 'name' in the same way as releaseName works in ArgoCD's standard helm processing
 
 There is no way to modify any other helm files at this time.
 
