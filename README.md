@@ -36,7 +36,7 @@ There is no way to modify any other helm files at this time.
 There is no way to modify any other files, that's what kustomize itself is for.
 
 ## What can I do with it?
-Have a look at the [test suite](test/README.md) for a lot of examples of how you can use this to make nice git repos for your applications.
+Have a look at the [examples directory](examples/README.md) for a list of examples of how you can use this to make nice git repos for your applications. This also refers to the [test directory](test/README.md), which contains a number of examples that also serve as CI/CD tests for this plugin.
 
 ## What doesn't it do?
 This is not a templating tool, there are plenty of choices out there to that stuff. It just brings together external tools.
