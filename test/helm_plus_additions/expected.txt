@@ -80,7 +80,7 @@ data:
     world.</p>\n\n</body>\n</html> \n"
 kind: ConfigMap
 metadata:
-  name: index.html
+  name: index.html-g9575k5952
 ---
 apiVersion: v1
 kind: Secret
