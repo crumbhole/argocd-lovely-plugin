@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/evanphx/json-patch v4.11.0+incompatible
-	github.com/otiai10/copy v1.6.0
+	github.com/otiai10/copy v1.7.0
 	gopkg.in/yaml.v2 v2.4.0
 	sigs.k8s.io/kustomize/api v0.10.0
 	sigs.k8s.io/kustomize/kyaml v0.12.0

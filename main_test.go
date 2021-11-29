@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/otiai10/copy"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
@@ -12,12 +11,11 @@ import (
 
 const (
 	testsPath     = "test/"
-	testsPathCopy = "test_copy/"
 )
 
 func setupEnv(path string) (map[string]string, error) {
 	var envValues map[string]string
-	envFile := path + "/env.yaml"
+	envFile := path + "/env.txt"
 	_, err := os.Stat(envFile)
 	if !errors.Is(err, os.ErrNotExist) {
 		envText, err := ioutil.ReadFile(envFile)
@@ -25,10 +23,6 @@ func setupEnv(path string) (map[string]string, error) {
 			return envValues, err
 		}
 		if err := yaml.Unmarshal(envText, &envValues); err != nil {
-			return envValues, err
-		}
-		// Unlink the env.yaml so it never gets involved in making the yamls.
-		if err := os.Remove(envFile); err != nil {
 			return envValues, err
 		}
 		for k, v := range envValues {
@@ -44,16 +38,18 @@ func cleanupEnv(env map[string]string) {
 	}
 }
 
-func checkDir(c Collection, path string) error {
+func checkDir(path string) error {
 	env, err := setupEnv(path)
 	defer cleanupEnv(env)
 	if err != nil {
 		return err
 	}
+	c := Collection{}
 	out, err := c.doAllDirs(true, path)
 	if err != nil {
 		return err
 	}
+	c = Collection{}
 	out, err = c.doAllDirs(false, path)
 	if err != nil {
 		return err
@@ -73,29 +69,15 @@ func checkDir(c Collection, path string) error {
 func TestDirectories(t *testing.T) {
 	os.Setenv(`ARGOCD_APP_NAME`, `test`)
 	os.Setenv(`ARGOCD_APP_NAMESPACE`, `testnamespace`)
-	opt := copy.Options{
-		OnDirExists: func(_ string, _ string) copy.DirExistsAction {
-			return copy.Replace
-		},
-	}
-	err := os.RemoveAll(testsPathCopy)
+	dirs, err := ioutil.ReadDir(testsPath)
 	if err != nil {
 		t.Error(err)
 	}
-	err = copy.Copy(testsPath, testsPathCopy, opt)
-	if err != nil {
-		t.Error(err)
-	}
-	dirs, err := ioutil.ReadDir(testsPathCopy)
-	if err != nil {
-		t.Error(err)
-	}
-	c := Collection{}
 
 	for _, d := range dirs {
 		if d.IsDir() {
 			t.Run(d.Name(), func(t *testing.T) {
-				err := checkDir(c, testsPathCopy+d.Name())
+				err := checkDir(testsPath+d.Name())
 				if err != nil {
 					t.Error(err)
 				}

@@ -3,6 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
+	"github.com/otiai10/copy"
+	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -64,7 +66,6 @@ func (c *Collection) processOneDir(path string) (string, error) {
 			if err != nil {
 				return "", err
 			}
-			//			print(*out)
 			result = out
 		}
 	}
@@ -93,8 +94,32 @@ func (c *Collection) initOneDir(path string) error {
 	return nil
 }
 
+// We copy the directory in case we patch some of the files for kustomize or helm
+// ArgoCD doesn't guarantee us an unpatched copy when we run
+func (c *Collection) makeTmpCopy(path string) (string, error) {
+	tmpPath, err := ioutil.TempDir(os.TempDir(), "lovely-plugin-")
+	if err != nil {
+		return tmpPath, err
+	}
+	err = os.RemoveAll(tmpPath)
+	if err != nil {
+		return tmpPath, err
+	}
+	err = copy.Copy(path, tmpPath)
+	return tmpPath, err
+}
+
 func (c *Collection) doAllDirs(init bool, path string) (string, error) {
-	err := c.scanDir(path)
+	workingPath := path
+	if !init {
+		var err error
+		workingPath, err = c.makeTmpCopy(path)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer os.RemoveAll(workingPath)
+	}
+	err := c.scanDir(workingPath)
 	if err != nil {
 		log.Fatal(err)
 	}
