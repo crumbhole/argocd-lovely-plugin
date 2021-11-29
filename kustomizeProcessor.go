@@ -75,6 +75,6 @@ func (k kustomizeProcessor) process(input *string, path string) (*string, error)
 	if err != nil {
 		return nil, errors.New(string(out))
 	}
-	outstr := string(out)
+	outstr := "---\n" + string(out)
 	return &outstr, nil
 }
