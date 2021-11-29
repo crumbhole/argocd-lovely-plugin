@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	testsPath     = "test/"
+	testsPath = "test/"
 )
 
 func setupEnv(path string) (map[string]string, error) {
@@ -77,7 +77,7 @@ func TestDirectories(t *testing.T) {
 	for _, d := range dirs {
 		if d.IsDir() {
 			t.Run(d.Name(), func(t *testing.T) {
-				err := checkDir(testsPath+d.Name())
+				err := checkDir(testsPath + d.Name())
 				if err != nil {
 					t.Error(err)
 				}
