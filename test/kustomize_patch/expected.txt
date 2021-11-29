@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 data:
   index.html: "<!DOCTYPE html>\n<html>\n<head>\n<title>Hello</title>\n</head>\n<body>\n\n<h1>World</h1>\n<p>Hello
