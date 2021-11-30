@@ -25,11 +25,10 @@ spec:
         targetRevision: HEAD
         plugin:
           name: argocd-lovely-plugin
-          env:                                                                                                                                                                                         
-            - name: LOVELY_HELM_PATCH                                                                                                                                                                  
-              value: |                                                                                                                                                                                 
+          env:
+            - name: LOVELY_HELM_PATCH
+              value: |
                 [{ "op": "add", "path": "/spec/containers/0/env", "value": { "action": "add", "name": "cluster, "value": "{{name}}" } }]
-
       syncPolicy:
         automated:
           prune: true
