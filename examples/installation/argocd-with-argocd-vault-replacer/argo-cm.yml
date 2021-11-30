@@ -1,0 +1,29 @@
+apiVersion: v1
+data:
+  configManagementPlugins: |-
+    - name: argocd-lovely-plugin
+      init:
+        command: ["argocd-lovely-plugin"]
+        args: ["init"]
+      generate:
+        command: ["argocd-lovely-plugin"]
+    - name: argocd-vault-replacer
+      generate:
+        command: ["argocd-vault-replacer"]
+    - name: kustomize-argocd-vault-replacer
+      generate:
+        command: ["sh", "-c"]
+        args: ["kustomize build . | argocd-vault-replacer"]
+    - name: helm-argocd-vault-replacer
+      init:
+        command: ["/bin/sh", "-c"]
+        args: ["helm dependency build"]
+      generate:
+        command: [sh, -c]
+        args: ["helm template -n $ARGOCD_APP_NAMESPACE $ARGOCD_APP_NAME . | argocd-vault-replacer"]
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+  name: argocd-cm

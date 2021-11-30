@@ -1,0 +1,3 @@
+hello-world:
+  image:
+    tag: <vault:example/data/foo/bar~imageTag>

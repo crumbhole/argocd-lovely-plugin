@@ -1,0 +1,27 @@
+# Downloads the plugin and moves it to /custom-tools, which is then mounted on the argocd-repo-server
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-vault-replacer
+spec:
+  template:
+    spec:
+      containers:
+      - name: argocd-repo-server
+        volumeMounts:
+        - name: custom-tools
+          mountPath: /usr/local/bin/argocd-vault-replacer
+          subPath: argocd-vault-replacer
+        env:
+          - name: VAULT_ADDR
+            value: https://vault.mycompany.biz
+      volumes:
+      - name: custom-tools
+        emptyDir: {}
+      initContainers:
+      - name: argocd-vault-replacer-download
+        image: ghcr.io/crumbhole/argocd-vault-replacer:stable
+        imagePullPolicy: Always
+        volumeMounts:
+          - mountPath: /custom-tools
+            name: custom-tools

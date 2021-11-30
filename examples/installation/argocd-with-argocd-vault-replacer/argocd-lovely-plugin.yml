@@ -20,7 +20,7 @@ spec:
       - name: custom-tools
         emptyDir: {}
       initContainers:
-      - name: argocd-lovely-plugin-install
+      - name: argocd-lovely-plugin-download
         image: ghcr.io/crumbhole/argocd-lovely-plugin:stable
         imagePullPolicy: Always
         volumeMounts:
