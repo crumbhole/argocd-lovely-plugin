@@ -1,11 +1,11 @@
 # argocd-lovely-plugin
-An [Argo CD](https://argoproj.github.io/argo-cd/) plugin that behaves in a way I wish Argo CD behaved. This is only aimed at using Argo CD for GitOps - I do not use the UI for creating or modifying applications.
+An [Argo CD](https://argoproj.github.io/argo-cd/) plugin that behaves in a way we wish Argo CD behaved. This is only aimed at using Argo CD for GitOps - we do not use the UI for creating or modifying applications.
 
 ## Headline features
 - Composite multiple things together to form a single app from multiple directories. For example - two or more helm charts together as a single app. Or a helm chart with a bit of plain yaml (a secret) to supplement it.
 - Trivially allows Helm + Kustomize to work together, just works as you'd hope. Put a helm
-- When used with [application sets](https://argocd-applicationset.readthedocs.io/en/stable/) you can apply kustomization and modify helm's values.yaml per application to apply minor differences to your applications trivially.
-- Chain several plugins together. argocd-lovely-plugin acts as a master plugin runner (acting as the only plugin to ArgoCD), and then runs other ArgoCD compatible plugins in a chain. This acts a bit like a unix pipe, so you can helm | kustomize | argocd-vault-replacer.
+- When used with [application sets](https://argocd-applicationset.readthedocs.io/en/stable/) you can apply Kustomization and modify Helm's values.yaml per application to apply minor differences to your applications trivially.
+- Chain several plugins together. argocd-lovely-plugin acts as a master plugin runner (acting as the only plugin to ArgoCD), and then runs other Argo CD compatible plugins in a chain. This acts a bit like a unix pipe, so you can helm | kustomize | argocd-vault-replacer.
 
 ## Why?
 - Allows for better GitOps with one argo application per real application.
@@ -19,7 +19,7 @@ An [Argo CD](https://argoproj.github.io/argo-cd/) plugin that behaves in a way I
 - Kustomize
 - Plain YAML
 
-argocd-lovely-plugin does not support jsonnet as I do not use jsonnet, and haven't seen the need to use it. I don't know how it would best fit into the structure.
+argocd-lovely-plugin does not support jsonnet as we do not use jsonnet, and haven't seen the need to use it. We don't know how it would best fit into the structure.
 
 # Installing as an Argo CD Plugin
 You can use [our Kustomization example](https://github.com/crumbhole/argocd-lovely-plugin/tree/main/examples/kustomize/argocd) to install Argo CD and to bootstrap the installation of the plugin at the same time. However the steps below will detail what is required should you wish to do things more manually.
