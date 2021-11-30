@@ -10,6 +10,7 @@ Additional examples also serve as CI/CD tests and can be found in the `test` dir
 |[helm_merge](https://github.com/crumbhole/argocd-lovely-plugin/tree/main/test/helm_merge)|Deploy a Helm chart and merge in a text file containing overwriting config.|
 |[helm_plus_additions](https://github.com/crumbhole/argocd-lovely-plugin/tree/main/test/helm_plus_additions)|Deploy a Helm chart, a secret and a Kustomized configmap all under one Argo CD application.|
 |[argocd-vault-replacer](https://github.com/crumbhole/argocd-lovely-plugin/tree/main/examples/argocd-vault-replacer)|Demonstrates how to use argocd-lovely-plugin with other Argo CD plugins, in this case argocd-vault-replacer to inject secrets from Hashicorp Vault.|
+|[kustomize_patch](https://github.com/crumbhole/argocd-lovely-plugin/tree/main/examples/kustomize_patch)|Demonstrates defining a Kustomize patch outside of a kustomization.yaml manifest.|
 
 ## Installation Examples
 
