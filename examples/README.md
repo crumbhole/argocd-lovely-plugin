@@ -1,6 +1,6 @@
 This directory contains some useful argocd-lovely-plugin examples.
 
-Additional examples also serve as CI/CD tests and can be found in the `test` directory.
+Additional examples also serve as CI/CD tests and can be found in the [test](https://github.com/crumbhole/argocd-lovely-plugin/tree/main/test) directory.
 
 ## Noteworthy Usage Examples
 
