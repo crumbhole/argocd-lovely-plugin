@@ -20,7 +20,7 @@ spec:
         namespace: example
       project: applicationsets
       source:
-        path: examples/applicationsets/chart
+        path: test/helm_only
         repoURL: 'https://github.com/crumbhole/argocd-lovely-plugin.git'
         targetRevision: HEAD
         plugin:
@@ -38,4 +38,4 @@ spec:
         - CreateNamespace=true
 ```
 
-This ApplicationSet manifest will deploy our chart and the inject the cluster name into it as an environment variable.
+This ApplicationSet manifest will deploy our test chart from `test/helm_only` and then inject the cluster name into it as an environment variable.
