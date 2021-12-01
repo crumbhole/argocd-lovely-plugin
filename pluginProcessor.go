@@ -11,17 +11,17 @@ import (
 
 type pluginProcessor struct{}
 
-func (_ pluginProcessor) name() string {
+func (pluginProcessor) name() string {
 	return "plugin"
 }
 
-func (_ pluginProcessor) enabled(_ string) bool {
+func (pluginProcessor) enabled(_ string) bool {
 	return len(Plugins()) > 0
 }
 
 func (v pluginProcessor) init(path string) error {
 	if !v.enabled(path) {
-		return DisabledProcessorError
+		return ErrDisabledProcessor
 	}
 	for _, plugin := range PluginsInit() {
 		cmd := exec.Command(`bash`, `-c`, plugin)
@@ -36,7 +36,7 @@ func (v pluginProcessor) init(path string) error {
 
 func (v pluginProcessor) process(input *string, path string) (*string, error) {
 	if !v.enabled(path) {
-		return input, DisabledProcessorError
+		return input, ErrDisabledProcessor
 	}
 	currentText := *input
 	for _, plugin := range Plugins() {

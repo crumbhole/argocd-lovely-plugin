@@ -18,6 +18,7 @@ var processors = []Processor{
 	pluginProcessor{},
 }
 
+// Collection is a list of sub-applications making up this application
 type Collection struct {
 	dirs PackageDirectories
 }
@@ -129,13 +130,12 @@ func (c *Collection) doAllDirs(init bool, path string) (string, error) {
 			log.Fatal(err)
 		}
 		return ``, err
-	} else {
-		output, err := c.processAllDirs()
-		if err != nil {
-			log.Fatal(err)
-		}
-		return output, err
 	}
+	output, err := c.processAllDirs()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return output, err
 }
 
 func parseArgs() (bool, error) {

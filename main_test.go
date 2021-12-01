@@ -33,7 +33,7 @@ func setupEnv(path string) (map[string]string, error) {
 }
 
 func cleanupEnv(env map[string]string) {
-	for k, _ := range env {
+	for k := range env {
 		os.Unsetenv(k)
 	}
 }

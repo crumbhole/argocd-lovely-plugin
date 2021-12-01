@@ -14,17 +14,17 @@ const kustomizeIntermediateFilename = `_lovely_resource.yaml`
 
 type kustomizeProcessor struct{}
 
-func (_ kustomizeProcessor) name() string {
+func (kustomizeProcessor) name() string {
 	return "kustomize"
 }
 
-func (_ kustomizeProcessor) enabled(path string) bool {
+func (kustomizeProcessor) enabled(path string) bool {
 	return reFileInDir(path, regexp.MustCompile(`^kustomization\.ya?ml$`))
 }
 
 func (k kustomizeProcessor) init(path string) error {
 	if !k.enabled(path) {
-		return DisabledProcessorError
+		return ErrDisabledProcessor
 	}
 	// No preprocessing needed
 	return nil
@@ -32,7 +32,7 @@ func (k kustomizeProcessor) init(path string) error {
 
 func (k kustomizeProcessor) process(input *string, path string) (*string, error) {
 	if !k.enabled(path) {
-		return input, DisabledProcessorError
+		return input, ErrDisabledProcessor
 	}
 	kustYamlPath := path + "/kustomization.yaml"
 	err := MergeYaml(kustYamlPath, KustomizeMerge(), KustomizePatch())

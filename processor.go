@@ -6,6 +6,11 @@ import (
 	"regexp"
 )
 
+// Processor interface is the interface for all processing engines
+// name - name of processor for display and selection purposes
+// enabled - does this processor believe it has work to do
+// init - call this to invoke init phase on this processor
+// process - call this to invoke main phase on this processor
 type Processor interface {
 	name() string
 	enabled(path string) bool
@@ -27,4 +32,5 @@ func reFileInDir(path string, re *regexp.Regexp) bool {
 	return false
 }
 
-var DisabledProcessorError = errors.New("Internal Error: attempt to use disabled processor")
+// ErrDisabledProcessor is the error to return when attempting to use a disabled processor
+var ErrDisabledProcessor = errors.New("Internal Error: attempt to use disabled processor")

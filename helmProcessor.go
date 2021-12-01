@@ -10,22 +10,22 @@ import (
 	"regexp"
 )
 
-type Dependency struct {
+type dependency struct {
 	Name       string `yaml:"name"`
 	Repository string `yaml:"repository"`
 }
 
-type Dependencies struct {
-	Dependencies []Dependency `yaml:"dependencies"`
+type dependencies struct {
+	dependencies []dependency `yaml:"dependencies"`
 }
 
 type helmProcessor struct{}
 
-func (_ helmProcessor) name() string {
+func (helmProcessor) name() string {
 	return "helm"
 }
 
-func (_ helmProcessor) enabled(path string) bool {
+func (helmProcessor) enabled(path string) bool {
 	return reFileInDir(path, regexp.MustCompile(`^Chart\.ya?ml$`))
 }
 
@@ -62,9 +62,9 @@ func (h helmProcessor) reposEnsure(path string) error {
 		if err != nil {
 			continue
 		}
-		var deps Dependencies
+		var deps dependencies
 		err = yaml.Unmarshal(yamlcontent, &deps)
-		for _, dep := range deps.Dependencies {
+		for _, dep := range deps.dependencies {
 			h.repoEnsure(path, dep.Name, dep.Repository)
 		}
 	}
@@ -77,7 +77,7 @@ func (h helmProcessor) reposEnsure(path string) error {
 
 func (h helmProcessor) init(path string) error {
 	if !h.enabled(path) {
-		return DisabledProcessorError
+		return ErrDisabledProcessor
 	}
 	h.reposEnsure(path)
 	_, err := h.helmDo(path, `dependency`, `build`)
@@ -86,7 +86,7 @@ func (h helmProcessor) init(path string) error {
 
 func (h helmProcessor) process(input *string, path string) (*string, error) {
 	if !h.enabled(path) {
-		return input, DisabledProcessorError
+		return input, ErrDisabledProcessor
 	}
 	err := MergeYaml(path+"/values.yaml", HelmMerge(), HelmPatch())
 	if err != nil {
