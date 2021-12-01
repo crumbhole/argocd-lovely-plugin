@@ -2,7 +2,7 @@
 
 DEPS := $(shell find . -type f -name "*.go" -printf "%p ")
 
-all: code-vet code-fmt lint test build/argocd-lovely-plugin
+all: code-vet code-fmt test build/argocd-lovely-plugin
 
 clean:
 	$(RM) -rf build
