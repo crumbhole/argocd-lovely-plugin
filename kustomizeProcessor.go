@@ -56,6 +56,9 @@ func (k kustomizeProcessor) process(input *string, path string) (*string, error)
 		}
 		var kust types.Kustomization
 		err = yaml.Unmarshal(kustContents, &kust)
+		if err != nil {
+			return nil, err
+		}
 		kust.Resources = append(kust.Resources, kustomizeIntermediateFilename)
 
 		kustomizationFile, err := os.OpenFile(path+"/kustomization.yaml", os.O_WRONLY, 0644)

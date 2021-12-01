@@ -64,6 +64,9 @@ func (h helmProcessor) reposEnsure(path string) error {
 		}
 		var deps dependencies
 		err = yaml.Unmarshal(yamlcontent, &deps)
+		if err != nil {
+			return err
+		}
 		for _, dep := range deps.dependencies {
 			h.repoEnsure(path, dep.Name, dep.Repository)
 		}
@@ -97,5 +100,5 @@ func (h helmProcessor) process(input *string, path string) (*string, error) {
 		os.Getenv(`ARGOCD_APP_NAMESPACE`),
 		os.Getenv(`ARGOCD_APP_NAME`),
 		`.`)
-	return &out, nil
+	return &out, err
 }

@@ -60,7 +60,7 @@ func (c *Collection) processAllDirs() (string, error) {
 }
 
 func (c *Collection) processOneDir(path string) (string, error) {
-	var result *string = nil
+	var result *string
 	for _, processor := range processors {
 		if processor.enabled(path) {
 			out, err := processor.process(result, path)
