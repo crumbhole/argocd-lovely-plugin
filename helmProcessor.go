@@ -63,10 +63,7 @@ func (h helmProcessor) reposEnsure(path string) error {
 			continue
 		}
 		var deps dependencies
-		err = yaml.Unmarshal(yamlcontent, &deps)
-		if err != nil {
-			return err
-		}
+		_ = yaml.Unmarshal(yamlcontent, &deps)
 		for _, dep := range deps.dependencies {
 			h.repoEnsure(path, dep.Name, dep.Repository)
 		}
