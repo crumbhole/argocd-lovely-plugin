@@ -33,7 +33,7 @@ func setupEnv(path string) (map[string]string, error) {
 }
 
 func cleanupEnv(env map[string]string) {
-	for k := range env {
+	for k, _ := range env {
 		os.Unsetenv(k)
 	}
 }
@@ -45,12 +45,12 @@ func checkDir(path string) error {
 		return err
 	}
 	c := Collection{}
-	_, err = c.doAllDirs(true, path)
+	out, err := c.doAllDirs(true, path)
 	if err != nil {
 		return err
 	}
 	c = Collection{}
-	out, err := c.doAllDirs(false, path)
+	out, err = c.doAllDirs(false, path)
 	if err != nil {
 		return err
 	}

@@ -11,24 +11,24 @@ type yamlProcessor struct {
 	output string
 }
 
-func (yamlProcessor) name() string {
+func (_ yamlProcessor) name() string {
 	return "yaml"
 }
 
-func (yamlProcessor) enabled(_ string) bool {
+func (_ yamlProcessor) enabled(_ string) bool {
 	// Always enabled, to pick up if nothing else worked
 	return true
 }
 
 func (y yamlProcessor) init(path string) error {
 	if !y.enabled(path) {
-		return ErrDisabledProcessor
+		return DisabledProcessorError
 	}
 	// No preprocessing needed
 	return nil
 }
 
-func (y *yamlProcessor) scanFile(path string, info os.FileInfo, err error) error {
+func (v *yamlProcessor) scanFile(path string, info os.FileInfo, err error) error {
 	if err != nil {
 		return err
 	}
@@ -41,23 +41,23 @@ func (y *yamlProcessor) scanFile(path string, info os.FileInfo, err error) error
 		if err != nil {
 			return err
 		}
-		y.output += "---\n"
-		y.output += string(yamlcontent)
+		v.output += "---\n"
+		v.output += string(yamlcontent)
 	}
 	return nil
 }
 
-func (y yamlProcessor) process(input *string, path string) (*string, error) {
-	if !y.enabled(path) {
-		return input, ErrDisabledProcessor
+func (v yamlProcessor) process(input *string, path string) (*string, error) {
+	if !v.enabled(path) {
+		return input, DisabledProcessorError
 	}
 	if input == nil {
-		y.output = ""
-		err := filepath.Walk(path, y.scanFile)
+		v.output = ""
+		err := filepath.Walk(path, v.scanFile)
 		if err != nil {
 			return nil, err
 		}
-		return &y.output, nil
+		return &v.output, nil
 	}
 	return input, nil
 }

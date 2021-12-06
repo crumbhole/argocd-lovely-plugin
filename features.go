@@ -7,9 +7,8 @@ import (
 	"strings"
 )
 
-// Plugins returns the list of plugins to run during the main phase
-// Set LOVELY_PLUGINS to a comma separated list of plugins to run
 func Plugins() []string {
+	// Set LOVELY_PLUGINS to a comma separated list of plugins to run
 	pluginsText, got := os.LookupEnv(`LOVELY_PLUGINS`)
 	if got {
 		plugins := strings.Split(pluginsText, `,`)
@@ -21,9 +20,8 @@ func Plugins() []string {
 	return make([]string, 0)
 }
 
-// PluginsInit returns the list of plugins to run during the init phase
-// Set LOVELY_PLUGINS_INIT to a comma separated list of plugins to run during init
 func PluginsInit() []string {
+	// Set LOVELY_PLUGINS_INIT to a comma separated list of plugins to run during init
 	pluginsText, got := os.LookupEnv(`LOVELY_PLUGINS_INIT`)
 	if got {
 		plugins := strings.Split(pluginsText, `,`)
@@ -35,9 +33,8 @@ func PluginsInit() []string {
 	return make([]string, 0)
 }
 
-// KustomizeBinary returns the path to kustomize if overridden, otherwise we search the path
-// Set LOVELY_KUSTOMIZE_PATH to the path to the kustomize binary
 func KustomizeBinary() string {
+	// Set LOVELY_KUSTOMIZE_PATH to the path to the kustomize binary
 	kustomize, got := os.LookupEnv(`LOVELY_KUSTOMIZE_PATH`)
 	if !got {
 		return `kustomize`
@@ -45,9 +42,8 @@ func KustomizeBinary() string {
 	return kustomize
 }
 
-// HelmBinary returns the path to helm if overridden, otherwise we search the path
-// Set LOVELY_HELM_PATH to the path to the helm binary
 func HelmBinary() string {
+	// Set LOVELY_HELM_PATH to the path to the helm binary
 	helm, got := os.LookupEnv(`LOVELY_HELM_PATH`)
 	if !got {
 		return `helm`
@@ -55,9 +51,8 @@ func HelmBinary() string {
 	return helm
 }
 
-// HelmMerge returns the yaml to strategic merge into values.yaml
-// Set LOVELY_HELM_MERGE to some yaml you'd like strategic merged into any values.yaml files used by helm
 func HelmMerge() string {
+	// Set LOVELY_HELM_MERGE to some yaml you'd like strategic merged into any values.yaml files used by helm
 	helm, got := os.LookupEnv(`LOVELY_HELM_MERGE`)
 	if !got {
 		return ``
@@ -65,9 +60,8 @@ func HelmMerge() string {
 	return helm
 }
 
-// HelmPatch returns the yaml to json6902 patch into values.yaml
-// Set LOVELY_HELM_PATCH to some yaml you'd like json6902 patched into any values.yaml files used by helm
 func HelmPatch() string {
+	// Set LOVELY_HELM_PATCH to some yaml you'd like json6902 patched into any values.yaml files used by helm
 	helm, got := os.LookupEnv(`LOVELY_HELM_PATCH`)
 	if !got {
 		return ``
@@ -75,9 +69,8 @@ func HelmPatch() string {
 	return helm
 }
 
-// KustomizeMerge returns the yaml to strategic merge into kustomization.yaml
-// Set LOVELY_KUSTOMIZE_MERGE to some yaml you'd like strategic merged on any kustomization.yaml files used by kustomize
 func KustomizeMerge() string {
+	// Set LOVELY_KUSTOMIZE_MERGE to some yaml you'd like strategic merged on any kustomization.yaml files used by kustomize
 	kustomize, got := os.LookupEnv(`LOVELY_KUSTOMIZE_MERGE`)
 	if !got {
 		return ``
@@ -85,9 +78,8 @@ func KustomizeMerge() string {
 	return kustomize
 }
 
-// KustomizePatch returns the yaml to json6902 patch into kustomization.yaml
-// Set LOVELY_KUSTOMIZE_PATCH to some yaml you'd like json6902 patched on any kustomization.yaml files used by kustomize
 func KustomizePatch() string {
+	// Set LOVELY_KUSTOMIZE_PATCH to some yaml you'd like json6902 patched on any kustomization.yaml files used by kustomize
 	kustomize, got := os.LookupEnv(`LOVELY_KUSTOMIZE_PATCH`)
 	if !got {
 		return ``

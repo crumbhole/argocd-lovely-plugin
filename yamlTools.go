@@ -8,12 +8,13 @@ import (
 	yaml "sigs.k8s.io/yaml"
 )
 
-// MergeYaml performs a json patch and a strategic merge, both if needed to some yaml on disk
+// Performs a json patch and a strategic merge, both if needed to some yaml on disk
 // Performs the strategic merge FIRST, followed by the json patch.
 // This is supposed to be Kubernetes strategic merge and RFC6902 patching
 // Accepts these patches as yaml. Will write a file to disk from these if
 // the file does not already exist, strategic merge patching an on disk
 // file will effectively create it.
+
 func MergeYaml(path string, mergetext string, patchtext string) error {
 	if mergetext == `` && patchtext == `` {
 		return nil

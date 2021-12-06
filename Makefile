@@ -29,8 +29,3 @@ code-fmt: $(DEPS) get
 ## Run go fmt for this project
 	@echo go fmt
 	go fmt $$(go list ./... )
-
-lint: $(DEPS) get
-## Run golint for this project
-	@echo golint
-	golint $$(go list ./... )
