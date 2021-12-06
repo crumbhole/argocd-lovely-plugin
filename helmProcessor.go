@@ -10,13 +10,15 @@ import (
 	"regexp"
 )
 
-type dependency struct {
+// Dependency is one repository that this chart is dependent upon
+type Dependency struct {
 	Name       string `yaml:"name"`
 	Repository string `yaml:"repository"`
 }
 
-type dependencies struct {
-	dependencies []dependency `yaml:"dependencies"`
+// Dependencies is a list of repositories that this chart is dependent upon
+type Dependencies struct {
+	Dependencies []Dependency `yaml:"dependencies"`
 }
 
 type helmProcessor struct{}
@@ -62,12 +64,12 @@ func (h helmProcessor) reposEnsure(path string) error {
 		if err != nil {
 			continue
 		}
-		var deps dependencies
+		var deps Dependencies
 		err = yaml.Unmarshal(yamlcontent, &deps)
 		if err != nil {
 			return err
 		}
-		for _, dep := range deps.dependencies {
+		for _, dep := range deps.Dependencies {
 			h.repoEnsure(path, dep.Name, dep.Repository)
 		}
 	}
