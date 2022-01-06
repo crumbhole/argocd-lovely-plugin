@@ -4,4 +4,4 @@ This example:
 - Installs the helm chart defined in `Chart.yaml`
 - Merges configuration into the resulting install by adding the Environment Variable defined in `env.txt`
 
-Alternatively, if this is too basic for your needs, you may wish to Kustomize the Helm chart. An example of this can be found at [helm_kustomize](https://github.com/crumbhole/argocd-lovely-plugin/tree/main/test/helm_kustomize).
+Alternatively, if this is too basic for your needs, you may wish to Kustomize the Helm chart. An example of this can be found at [helm_kustomize](../helm_kustomize).
