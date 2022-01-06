@@ -10,7 +10,7 @@ This is an obviously contrived example, but demonstrates how simple it is to com
 
 ## Prerequisites:
 1. You will need a running instance of Vault, with a KV secret at the path `example/foo/bar`, another at `secondexample/foo/bar` and a third at `thirdexample/foo/bar`.
-2. You will need to install Argo CD, argocd-vault-replacer and argocd-lovely-plugin. An example of how to do this can be found at [examples/installation/argocd-with-argocd-vault-replacer).](https://github.com/crumbhole/argocd-lovely-plugin/tree/main/examples/installation/argocd-with-argocd-vault-replacer). Ensure you modify the `VAULT_ADDR` environment variable to match your Vault installation.
+2. You will need to install Argo CD, argocd-vault-replacer and argocd-lovely-plugin. An example of how to do this can be found at [examples/installation/argocd-with-argocd-vault-replacer).](../installation/argocd-with-argocd-vault-replacer). Ensure you modify the `VAULT_ADDR` environment variable to match your Vault installation.
 3. You will need to set up the [Vault Kubernetes Authentication](https://github.com/crumbhole/argocd-vault-replacer/blob/main/README.md#vault-kubernetes-authentication).
 
 ## Argo CD Application Manifest
