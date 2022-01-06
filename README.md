@@ -22,7 +22,7 @@ An [Argo CD](https://argoproj.github.io/argo-cd/) plugin that behaves in a way w
 argocd-lovely-plugin does not support jsonnet as we do not use jsonnet, and haven't seen the need to use it. We don't know how it would best fit into the structure.
 
 # Installing as an Argo CD Plugin
-You can use [our Kustomization example](https://github.com/crumbhole/argocd-lovely-plugin/tree/main/examples/kustomize/argocd) to install Argo CD and to bootstrap the installation of the plugin at the same time. However the steps below will detail what is required should you wish to do things more manually.
+You can use [our Kustomization example](examples/installation/argocd) to install Argo CD and to bootstrap the installation of the plugin at the same time. However the steps below will detail what is required should you wish to do things more manually.
 
 ## General configuration
 argocd-lovely-plugin is designed for minimal configuration and to do the right thing. The following environment variables can be used to change some behaviour:
