@@ -30,7 +30,7 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v2.4.0
       - name: Get git tag
-        uses: little-core-labs/get-git-tag@v3.0.1
+        uses: little-core-labs/get-git-tag@v3.0.2
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
