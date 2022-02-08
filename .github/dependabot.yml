@@ -1,0 +1,31 @@
+version: 2
+updates:
+
+  # Maintain dependencies for Golang
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      # Prefix all commit messages with "go"
+      prefix: "go"
+    labels:
+      - "golang"
+      - "dependencies"
+    reviewers:
+      - "Joibel"
+      - "tico24"
+
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      # Prefix all commit messages with "gh-actions"
+      prefix: "gh-actions"
+    labels:
+      - "golang"
+      - "dependencies"
+    reviewers:
+      - "Joibel"
