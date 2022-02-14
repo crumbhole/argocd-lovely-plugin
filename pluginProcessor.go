@@ -19,21 +19,6 @@ func (pluginProcessor) enabled(_ string) bool {
 	return len(Plugins()) > 0
 }
 
-func (v pluginProcessor) init(path string) error {
-	if !v.enabled(path) {
-		return ErrDisabledProcessor
-	}
-	for _, plugin := range PluginsInit() {
-		cmd := exec.Command(`bash`, `-c`, plugin)
-		cmd.Dir = path
-		out, err := cmd.CombinedOutput()
-		if err != nil {
-			return fmt.Errorf("%s: %s", err, out)
-		}
-	}
-	return nil
-}
-
 func (v pluginProcessor) generate(input *string, path string) (*string, error) {
 	if !v.enabled(path) {
 		return input, ErrDisabledProcessor

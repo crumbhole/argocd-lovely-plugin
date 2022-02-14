@@ -11,6 +11,7 @@ Additional examples also serve as CI/CD tests and can be found in the [test](../
 |[helm_plus_additions](../test/helm_plus_additions)|Deploy a Helm chart, a secret and a Kustomized configmap all under one Argo CD application.|
 |[argocd-vault-replacer](../examples/argocd-vault-replacer)|Demonstrates how to use argocd-lovely-plugin with other Argo CD plugins, in this case argocd-vault-replacer to inject secrets from Hashicorp Vault.|
 |[kustomize_patch](../test/kustomize_patch)|Demonstrates defining a Kustomize patch outside of a kustomization.yaml manifest.|
+|[preprocessor](../test/preprocessor)|Demonstrates modifying a helm chart prior to it being downloaded and rendered.|
 |[applicationsets](../examples/applicationsets)|Demonstrates performing a Kustomize patch on an applicationset.|
 
 ## Installation Examples

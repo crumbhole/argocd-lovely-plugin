@@ -7,10 +7,8 @@ import (
 	"strings"
 )
 
-// Plugins returns the list of plugins to run during the main phase
-// Set LOVELY_PLUGINS to a comma separated list of plugins to run
-func Plugins() []string {
-	pluginsText, got := os.LookupEnv(`LOVELY_PLUGINS`)
+func getPlugins(envname string) []string {
+	pluginsText, got := os.LookupEnv(envname)
 	if got {
 		plugins := strings.Split(pluginsText, `,`)
 		for i, plugin := range plugins {
@@ -21,18 +19,16 @@ func Plugins() []string {
 	return make([]string, 0)
 }
 
-// PluginsInit returns the list of plugins to run during the init phase
-// Set LOVELY_PLUGINS_INIT to a comma separated list of plugins to run during init
-func PluginsInit() []string {
-	pluginsText, got := os.LookupEnv(`LOVELY_PLUGINS_INIT`)
-	if got {
-		plugins := strings.Split(pluginsText, `,`)
-		for i, plugin := range plugins {
-			plugins[i] = strings.TrimSpace(plugin)
-		}
-		return plugins
-	}
-	return make([]string, 0)
+// Plugins returns the list of plugins to run during the generate phase after main processing
+// Set LOVELY_PLUGINS to a comma separated list of plugins to run after other processing.
+func Plugins() []string {
+	return getPlugins(`LOVELY_PLUGINS`)
+}
+
+// Preprocessors returns the list of plugins to run before we generate yaml.
+// Set LOVELY_PREPROCESSORS to a comma separated list of plugins to run on the directory before any other processing.
+func Preprocessors() []string {
+	return getPlugins(`LOVELY_PREPROCESSORS`)
 }
 
 // KustomizeBinary returns the path to kustomize if overridden, otherwise we search the path

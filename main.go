@@ -61,6 +61,13 @@ func (c *Collection) processAllDirs() (string, error) {
 
 func (c *Collection) processOneDir(path string) (string, error) {
 	var result *string
+	pre := preProcessor{}
+	if pre.enabled(path) {
+		err := pre.generate(path)
+		if err != nil {
+			return "", err
+		}
+	}
 	for _, processor := range processors {
 		if processor.enabled(path) {
 			out, err := processor.generate(result, path)

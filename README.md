@@ -3,7 +3,7 @@ An [Argo CD](https://argoproj.github.io/argo-cd/) plugin that behaves in a way w
 
 ## Headline features
 - Composite multiple things together to form a single app from multiple directories. For example - two or more Helm charts together as a single app. Or a Helm chart with a bit of plain yaml (a secret) to supplement it.
-- Trivially allows Helm + Kustomize to work together, just works as you'd hope. Put a helm Chart.yaml+values.yaml in a folder, alongside a kustomization.yaml and you can kustomize your helm output or add more objects with kustomize.
+- Trivially allows Helm + Kustomize to work together, just works as you'd hope. Put a helm Chart.yaml+values.yaml in a folder, alongside a kustomization.yaml and you can kustomize your helm output or add more objects with kustomize
 - When used with [application sets](https://argocd-applicationset.readthedocs.io/en/stable/) you can apply Kustomization and modify Helm's values.yaml per application to apply minor differences to your applications trivially.
 - Chain several plugins together. argocd-lovely-plugin acts as a master plugin runner (acting as the only plugin to Argo CD), and then runs other Argo CD compatible plugins in a chain. This acts a bit like a unix pipe, so you can helm | kustomize | argocd-vault-replacer.
 
@@ -26,7 +26,7 @@ You can use [our Kustomization example](examples/installation/argocd) to install
 
 ## General configuration
 argocd-lovely-plugin is designed for minimal configuration and to do the right thing. The following environment variables can be used to change some behaviour:
-- LOVELY_PLUGINS: Set to a comma separated list of binaries to run, in the same way as Argo CD expects plugins. stdin->plugin->stdout processing yaml. Each plugin is executed with bash -c <plugin and parameters>, so you can pass parameters as hoped for.
+- LOVELY_PREPROCESSORS and LOVELY_PLUGINS: Set to a comma separated list of binaries to run during preprocessing and as plugins. Read [this](doc/plugins.md) for more on plugins.
 - LOVELY_KUSTOMIZE_PATH: Set to a path or binary name to use for Kustomize.
 - LOVELY_HELM_PATH: Set to a path or binary name to use for Helm.
 
