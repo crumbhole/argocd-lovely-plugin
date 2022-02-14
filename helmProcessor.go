@@ -80,20 +80,16 @@ func (h helmProcessor) reposEnsure(path string) error {
 	return err
 }
 
-func (h helmProcessor) init(path string) error {
-	if !h.enabled(path) {
-		return ErrDisabledProcessor
-	}
-	h.reposEnsure(path)
-	_, err := h.helmDo(path, `dependency`, `build`)
-	return err
-}
-
-func (h helmProcessor) process(input *string, path string) (*string, error) {
+func (h helmProcessor) generate(input *string, path string) (*string, error) {
 	if !h.enabled(path) {
 		return input, ErrDisabledProcessor
 	}
-	err := MergeYaml(path+"/values.yaml", HelmMerge(), HelmPatch())
+	h.reposEnsure(path)
+	_, err := h.helmDo(path, `dependency`, `build`)
+	if err != nil {
+		return nil, err
+	}
+	err = MergeYaml(path+"/values.yaml", HelmMerge(), HelmPatch())
 	if err != nil {
 		return nil, err
 	}

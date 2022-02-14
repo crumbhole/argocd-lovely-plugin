@@ -45,12 +45,7 @@ func checkDir(path string) error {
 		return err
 	}
 	c := Collection{}
-	_, err = c.doAllDirs(true, path)
-	if err != nil {
-		return err
-	}
-	c = Collection{}
-	out, err := c.doAllDirs(false, path)
+	out, err := c.doAllDirs(path)
 	if err != nil {
 		return err
 	}

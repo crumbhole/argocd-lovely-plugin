@@ -22,15 +22,7 @@ func (kustomizeProcessor) enabled(path string) bool {
 	return reFileInDir(path, regexp.MustCompile(`^kustomization\.ya?ml$`))
 }
 
-func (k kustomizeProcessor) init(path string) error {
-	if !k.enabled(path) {
-		return ErrDisabledProcessor
-	}
-	// No preprocessing needed
-	return nil
-}
-
-func (k kustomizeProcessor) process(input *string, path string) (*string, error) {
+func (k kustomizeProcessor) generate(input *string, path string) (*string, error) {
 	if !k.enabled(path) {
 		return input, ErrDisabledProcessor
 	}

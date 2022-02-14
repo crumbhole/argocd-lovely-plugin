@@ -20,14 +20,6 @@ func (yamlProcessor) enabled(_ string) bool {
 	return true
 }
 
-func (y yamlProcessor) init(path string) error {
-	if !y.enabled(path) {
-		return ErrDisabledProcessor
-	}
-	// No preprocessing needed
-	return nil
-}
-
 func (y *yamlProcessor) scanFile(path string, info os.FileInfo, err error) error {
 	if err != nil {
 		return err
@@ -47,7 +39,7 @@ func (y *yamlProcessor) scanFile(path string, info os.FileInfo, err error) error
 	return nil
 }
 
-func (y yamlProcessor) process(input *string, path string) (*string, error) {
+func (y yamlProcessor) generate(input *string, path string) (*string, error) {
 	if !y.enabled(path) {
 		return input, ErrDisabledProcessor
 	}

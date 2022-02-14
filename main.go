@@ -63,7 +63,7 @@ func (c *Collection) processOneDir(path string) (string, error) {
 	var result *string
 	for _, processor := range processors {
 		if processor.enabled(path) {
-			out, err := processor.process(result, path)
+			out, err := processor.generate(result, path)
 			if err != nil {
 				return "", err
 			}
@@ -71,28 +71,6 @@ func (c *Collection) processOneDir(path string) (string, error) {
 		}
 	}
 	return *result, nil
-}
-
-func (c *Collection) initAllDirs() error {
-	for _, path := range c.dirs.GetPackages() {
-		err := c.initOneDir(path)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func (c *Collection) initOneDir(path string) error {
-	for _, processor := range processors {
-		if processor.enabled(path) {
-			err := processor.init(path)
-			if err != nil {
-				return err
-			}
-		}
-	}
-	return nil
 }
 
 // We copy the directory in case we patch some of the files for kustomize or helm
@@ -110,26 +88,15 @@ func (c *Collection) makeTmpCopy(path string) (string, error) {
 	return tmpPath, err
 }
 
-func (c *Collection) doAllDirs(init bool, path string) (string, error) {
-	workingPath := path
-	if !init {
-		var err error
-		workingPath, err = c.makeTmpCopy(path)
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer os.RemoveAll(workingPath)
-	}
-	err := c.scanDir(workingPath)
+func (c *Collection) doAllDirs(path string) (string, error) {
+	workingPath, err := c.makeTmpCopy(path)
 	if err != nil {
 		log.Fatal(err)
 	}
-	if init {
-		err := c.initAllDirs()
-		if err != nil {
-			log.Fatal(err)
-		}
-		return ``, err
+	defer os.RemoveAll(workingPath)
+	err = c.scanDir(workingPath)
+	if err != nil {
+		log.Fatal(err)
 	}
 	output, err := c.processAllDirs()
 	if err != nil {
@@ -156,12 +123,15 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	if initMode {
+		return
+	}
 	dir, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
 	}
 	c := Collection{}
-	output, err := c.doAllDirs(initMode, dir)
+	output, err := c.doAllDirs(dir)
 	if err != nil {
 		log.Fatal(err)
 	}

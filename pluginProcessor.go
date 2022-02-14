@@ -34,7 +34,7 @@ func (v pluginProcessor) init(path string) error {
 	return nil
 }
 
-func (v pluginProcessor) process(input *string, path string) (*string, error) {
+func (v pluginProcessor) generate(input *string, path string) (*string, error) {
 	if !v.enabled(path) {
 		return input, ErrDisabledProcessor
 	}
