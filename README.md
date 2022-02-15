@@ -31,6 +31,7 @@ argocd-lovely-plugin is designed for minimal configuration and to do the right t
 - LOVELY_HELM_PATH: Set to a path or binary name to use for Helm.
 
 ## Helm variation
+You can use these environment variables for modifying helm's behaviour, and the values.yaml file. More generic manipulation of any file is available through preprocessing.
 - LOVELY_HELM_MERGE: to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) merged into any values.yaml used by Helm.
 - LOVELY_HELM_PATCH: to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any values.yaml used by Helm.
 - ARGOCD_APP_NAME: This can be used to set the Helm 'name' in the same way as releaseName works in Argo CD's standard Helm processing
@@ -38,6 +39,7 @@ argocd-lovely-plugin is designed for minimal configuration and to do the right t
 There is no way to modify any other Helm files at this time.
 
 ## Kustomize
+You can use these environment variables for modifying kustomize's behaviour, and the kustomization.yaml file. More generic manipulation of any file is available through preprocessing.
 - LOVELY_KUSTOMIZE_MERGE: to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) merged into any kustomization.yaml found.
 - LOVELY_KUSTOMIZE_PATCH: to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any kustomization.yaml found.
 
