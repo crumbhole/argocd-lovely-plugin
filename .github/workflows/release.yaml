@@ -15,7 +15,7 @@ jobs:
         goos: [linux, darwin]
     steps:
     - uses: actions/checkout@v2.4.0
-    - uses: wangyoucao577/go-release-action@v1.24
+    - uses: wangyoucao577/go-release-action@v1.25
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         goos: ${{ matrix.goos }}
