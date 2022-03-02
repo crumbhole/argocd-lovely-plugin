@@ -14,7 +14,7 @@ jobs:
         # build and publish in parallel: linux/386, linux/amd64, windows/386, windows/amd64, darwin/386, darwin/amd64
         goos: [linux, darwin]
     steps:
-    - uses: actions/checkout@v2.4.0
+    - uses: actions/checkout@v3
     - uses: wangyoucao577/go-release-action@v1.25
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v2.4.0
+        uses: actions/checkout@v3
       - name: Get git tag
         uses: little-core-labs/get-git-tag@v3.0.2
       - name: Set up QEMU
