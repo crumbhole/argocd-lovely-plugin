@@ -96,12 +96,15 @@ func (c *Collection) makeTmpCopy(path string) (string, error) {
 }
 
 func (c *Collection) doAllDirs(path string) (string, error) {
-	workingPath, err := c.makeTmpCopy(path)
-	if err != nil {
-		log.Fatal(err)
+	workingPath := path
+	if len(Preprocessors()) > 0 {
+		workingPath, err := c.makeTmpCopy(path)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer os.RemoveAll(workingPath)
 	}
-	defer os.RemoveAll(workingPath)
-	err = c.scanDir(workingPath)
+	err := c.scanDir(workingPath)
 	if err != nil {
 		log.Fatal(err)
 	}
