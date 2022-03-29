@@ -6,8 +6,8 @@ require (
 	github.com/evanphx/json-patch v5.6.0+incompatible
 	github.com/otiai10/copy v1.7.0
 	gopkg.in/yaml.v2 v2.4.0
-	sigs.k8s.io/kustomize/api v0.11.3
-	sigs.k8s.io/kustomize/kyaml v0.13.5
+	sigs.k8s.io/kustomize/api v0.11.4
+	sigs.k8s.io/kustomize/kyaml v0.13.6
 	sigs.k8s.io/yaml v1.3.0
 )
 
@@ -22,6 +22,6 @@ require (
 	github.com/mailru/easyjson v0.7.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	golang.org/x/net v0.0.0-20210405180319-a5a99cb37ef4 // indirect
-	golang.org/x/text v0.3.5 // indirect
+	golang.org/x/text v0.3.7 // indirect
 	k8s.io/kube-openapi v0.0.0-20210421082810-95288971da7e // indirect
 )
