@@ -53,7 +53,7 @@ func (k kustomizeProcessor) generate(input *string, path string) (*string, error
 		}
 		kust.Resources = append(kust.Resources, kustomizeIntermediateFilename)
 
-		kustomizationFile, err := os.OpenFile(path+"/kustomization.yaml", os.O_WRONLY, 0644)
+		kustomizationFile, err := os.OpenFile(path+"/kustomization.yaml", os.O_WRONLY|os.O_TRUNC, 0644)
 		if err != nil {
 			return nil, err
 		}

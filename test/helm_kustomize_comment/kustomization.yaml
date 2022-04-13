@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+# - Hi, this is not really very much of anything, it's really just a comment, but it needs to be quite long
+# in order to trigger a former bug. Hopefully that won't happen again.
+- ingress.yaml
+
+replicas:
+- name: test-hello-world
+  count: 5
+
+configMapGenerator:
+- name: index.html
+  files:
+  - index.html
