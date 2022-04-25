@@ -1,4 +1,4 @@
-FROM golang:1.17.7 as builder
+FROM golang:1.18.1 as builder
 
 RUN apt update && apt install -y curl wget unzip
 
