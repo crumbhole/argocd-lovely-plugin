@@ -18,7 +18,7 @@ test_verbose: get
 
 build/argocd-lovely-plugin: $(DEPS) get
 	mkdir -p build
-	go build -o build ./...
+	go build -buildvcs=false -o build ./...
 
 code-vet: $(DEPS) get
 ## Run go vet for this project. More info: https://golang.org/cmd/vet/
