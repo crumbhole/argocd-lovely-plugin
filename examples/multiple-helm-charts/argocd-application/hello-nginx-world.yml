@@ -8,7 +8,7 @@ spec:
     namespace: multiple-helm
     server: 'https://kubernetes.default.svc'
   source:
-    path: examples/multuple-helm-charts/charts
+    path: examples/multiple-helm-charts/charts
     repoURL: 'https://github.com/crumbhole/argocd-lovely-plugin.git'
     targetRevision: HEAD
     plugin:
