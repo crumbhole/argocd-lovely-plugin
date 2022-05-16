@@ -1,4 +1,4 @@
 hello-world:
   image:
-    repository: docker
-    tag: whalesay
+    repository: docker/whalesay
+    tag: latest
