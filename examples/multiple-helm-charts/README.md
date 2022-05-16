@@ -1,6 +1,7 @@
 This will deploy two Helm charts as one application. An nginx helm chart and a Hello World chart.
+Both charts have some arbitrary changes made to their Values.yaml just to prove that that's a thing we can do.
 
-1. Install argocd with the argoce-lovely-plugin
+1. Install argoCD with the argoce-lovely-plugin
 ```
 kubectl apply -k examples/installation/argocd
 ```
@@ -8,4 +9,13 @@ kubectl apply -k examples/installation/argocd
 2. Apply the mutliple helm charts application:
 ```
 kubectl apply -n argocd -f examples/multiple-helm-charts/argocd-application/hello-nginx-world.yml
+```
+
+In your cluster, you should see a namespace called 'multiple-helm' containing two pods. One using the nginx image (chart 1) and one using the docker/whalesay image (from Chart 2).
+In this example, chart 2's deployment ends up in a `CrashLoopBackOff` because it hasn't been fully configured.
+
+
+When finished, you can delete the argoCD Application and the multiple-helm namespace:
+```
+kubectl delete -n argocd -f examples/multiple-helm-charts/argocd-application/hello-nginx-world.yml && kubectl delete namespace multiple-helm
 ```

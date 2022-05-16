@@ -3,8 +3,6 @@ kind: Application
 metadata:
   name: hello-nginx-world
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: multiple-helm
