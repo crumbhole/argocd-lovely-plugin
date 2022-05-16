@@ -1,0 +1,1 @@
+This will deploy two Helm charts as one application. An nginx helm chart and a Hello World chart.
