@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: helm-plus-additions-hello-world
+  name: patch
 spec:
   template:
     spec:
