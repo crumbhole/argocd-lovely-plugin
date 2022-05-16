@@ -8,7 +8,7 @@ kubectl apply -k examples/installation/argocd
 
 2. Apply the mutliple helm charts application:
 ```
-kubectl apply -n argocd -f examples/multiple-helm-charts/argocd-application/hello-nginx-world.yml
+kubectl apply -n argocd -f https://raw.githubusercontent.com/crumbhole/argocd-lovely-plugin/main/examples/multiple-helm-charts/argocd-application/hello-nginx-world.yml
 ```
 
 In your cluster, you should see a namespace called 'multiple-helm' containing two pods. One using the nginx image (chart 1) and one using the docker/whalesay image (from Chart 2).
@@ -17,5 +17,5 @@ In this example, chart 2's deployment ends up in a `CrashLoopBackOff` because it
 
 When finished, you can delete the argoCD Application and the multiple-helm namespace:
 ```
-kubectl delete -n argocd -f examples/multiple-helm-charts/argocd-application/hello-nginx-world.yml && kubectl delete namespace multiple-helm
+kubectl delete -n argocd -f https://raw.githubusercontent.com/crumbhole/argocd-lovely-plugin/main/examples/multiple-helm-charts/argocd-application/hello-nginx-world.yml && kubectl delete namespace multiple-helm
 ```
