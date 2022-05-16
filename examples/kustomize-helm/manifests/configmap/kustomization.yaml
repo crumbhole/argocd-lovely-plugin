@@ -5,4 +5,3 @@ patches:
 - path: liveness-patch.yml
   target:
     kind: Deployment
-    name: helm-plus-additions-hello-world
