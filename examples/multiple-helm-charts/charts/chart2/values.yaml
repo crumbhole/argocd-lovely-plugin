@@ -1,3 +1,4 @@
 hello-world:
-  serviceAccount:
-    create: false
+  image:
+    repository: docker
+    tag: whalesay
