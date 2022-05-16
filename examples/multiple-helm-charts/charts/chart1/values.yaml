@@ -1,2 +1,3 @@
 nginx:
-  replicaCount: 3
+  cloneStaticSiteFromGit:
+    enabled: true
