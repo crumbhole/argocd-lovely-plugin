@@ -1,4 +1,4 @@
-On occasion, you may find that a Helm chart you are consuming lacks the necessary values for your needs. The argocd-lovely-plugin allows you to add additional resources to your Helm chart configuration.
+On occasion, you may find that a Helm chart you are consuming lacks the necessary values for your needs. The argocd-lovely-plugin allows you to add additional resources to your Helm chart configuration and also allows you to manipluate the output of Helm Template to add or remove additional changes.
 
 This example:
 - Installs the helm chart defined in `chart`
@@ -23,3 +23,7 @@ When finished, you can delete the argoCD Application and the multiple-helm names
 ```
 kubectl delete -n argocd -f https://raw.githubusercontent.com/crumbhole/argocd-lovely-plugin/main/examples/kustomize-helm/application/kustomize-helm.yml && kubectl delete namespace helm-plus-additions
 ```
+
+
+This is a somewhat contrived example as it would make logical sense in the real world to include the secret.yml contents within the kustomization.
+However, the aim of this example is to demonstrate that if you *just* needed to add some manifests to the output of a Helm chart, you can simply place the manifest alongside and the argocd-lovely-plugin will do the rest. For more complicated things, you will probably want to use Kustomize with the argocd-lovely-plugin.
