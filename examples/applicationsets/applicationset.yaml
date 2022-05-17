@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: example-set
+spec:
+  generators:
+    - clusters: {}
+  template:
+    metadata:
+      name: 'example-{{name}}'
+    spec:
+      destination:
+        name: '{{name}}'
+        namespace: example
+      project: default
+      source:
+        path: examples/applicationsets/helm_only
+        repoURL: 'https://github.com/crumbhole/argocd-lovely-plugin.git'
+        targetRevision: HEAD
+        plugin:
+          name: argocd-lovely-plugin
+          env:
+            - name: LOVELY_HELM_PATCH
+              value: |
+                [{ "op": "add", "path": "/hello-world/serviceAccount/name", "value": { "action": "add", "value": "wibble" } }]
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
