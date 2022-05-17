@@ -5,9 +5,12 @@ This example:
 - Deploys a separate secret defined in `secret`
 - Kustomizes the output of the chart to tweak the liveness and readiness probe config (something we aren’t able to do via this particular `values.yaml`). The patch is in `liveness-patch.yml` in `chart`.
 
-1. Install argoCD with the argoce-lovely-plugin
+1. Install argoCD with the argocd-lovely-plugin. Optional: If you want to use the ArgoCD UI, port-forward the server pod and grab the admin password:
 ```
-kubectl apply -k examples/installation/argocd
+cd examples/installation/argocd
+kubectl apply -k .
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
 ```
 
 2. Apply the kustomize-helm application:
