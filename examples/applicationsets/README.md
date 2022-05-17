@@ -28,7 +28,7 @@ spec:
           env:
             - name: LOVELY_HELM_PATCH
               value: |
-                [{ "op": "add", "path": "/spec/containers/0/env", "value": { "action": "add", "name": "cluster, "value": "{{name}}" } }]
+                [{ "op": "add", "path": "/spec/containers/0/env", "value": { "action": "add", "name": "cluster", "value": "{{name}}" } }]
       syncPolicy:
         automated:
           prune: true
