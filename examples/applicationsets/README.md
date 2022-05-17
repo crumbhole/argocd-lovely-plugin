@@ -2,7 +2,7 @@ You can use argocd-lovely-plugin to patch Argo CD applicationsets.
 
 Consider a situation where you have a Helm chart deployed as an applicationset, and you need to modify a value in the values.yaml depending on the cluster name.
 
-In this example, we will be deploying the Helm chart found in [helm_only](../examples/applicationsets/helm_only). You should note that the values.yaml defines the serviceAccount name as "foo". We want this to be the name of our cluster instead.
+In this example, we will be deploying the Helm chart found in [helm_only](../applicationsets/helm_only). You should note that the values.yaml defines the serviceAccount name as "foo". We want this to be the name of our cluster instead.
 
 1. Install argoCD with the argocd-lovely-plugin. Optional: If you want to use the ArgoCD UI, port-forward the server pod and grab the admin password:
 ```
