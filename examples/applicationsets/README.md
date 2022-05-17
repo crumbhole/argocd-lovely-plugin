@@ -20,6 +20,10 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/crumbhole/argocd-lo
 3. We only have one cluster as part of this demonstration, but you can see that the name of the ServiceAccount for the deployment is called `in-cluster`, which is the what Argo CD calls the default cluster.
 ```
 kubectl -n example get serviceAccounts
+
+NAME         SECRETS   AGE
+default      1         1m
+in-cluster   1         1m
 ```
 
 When finished, you can delete the argoCD Applicationset and the example namespace:
