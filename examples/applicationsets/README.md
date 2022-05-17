@@ -12,8 +12,7 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
 ```
 
-2. 
-Our [applicationset](../applicationsets/applicationset.yaml#L20-L25) contains a `LOVELY_HELM_PATCH` environment variable. This is a JSON string that contains a patch to be applied to the values.yaml.
+2. Our [applicationset](../applicationsets/applicationset.yaml#L20-L25) contains a `LOVELY_HELM_PATCH` environment variable. This is a JSON string that contains a patch to be applied to the values.yaml.
 
 ```
 
