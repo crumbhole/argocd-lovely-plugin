@@ -14,8 +14,6 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 2. Our [applicationset](../applicationsets/applicationset.yaml#L20-L25) contains a `LOVELY_HELM_PATCH` environment variable. This is a JSON string that contains a patch to be applied to the values.yaml.
 
-```
-
 Apply the applicationset to your cluster:
 ```
 kubectl apply -n argocd -f https://raw.githubusercontent.com/crumbhole/argocd-lovely-plugin/main/examples/applicationsets/applicationset.yaml
