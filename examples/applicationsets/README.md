@@ -1,40 +1,28 @@
 You can use argocd-lovely-plugin to patch Argo CD applicationsets.
 
-```yaml
-apiVersion: argoproj.io/v1alpha1
-kind: ApplicationSet
-metadata:
-  name: example-set
-spec:
-  generators:
-    - clusters:
-        selector:
-          matchLabels:
-            example.biz/appset-common: "true"
-  template:
-    metadata:
-      name: 'example-{{name}}'
-    spec:
-      destination:
-        name: '{{name}}'
-        namespace: example
-      project: applicationsets
-      source:
-        path: test/helm_only
-        repoURL: 'https://github.com/crumbhole/argocd-lovely-plugin.git'
-        targetRevision: HEAD
-        plugin:
-          name: argocd-lovely-plugin
-          env:
-            - name: LOVELY_HELM_PATCH
-              value: |
-                [{ "op": "add", "path": "/spec/containers/0/env", "value": { "action": "add", "name": "cluster", "value": "{{name}}" } }]
-      syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
-        syncOptions:
-        - CreateNamespace=true
+Consider a situation where you have a Helm chart deployed as an applicationset, and you need to modify a value in the values.yaml depending on the cluster name.
+
+In this example, we will be deploying the Helm chart found in [helm_only](../examples/applicationsets/helm_only). You should note that the values.yaml defines the serviceAccount name as "foo". We want this to be the name of our cluster instead.
+
+1. Install argoCD with the argocd-lovely-plugin. Optional: If you want to use the ArgoCD UI, port-forward the server pod and grab the admin password:
+```
+cd examples/installation/argocd
+kubectl apply -k .
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
 ```
 
-This ApplicationSet manifest will deploy our test chart from `test/helm_only` and then inject the cluster name into it as an environment variable.
+2. Apply the applicationset to your cluster:
+```
+kubectl apply -n argocd -f https://raw.githubusercontent.com/crumbhole/argocd-lovely-plugin/main/examples/applicationsets/applicationset.yaml
+```
+
+3. We only have one cluster as part of this demonstration, but you can see that the name of the ServiceAccount for the deployment is called `in-cluster`, which is the what Argo CD calls the default cluster.
+```
+kubectl -n example get serviceAccounts
+```
+
+When finished, you can delete the argoCD Applicationset and the example namespace:
+```
+kubectl delete -n argocd -f https://raw.githubusercontent.com/crumbhole/argocd-lovely-plugin/main/examples/applicationsets/applicationset.yaml && kubectl delete namespace example
+```

@@ -22,7 +22,7 @@ spec:
           env:
             - name: LOVELY_HELM_PATCH
               value: |
-                [{ "op": "add", "path": "/hello-world/serviceAccount/name", "value": "{{name}}" }]
+                [{ "op": "add", "path": "/hello-world/serviceAccount", "value": [ "name", "{{name}}" ] }]
       syncPolicy:
         automated:
           prune: true

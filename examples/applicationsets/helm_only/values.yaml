@@ -2,4 +2,4 @@ hello-world:
   replicaCount: 1
 
   serviceAccount:
-    name: "bar"
+    name: "foo"
