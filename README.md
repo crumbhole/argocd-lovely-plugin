@@ -61,3 +61,8 @@ For each sub-application
 - All plugins will be run, in order given to process the data.
 
 All the sub-application yamls will be concatenated and the result will be fed to Argo CD (printed to stdout).
+
+# Videos
+If you prefer to watch videos of things rather than read words, we have compiled some demos.
+
+- [Using Argo CD to Kustomize a Helm chart, and deploy additional manifests](https://youtu.be/OMae_8DHELA}
