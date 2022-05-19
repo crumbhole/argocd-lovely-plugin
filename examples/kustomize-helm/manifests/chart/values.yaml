@@ -1,3 +1,4 @@
-nginx:
+# https://github.com/helm/examples/blob/main/charts/hello-world/values.yaml
+hello-world:
   service:
     type: clusterIP
