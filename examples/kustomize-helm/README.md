@@ -16,10 +16,18 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 2. Apply the kustomize-helm application:
 ```
 kubectl apply -n argocd -f https://raw.githubusercontent.com/crumbhole/argocd-lovely-plugin/main/examples/kustomize-helm/application/kustomize-helm.yml
+kubectl -n helm-plus-additions wait deployment helm-plus-additions-hello-world --for condition=Available=True
 ```
 
 In your cluster, you should see a namespace called 'helm-plus-additions' containing your pod. If you look at the manifest, you should see the kustomized liveness and readiness probes.
-In addition, you should find your secret (`mysecret`) in this namespace.
+In addition, you should find your secret (`mysecret`) in this namespace:
+```
+# Get the secret
+kubectl -n helm-plus-additions get secret mysecret
+
+# output the yaml for the deployment and look for failurethreshold to be '3', not '5'
+kubectl -n helm-plus-additions get deployment helm-plus-additions-hello-world -o yaml | grep "failureThreshold:"
+```
 
 
 When finished, you can delete the argoCD Application and the multiple-helm namespace:
