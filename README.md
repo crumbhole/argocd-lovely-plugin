@@ -66,3 +66,4 @@ All the sub-application yamls will be concatenated and the result will be fed to
 If you prefer to watch videos of things rather than read words, we have compiled some demos.
 
 - [Using Argo CD to Kustomize a Helm chart, and deploy additional manifests](https://youtu.be/OMae_8DHELA)
+- [A bit about the general design of lovely plugin](https://youtu.be/5BLHwWlgd1k)
