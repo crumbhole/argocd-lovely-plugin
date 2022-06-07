@@ -14,7 +14,7 @@ spec:
           subPath: argocd-lovely-plugin
         # Environment Variables are optional
         env:
-          - name: LOVELY_PLUGINS
+          - name: ARGOCD_ENV_LOVELY_PLUGINS
             value: argocd-vault-replacer
       volumes:
       - name: custom-tools

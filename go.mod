@@ -21,6 +21,7 @@ require (
 	github.com/go-openapi/swag v0.21.1 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/gnostic v0.6.9 // indirect
+	github.com/josharian/intern v1.0.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	golang.org/x/net v0.0.0-20220526153639-5463443f8c37 // indirect

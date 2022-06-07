@@ -20,7 +20,7 @@ spec:
         plugin:
           name: argocd-lovely-plugin
           env:
-            - name: LOVELY_HELM_PATCH
+            - name: ARGOCD_ENV_LOVELY_HELM_PATCH
               value: |
                 [{ "op": "add", "path": "/hello-world/serviceAccount/name", "value": "{{name}}" }]
       syncPolicy:

@@ -26,24 +26,28 @@ You can use [our Kustomization example](examples/installation/argocd) to install
 
 ## General configuration
 argocd-lovely-plugin is designed for minimal configuration and to do the right thing. The following environment variables can be used to change some behaviour:
-- LOVELY_PREPROCESSORS and LOVELY_PLUGINS: Set to a comma separated list of binaries to run during preprocessing and as plugins. Read [this](doc/plugins.md) for more on plugins.
-- LOVELY_KUSTOMIZE_PATH: Set to a path or binary name to use for Kustomize.
-- LOVELY_HELM_PATH: Set to a path or binary name to use for Helm.
+- ARGOCD_ENV_LOVELY_PREPROCESSORS and ARGOCD_ENV_LOVELY_PLUGINS: Set to a comma separated list of binaries to run during preprocessing and as plugins. Read [this](doc/plugins.md) for more on plugins.
+- ARGOCD_ENV_LOVELY_KUSTOMIZE_PATH: Set to a path or binary name to use for Kustomize.
+- ARGOCD_ENV_LOVELY_HELM_PATH: Set to a path or binary name to use for Helm.
 
 ## Helm variation
 You can use these environment variables for modifying helm's behaviour, and the values.yaml file. More generic manipulation of any file is available through preprocessing.
-- LOVELY_HELM_MERGE: to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) merged into any values.yaml used by Helm.
-- LOVELY_HELM_PATCH: to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any values.yaml used by Helm.
+- ARGOCD_ENV_LOVELY_HELM_MERGE: to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) merged into any values.yaml used by Helm.
+- ARGOCD_ENV_LOVELY_HELM_PATCH: to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any values.yaml used by Helm.
 - ARGOCD_APP_NAME: This can be used to set the Helm 'name' in the same way as releaseName works in Argo CD's standard Helm processing
 
 There is no way to modify any other Helm files at this time.
 
 ## Kustomize
 You can use these environment variables for modifying kustomize's behaviour, and the kustomization.yaml file. More generic manipulation of any file is available through preprocessing.
-- LOVELY_KUSTOMIZE_MERGE: to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) merged into any kustomization.yaml found.
-- LOVELY_KUSTOMIZE_PATCH: to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any kustomization.yaml found.
+- ARGOCD_ENV_LOVELY_KUSTOMIZE_MERGE: to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) merged into any kustomization.yaml found.
+- ARGOCD_ENV_LOVELY_KUSTOMIZE_PATCH: to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any kustomization.yaml found.
 
 There is no way to modify any other files, that's what Kustomize itself is for.
+
+## Argo CD 2.4 support
+
+All argocd-lovely-plugin environment variables may be prefixed with ARGOCD_ENV_ for Argo CD 2.4 compatibility. For now, they will be picked up if not prefixed that way for backwards compatibility. If you are deranged and define both the ARGOCD_ENV_ version will be used.
 
 ## What can I do with it?
 Have a look at the [examples directory](examples/README.md) for a list of examples of how you can use this to make nice git repos for your applications. This also refers to the [test directory](test/README.md), which contains a number of examples that also serve as CI/CD tests for this plugin.
