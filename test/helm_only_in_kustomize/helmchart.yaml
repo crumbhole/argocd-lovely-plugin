@@ -3,7 +3,7 @@ kind: HelmChartInflationGenerator
 metadata:
   name: test-hello-world
 name: hello-world
-releaseName: hello-world
+releaseName: test-hello-world
 values: values.yaml
 repo:  https://helm.github.io/examples
 version: 0.1.0
