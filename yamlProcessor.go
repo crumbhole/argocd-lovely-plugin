@@ -33,6 +33,9 @@ func (y *yamlProcessor) scanFile(path string, info os.FileInfo, err error) error
 		if err != nil {
 			return err
 		}
+		if len(y.output) > 0 && y.output[len(y.output)-1] != '\n' {
+			y.output += "\n"
+		}
 		y.output += "---\n"
 		y.output += string(yamlcontent)
 	}
