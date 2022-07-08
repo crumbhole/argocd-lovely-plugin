@@ -68,6 +68,12 @@ For each sub-application
 
 All the sub-application yamls will be concatenated and the result will be fed to Argo CD (printed to stdout).
 
+# Debugging lovely's behaviour locally
+
+You can download argocd-lovely-plugin binary and run it in an application directory. Errors will go to stderr, and the rendered yaml will appear on stdout.
+- You will need helm and kustomize on your path if you use those.
+- You should set up the expected environment variables. Remember ARGOCD_APP_NAME needs to be set for helm chart rendering.
+
 # Videos
 If you prefer to watch videos of things rather than read words, we have compiled some demos.
 
