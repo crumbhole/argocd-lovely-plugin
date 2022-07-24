@@ -24,6 +24,14 @@ argocd-lovely-plugin does not support jsonnet as we do not use jsonnet, and have
 # Installing as an Argo CD Plugin
 You can use [our Kustomization example](examples/installation/argocd) to install Argo CD and to bootstrap the installation of the plugin at the same time. However the steps below will detail what is required should you wish to do things more manually.
 
+## Environment variables
+
+Lovely is configured through environment variables. These can be set in both the argocd-repo-server and in the application itself.
+
+If you are passing the configuration in as application environment variables in Argo CD 2.4 or higher you must not put the ARGOCD_ENV_ prefix on them, as Argo CD does that for you.
+
+Otherwise lovely will accept either form of all of the variables, with or without ARGOCD_ENV_, with the ARGOCD_ENV_ version taking precidence if you set both of them.
+
 ## General configuration
 argocd-lovely-plugin is designed for minimal configuration and to do the right thing. The following environment variables can be used to change some behaviour:
 - ARGOCD_ENV_LOVELY_PREPROCESSORS and ARGOCD_ENV_LOVELY_PLUGINS: Set to a comma separated list of binaries to run during preprocessing and as plugins. Read [this](doc/plugins.md) for more on plugins.
