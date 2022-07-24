@@ -68,6 +68,13 @@ func HelmPatch() string {
 	return getArgoEnv(`LOVELY_HELM_PATCH`, ``)
 }
 
+// HelmValues returns a list of values files to be fed to helm
+// Set ARGOCD_ENV_LOVELY_HELM_VALUES to a comma separated list
+// of files.
+func HelmValues() []string {
+	return getPlugins(`LOVELY_HELM_VALUES`)
+}
+
 // KustomizeMerge returns the yaml to strategic merge into kustomization.yaml
 // Set ARGOCD_ENV_LOVELY_KUSTOMIZE_MERGE to some yaml you'd like strategic merged on any kustomization.yaml files used by kustomize
 func KustomizeMerge() string {
