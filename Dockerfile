@@ -17,4 +17,5 @@ RUN make -j4
 
 FROM alpine as putter
 COPY --from=builder /build/build/argocd-lovely-plugin .
-ENTRYPOINT [ "mv", "argocd-lovely-plugin", "/custom-tools/" ]
+USER 999
+ENTRYPOINT [ "cp", "argocd-lovely-plugin", "/custom-tools/" ]
