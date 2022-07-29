@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: helm-kustomize
+  name: helmonlyinkustomize
   namespace: argocd
 spec:
   destination:
-    namespace: helmkustomize
+    namespace: helmonlyinkustomize
     server: 'https://kubernetes.default.svc'
   source:
-    path: test/helm_kustomize
+    path: test/helm_only_in_kustomize
     repoURL: 'https://github.com/crumbhole/argocd-lovely-plugin.git'
     targetRevision: HEAD
     plugin:
