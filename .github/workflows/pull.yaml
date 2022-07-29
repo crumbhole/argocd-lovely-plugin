@@ -34,6 +34,12 @@ jobs:
       run: go test -v ./...
   test-deploy:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        argocd_version:
+          - "2.4.7"
+          - "2.3.6"
+      fail-fast: true
     steps:
       - uses: actions/checkout@v3
       - uses: AbsaOSS/k3d-action@v2
@@ -48,7 +54,7 @@ jobs:
         run: |
           docker build . -t argocd-lovely-plugin/testing:latest
           k3d image import argocd-lovely-plugin/testing:latest -c test-cluster-1 --verbose
-          kubectl apply -k .github/workflows/assets/bootstrap/argocd
+          kubectl apply -k .github/workflows/assets/bootstrap/argocd-${{ matrix.kubernetes_version }}
           kubectl -n argocd rollout status statefulset/argocd-application-controller
           kubectl -n argocd rollout status deployment/argocd-repo-server
           kubectl -n argocd describe pod -l=app.kubernetes.io/name=argocd-repo-server
