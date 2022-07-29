@@ -57,8 +57,8 @@ jobs:
           kubectl apply -k .github/workflows/assets/bootstrap/argocd-${{ matrix.argocd_version }}
           kubectl -n argocd rollout status statefulset/argocd-application-controller
           kubectl -n argocd rollout status deployment/argocd-repo-server
-          kubectl -n argocd describe pod -l=app.kubernetes.io/name=argocd-repo-server
-          kubectl -n argocd logs -l=app.kubernetes.io/name=argocd-repo-server
+          kubectl -n argocd apply -f .github/workflows/assets/app-of-apps
+          sleep 30
       - name: "Test helm/kustomize"
         run: |
           kubectl config use-context k3d-test-cluster-1
