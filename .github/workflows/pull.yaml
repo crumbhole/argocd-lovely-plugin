@@ -54,7 +54,7 @@ jobs:
         run: |
           docker build . -t argocd-lovely-plugin/testing:latest
           k3d image import argocd-lovely-plugin/testing:latest -c test-cluster-1 --verbose
-          kubectl apply -k .github/workflows/assets/bootstrap/argocd-${{ matrix.kubernetes_version }}
+          kubectl apply -k .github/workflows/assets/bootstrap/argocd-${{ matrix.argocd_version }}
           kubectl -n argocd rollout status statefulset/argocd-application-controller
           kubectl -n argocd rollout status deployment/argocd-repo-server
           kubectl -n argocd describe pod -l=app.kubernetes.io/name=argocd-repo-server
