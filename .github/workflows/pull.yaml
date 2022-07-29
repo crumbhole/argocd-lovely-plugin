@@ -48,12 +48,14 @@ jobs:
         run: |
           docker build . -t myproj/demo:v1.0.0
           k3d image import myproj/demo:v1.0.0 -c test-cluster-1 --verbose
-          kubectl apply -f .github/workflows/assets/pod.yaml
+          kubectl apply -k .github/workflows/assets/bootstrap/argocd
+          kubectl -n argocd rollout status statefulset/argocd-application-controller
+          kubectl -n argocd rollout status deployment/argocd-repo-server
       - name: Pod-Checker
         run: |
           docker ps -a
           kubectl config use-context k3d-test-cluster-1
-          kubectl get pods -o wide
+          kubectl -n argocd get pods -o wide
   push_to_registry:
     name: Push Docker image to GitHub Packages
     runs-on: ubuntu-latest
