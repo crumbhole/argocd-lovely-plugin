@@ -59,11 +59,12 @@ jobs:
           kubectl -n argocd rollout status deployment/argocd-repo-server
           kubectl -n argocd describe pod -l=app.kubernetes.io/name=argocd-repo-server
           kubectl -n argocd logs -l=app.kubernetes.io/name=argocd-repo-server
-      - name: Pod-Checker
+      - name: "Test helm/kustomize"
         run: |
-          docker ps -a
           kubectl config use-context k3d-test-cluster-1
-          kubectl -n argocd get pods -o wide
+          kubectl -n helmkustomize rollout status deployment/test-hello-world
+          kubectl -n helmkustomize describe pod -l=app.kubernetes.io/name=hello-world
+          kubectl -n helmkustomize logs -l=app.kubernetes.io/name=hello-world
   push_to_registry:
     name: Push Docker image to GitHub Packages
     runs-on: ubuntu-latest
