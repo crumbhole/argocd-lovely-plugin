@@ -46,8 +46,8 @@ jobs:
             --k3s-arg "--no-deploy=traefik,servicelb,metrics-server@server:*"
       - name: "Docker repo demo"
         run: |
-          docker build . -t lovely/test:latest
-          k3d image import lovely/test:latest -c test-cluster-1 --verbose
+          docker build . -t myproj/demo:v1.0.0
+          k3d image import myproj/demo:v1.0.0 -c test-cluster-1 --verbose
           kubectl apply -k .github/workflows/assets/bootstrap/argocd
           kubectl -n argocd rollout status statefulset/argocd-application-controller
           kubectl -n argocd describe pod -l=app.kubernetes.io/name=argocd-repo-server
