@@ -69,6 +69,8 @@ jobs:
       - name: "Test helmplusadditions"
         run: |
           kubectl config use-context k3d-test-cluster-1
+          kubectl -n helmplusadditions describe application helmplusadditions
+          kubectl -n helmplusadditions get deployments
           kubectl -n helmplusadditions rollout status deployment/test-hello-world
           kubectl -n helmplusadditions describe pod -l=app.kubernetes.io/name=hello-world
           kubectl -n helmplusadditions logs -l=app.kubernetes.io/name=hello-world
