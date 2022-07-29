@@ -49,16 +49,11 @@ jobs:
           docker build . -t myproj/demo:v1.0.0
           k3d image import myproj/demo:v1.0.0 -c test-cluster-1 --verbose
           kubectl apply -f .github/workflows/assets/pod.yaml
-      - name: Cluster info
-        run: |
-          kubectl cluster-info --context k3d-test-cluster-1
-      - name: Nodes
+      - name: Pod-Checker
         run: |
           docker ps -a
           kubectl config use-context k3d-test-cluster-1
-          kubectl get nodes -o wide
-      - name: Network
-        run: docker network inspect k3d-test-cluster-1
+          kubectl get pods -o wide
   push_to_registry:
     name: Push Docker image to GitHub Packages
     runs-on: ubuntu-latest
