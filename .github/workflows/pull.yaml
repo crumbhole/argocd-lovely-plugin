@@ -37,17 +37,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: AbsaOSS/k3d-action@v2
-        name: "Create single k3d Cluster with imported Registry"
+        name: "Create single k3d Cluster and run Argocd/Lovely"
         with:
           cluster-name: test-cluster-1
           args: >-
             --agents 3
             --no-lb
             --k3s-arg "--no-deploy=traefik,servicelb,metrics-server@server:*"
-      - name: "Docker repo demo"
+      - name: "Deploy Argocd/Lovely"
         run: |
-          docker build . -t myproj/demo:v1.0.0
-          k3d image import myproj/demo:v1.0.0 -c test-cluster-1 --verbose
+          docker build . -t argocd-lovely-plugin/testing:latest
+          k3d image import argocd-lovely-plugin/testing:latest -c test-cluster-1 --verbose
           kubectl apply -k .github/workflows/assets/bootstrap/argocd
           kubectl -n argocd rollout status statefulset/argocd-application-controller
           kubectl -n argocd rollout status deployment/argocd-repo-server
