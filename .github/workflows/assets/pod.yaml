@@ -8,3 +8,4 @@ spec:
   containers:
   - name: demo-app
     image: myproj/demo:v1.0.0
+    imagePullPolicy: Never
