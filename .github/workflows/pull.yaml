@@ -57,19 +57,19 @@ jobs:
           kubectl apply -k .github/workflows/assets/bootstrap/argocd-${{ matrix.argocd_version }}
           kubectl -n argocd rollout status statefulset/argocd-application-controller
           kubectl -n argocd rollout status deployment/argocd-repo-server
-      - name: "Test helm/kustomize"
+      - name: "Test helmonlyinkustomize"
         run: |
           kubectl config use-context k3d-test-cluster-1
-          kubectl -n argocd apply -f .github/workflows/assets/applications/helm_kustomize.yml
-          sleep 10 && kubectl -n argocd get application helm-kustomize
+          kubectl -n argocd apply -f .github/workflows/assets/applications/helmonlyinkustomize.yml
+          sleep 10 && kubectl -n argocd get application helmonlyinkustomize
           kubectl get namespaces
-          kubectl -n argocd describe application helm-kustomize
+          kubectl -n argocd describe application helmonlyinkustomize
           sleep 30
-          kubectl -n argocd describe application helm-kustomize
+          kubectl -n argocd describe application helmonlyinkustomize
           kubectl get namespaces
-          kubectl -n helmkustomize rollout status deployment/test-hello-world
-          kubectl -n helmkustomize describe pod -l=app.kubernetes.io/name=hello-world
-          kubectl -n helmkustomize logs -l=app.kubernetes.io/name=hello-world
+          kubectl -n helmonlyinkustomize rollout status deployment/test-hello-world
+          kubectl -n helmonlyinkustomize describe pod -l=app.kubernetes.io/name=hello-world
+          kubectl -n helmonlyinkustomize logs -l=app.kubernetes.io/name=hello-world
   push_to_registry:
     name: Push Docker image to GitHub Packages
     runs-on: ubuntu-latest
