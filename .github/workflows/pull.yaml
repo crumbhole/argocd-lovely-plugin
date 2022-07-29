@@ -65,7 +65,7 @@ jobs:
           kubectl get namespaces
           kubectl -n argocd describe application helm-kustomize
           sleep 30
-          ubectl -n argocd describe application helm-kustomize
+          kubectl -n argocd describe application helm-kustomize
           kubectl get namespaces
           kubectl -n helmkustomize rollout status deployment/test-hello-world
           kubectl -n helmkustomize describe pod -l=app.kubernetes.io/name=hello-world
