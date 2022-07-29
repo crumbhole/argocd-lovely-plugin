@@ -17,7 +17,7 @@ spec:
         emptyDir: {}
       initContainers:
       - name: argocd-lovely-plugin-download
-        image: ghcr.io/crumbhole/argocd-lovely-plugin:stable
+        image: lovely/test:latest
         imagePullPolicy: Always
         volumeMounts:
           - mountPath: /custom-tools
