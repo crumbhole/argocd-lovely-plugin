@@ -61,12 +61,7 @@ jobs:
         run: |
           kubectl config use-context k3d-test-cluster-1
           kubectl -n argocd apply -f .github/workflows/assets/applications/helm_only_in_kustomize.yml
-          sleep 10 && kubectl -n argocd get application helmonlyinkustomize
-          kubectl get namespaces
-          kubectl -n argocd describe application helmonlyinkustomize
-          sleep 30
-          kubectl -n argocd describe application helmonlyinkustomize
-          kubectl get namespaces
+          sleep 10
           kubectl -n helmonlyinkustomize rollout status deployment/test-hello-world
           kubectl -n helmonlyinkustomize describe pod -l=app.kubernetes.io/name=hello-world
           kubectl -n helmonlyinkustomize logs -l=app.kubernetes.io/name=hello-world
