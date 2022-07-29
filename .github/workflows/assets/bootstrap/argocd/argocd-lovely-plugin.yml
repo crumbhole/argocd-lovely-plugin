@@ -17,7 +17,7 @@ spec:
         emptyDir: {}
       initContainers:
       - name: argocd-lovely-plugin-download
-        image: myproj/demo:v1.0.0
+        image: argocd-lovely-plugin/testing:latest
         imagePullPolicy: Never
         volumeMounts:
           - mountPath: /custom-tools
