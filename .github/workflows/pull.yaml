@@ -50,8 +50,6 @@ jobs:
           k3d image import myproj/demo:v1.0.0 -c test-cluster-1 --verbose
           kubectl apply -k .github/workflows/assets/bootstrap/argocd
           kubectl -n argocd rollout status statefulset/argocd-application-controller
-          kubectl -n argocd describe pod -l=app.kubernetes.io/name=argocd-repo-server
-          kubectl -n argocd logs -l=app.kubernetes.io/name=argocd-repo-server
           kubectl -n argocd rollout status deployment/argocd-repo-server
           kubectl -n argocd describe pod -l=app.kubernetes.io/name=argocd-repo-server
           kubectl -n argocd logs -l=app.kubernetes.io/name=argocd-repo-server
