@@ -32,7 +32,7 @@ jobs:
 
     - name: Test
       run: go test -v ./...
-  test-deploy:
+  test-deploy-argocd:
     runs-on: ubuntu-latest
     strategy:
       matrix:
