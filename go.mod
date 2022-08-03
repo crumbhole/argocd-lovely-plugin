@@ -7,7 +7,7 @@ require (
 	github.com/otiai10/copy v1.7.0
 	gopkg.in/yaml.v2 v2.4.0
 	sigs.k8s.io/kustomize/api v0.12.0
-	sigs.k8s.io/kustomize/kyaml v0.13.8
+	sigs.k8s.io/kustomize/kyaml v0.13.9
 	sigs.k8s.io/yaml v1.3.0
 )
 
