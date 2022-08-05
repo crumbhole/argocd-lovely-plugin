@@ -1,0 +1,5 @@
+version: "3.9"
+services:
+  argocd-lovely-plugin:
+    build: .
+    image: ghcr.io/crumbhole/argocd-lovely-plugin:test

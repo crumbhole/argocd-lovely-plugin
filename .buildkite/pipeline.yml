@@ -1,0 +1,4 @@
+steps:
+  - plugins:
+      - docker-compose#v3.10.0:
+          build: argocd-lovely-plugin
