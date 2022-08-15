@@ -39,7 +39,7 @@ func (h helmProcessor) helmDo(path string, params ...string) (string, error) {
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
 	out, err := cmd.Output()
-	// fmt.Printf("Output from %v in %s is %s\n", params, path, out)
+	//	fmt.Printf("Output from %v in %s is %s\n", params, path, out)
 	if err != nil {
 		return string(out), fmt.Errorf("%s: %v", err, stderr.String())
 	}
@@ -49,10 +49,6 @@ func (h helmProcessor) helmDo(path string, params ...string) (string, error) {
 func (h helmProcessor) repoEnsure(path string, name string, url string) error {
 	_, err := h.helmDo(path, `repo`, `add`, name, url)
 	return err
-}
-
-func (h helmProcessor) values() []string {
-	return HelmValues()
 }
 
 var requirementsFiles = [...]string{
@@ -97,16 +93,10 @@ func (h helmProcessor) generate(input *string, path string) (*string, error) {
 	if err != nil {
 		return nil, err
 	}
-	params := []string{`template`}
-	for _, valuefile := range h.values() {
-		params = append(params, `-f`, valuefile)
-	}
-	params = append(params,
+	out, err := h.helmDo(path, `template`,
 		`-n`,
 		os.Getenv(`ARGOCD_APP_NAMESPACE`),
 		os.Getenv(`ARGOCD_APP_NAME`),
 		`.`)
-	fmt.Printf("%v\n", params)
-	out, err := h.helmDo(path, params...)
 	return &out, err
 }

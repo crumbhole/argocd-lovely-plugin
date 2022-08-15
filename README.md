@@ -42,7 +42,6 @@ argocd-lovely-plugin is designed for minimal configuration and to do the right t
 You can use these environment variables for modifying helm's behaviour, and the values.yaml file. More generic manipulation of any file is available through preprocessing.
 - ARGOCD_ENV_LOVELY_HELM_MERGE: to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) merged into any values.yaml used by Helm.
 - ARGOCD_ENV_LOVELY_HELM_PATCH: to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any values.yaml used by Helm.
-- ARGOCD_ENV_LOVELY_HELM_VALUES: to add further values files, in order, as a comma separated list of files you wish to be processed. See helm's own documentation for layering values files. values.yaml always gets read first.
 - ARGOCD_APP_NAME: This can be used to set the Helm 'name' in the same way as releaseName works in Argo CD's standard Helm processing
 
 There is no way to modify any other Helm files at this time.
