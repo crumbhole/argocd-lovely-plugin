@@ -7,10 +7,10 @@ import (
 	"strings"
 )
 
-const argo_prefix = `ARGOCD_ENV_`
+const argoPrefix = `ARGOCD_ENV_`
 
 func getArgoEnv(name string, defaultVal string) string {
-	result, got := os.LookupEnv(argo_prefix + name)
+	result, got := os.LookupEnv(argoPrefix + name)
 	if !got {
 		result, got = os.LookupEnv(name)
 		if !got {
