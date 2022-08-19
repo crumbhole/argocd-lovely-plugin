@@ -21,6 +21,9 @@ An [Argo CD](https://argoproj.github.io/argo-cd/) plugin that behaves in a way w
 
 argocd-lovely-plugin does not support jsonnet as we do not use jsonnet, and haven't seen the need to use it. We don't know how it would best fit into the structure.
 
+## Supported Argo CD Version
+We aim to match the [Argo CD Supported Versions](https://argo-cd.readthedocs.io/en/stable/operator-manual/installation/#supported-versions) by testing against Argo CD N and N -1 versions of Argo CD. You can see the current versions of Argo CD that we test against by looking in the [CI bootstrap directory](workflows/assets/bootstrap) in this repo.
+
 # Installing as an Argo CD Plugin
 You can use [our Kustomization example](examples/installation/argocd) to install Argo CD and to bootstrap the installation of the plugin at the same time. However the steps below will detail what is required should you wish to do things more manually.
 
