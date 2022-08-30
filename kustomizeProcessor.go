@@ -2,11 +2,12 @@ package main
 
 import (
 	"errors"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"regexp"
+
+	"gopkg.in/yaml.v2"
 	"sigs.k8s.io/kustomize/api/types"
 )
 
@@ -27,6 +28,12 @@ func (k kustomizeProcessor) generate(input *string, path string) (*string, error
 		return input, ErrDisabledProcessor
 	}
 	kustYamlPath := path + "/kustomization.yaml"
+	if _, err := os.Stat(kustYamlPath); os.IsNotExist(err) {
+		kustYamlPath = path + "/kustomization.yml"
+		if _, err := os.Stat(kustYamlPath); os.IsNotExist(err) {
+			return nil, err
+		}
+	}
 	err := MergeYaml(kustYamlPath, KustomizeMerge(), KustomizePatch())
 	if err != nil {
 		return nil, err
@@ -53,7 +60,7 @@ func (k kustomizeProcessor) generate(input *string, path string) (*string, error
 		}
 		kust.Resources = append(kust.Resources, kustomizeIntermediateFilename)
 
-		kustomizationFile, err := os.OpenFile(path+"/kustomization.yaml", os.O_WRONLY|os.O_TRUNC, 0644)
+		kustomizationFile, err := os.OpenFile(kustYamlPath, os.O_WRONLY|os.O_TRUNC, 0644)
 		if err != nil {
 			return nil, err
 		}
