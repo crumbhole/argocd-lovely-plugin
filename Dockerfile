@@ -1,4 +1,4 @@
-FROM golang:1.19.0 as builder
+FROM golang:1.19.1 as builder
 
 RUN apt update && apt install -y curl wget unzip
 
