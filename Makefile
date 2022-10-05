@@ -1,8 +1,11 @@
-.PHONY:	all clean code-vet code-fmt test get
+.PHONY:	all clean code-vet code-fmt test get docker
 
 DEPS := $(shell find . -type f -name "*.go" -printf "%p ")
 
 all: code-vet code-fmt test build/argocd-lovely-plugin
+
+docker:
+	docker build .
 
 clean:
 	$(RM) -rf build
