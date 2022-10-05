@@ -53,6 +53,7 @@ There is no way to modify any other Helm files at this time.
 You can use these environment variables for modifying kustomize's behaviour, and the kustomization.yaml file. More generic manipulation of any file is available through preprocessing.
 - ARGOCD_ENV_LOVELY_KUSTOMIZE_MERGE: to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) merged into any kustomization.yaml found.
 - ARGOCD_ENV_LOVELY_KUSTOMIZE_PATCH: to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any kustomization.yaml found.
+- ARGOCD_ENV_LOVELY_KUSTOMIZE_PARAMS: Space separated extra parameters to `kustomize build` as you might use on the command line. `--enable-helm` is already passed always. You're on your own here if you pass 
 
 There is no way to modify any other files, that's what Kustomize itself is for.
 

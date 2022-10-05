@@ -50,6 +50,20 @@ func KustomizeBinary() string {
 	return getArgoEnv(`LOVELY_KUSTOMIZE_PATH`, `kustomize`)
 }
 
+// KustomizeParams returns extra parameters to pass to kustomize
+// Set ARGOCD_ENV_LOVELY_KUSTOMIZE_PARAMS to extra parameters to pass to kustomize
+func KustomizeParams() []string {
+	paramsStr := getArgoEnv(`LOVELY_KUSTOMIZE_PARAMS`, ``)
+	if paramsStr == `` {
+		return []string{}
+	}
+	params := strings.Split(paramsStr, ` `)
+	for i, param := range params {
+		params[i] = strings.TrimSpace(param)
+	}
+	return params
+}
+
 // HelmBinary returns the path to helm if overridden, otherwise we search the path
 // Set ARGOCD_ENV_LOVELY_HELM_PATH to the path to the helm binary
 func HelmBinary() string {

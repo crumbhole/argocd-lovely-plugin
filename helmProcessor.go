@@ -94,7 +94,7 @@ func (h helmProcessor) generate(input *string, path string) (*string, error) {
 		return nil, err
 	}
 	out, err := h.helmDo(path, `template`,
-                `--include-crds`,
+		`--include-crds`,
 		`-n`,
 		os.Getenv(`ARGOCD_APP_NAMESPACE`),
 		os.Getenv(`ARGOCD_APP_NAME`),

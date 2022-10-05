@@ -73,7 +73,10 @@ func (k kustomizeProcessor) generate(input *string, path string) (*string, error
 			return nil, err
 		}
 	}
-	out, err := exec.Command(KustomizeBinary(), `build`, `--enable-helm`, path).CombinedOutput()
+	params := []string{`build`, `--enable-helm`}
+	params = append(params[:], KustomizeParams()[:]...)
+	params = append(params, path)
+	out, err := exec.Command(KustomizeBinary(), params...).CombinedOutput()
 	if err != nil {
 		return nil, errors.New(string(out))
 	}
