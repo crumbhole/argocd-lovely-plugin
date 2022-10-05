@@ -5,6 +5,7 @@ package main
 import (
 	"fmt"
 	"os/exec"
+	"path/filepath"
 )
 
 type preProcessor struct{}
@@ -13,15 +14,31 @@ func (preProcessor) name() string {
 	return "preprocessor"
 }
 
-func (preProcessor) enabled(_ string) bool {
-	return len(Preprocessors()) > 0
+func getRelPreprocessors(basePath string, path string) ([]string, error) {
+	relPath, err := filepath.Rel(basePath, path)
+	if err != nil {
+		return make([]string, 0), fmt.Errorf("Internal relative path error %s", err)
+	}
+	return Preprocessors(relPath)
 }
 
-func (v preProcessor) generate(path string) error {
-	if !v.enabled(path) {
+func (preProcessor) enabled(basePath string, path string) bool {
+	plugins, err := getRelPreprocessors(basePath, path)
+	if err != nil {
+		return true // Enable for error case so errors get reported
+	}
+	return len(plugins) > 0
+}
+
+func (v preProcessor) generate(basePath string, path string) error {
+	if !v.enabled(basePath, path) {
 		return ErrDisabledProcessor
 	}
-	for _, plugin := range Preprocessors() {
+	plugins, err := getRelPreprocessors(basePath, path)
+	if err != nil {
+		return err
+	}
+	for _, plugin := range plugins {
 		cmd := exec.Command(`bash`, `-c`, plugin)
 		cmd.Dir = path
 		out, err := cmd.CombinedOutput()

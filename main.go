@@ -20,10 +20,11 @@ var processors = []Processor{
 
 // Collection is a list of sub-applications making up this application
 type Collection struct {
-	dirs PackageDirectories
+	baseDir string
+	dirs    PackageDirectories
 }
 
-func (c *Collection) scanFile(path string, info os.FileInfo, err error) error {
+func (c *Collection) scanFile(path string, info os.DirEntry, err error) error {
 	if err != nil {
 		return err
 	}
@@ -44,7 +45,7 @@ func (c *Collection) scanFile(path string, info os.FileInfo, err error) error {
 }
 
 func (c *Collection) scanDir(path string) error {
-	return filepath.Walk(path, c.scanFile)
+	return filepath.WalkDir(path, c.scanFile)
 }
 
 func (c *Collection) processAllDirs() (string, error) {
@@ -62,15 +63,15 @@ func (c *Collection) processAllDirs() (string, error) {
 func (c *Collection) processOneDir(path string) (string, error) {
 	var result *string
 	pre := preProcessor{}
-	if pre.enabled(path) {
-		err := pre.generate(path)
+	if pre.enabled(c.baseDir, path) {
+		err := pre.generate(c.baseDir, path)
 		if err != nil {
 			return "", err
 		}
 	}
 	for _, processor := range processors {
-		if processor.enabled(path) {
-			out, err := processor.generate(result, path)
+		if processor.enabled(c.baseDir, path) {
+			out, err := processor.generate(result, c.baseDir, path)
 			if err != nil {
 				return "", err
 			}
@@ -100,6 +101,7 @@ func (c *Collection) doAllDirs(path string) (string, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	c.baseDir = workingPath
 	defer os.RemoveAll(workingPath)
 	err = c.scanDir(workingPath)
 	if err != nil {

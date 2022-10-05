@@ -27,7 +27,7 @@ func (helmProcessor) name() string {
 	return "helm"
 }
 
-func (helmProcessor) enabled(path string) bool {
+func (helmProcessor) enabled(_ string, path string) bool {
 	return reFileInDir(path, regexp.MustCompile(`^Chart\.ya?ml$`))
 }
 
@@ -80,8 +80,8 @@ func (h helmProcessor) reposEnsure(path string) error {
 	return err
 }
 
-func (h helmProcessor) generate(input *string, path string) (*string, error) {
-	if !h.enabled(path) {
+func (h helmProcessor) generate(input *string, basePath string, path string) (*string, error) {
+	if !h.enabled(basePath, path) {
 		return input, ErrDisabledProcessor
 	}
 	h.reposEnsure(path)

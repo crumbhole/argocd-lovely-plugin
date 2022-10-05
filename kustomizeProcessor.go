@@ -19,12 +19,12 @@ func (kustomizeProcessor) name() string {
 	return "kustomize"
 }
 
-func (kustomizeProcessor) enabled(path string) bool {
+func (kustomizeProcessor) enabled(_ string, path string) bool {
 	return reFileInDir(path, regexp.MustCompile(`^kustomization\.ya?ml$`))
 }
 
-func (k kustomizeProcessor) generate(input *string, path string) (*string, error) {
-	if !k.enabled(path) {
+func (k kustomizeProcessor) generate(input *string, basePath string, path string) (*string, error) {
+	if !k.enabled(basePath, path) {
 		return input, ErrDisabledProcessor
 	}
 	kustYamlPath := path + "/kustomization.yaml"

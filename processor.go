@@ -13,8 +13,8 @@ import (
 // Historically we had an init phase, which has been removed
 type Processor interface {
 	name() string
-	enabled(path string) bool
-	generate(input *string, path string) (*string, error)
+	enabled(basePath string, path string) bool
+	generate(input *string, basePath string, path string) (*string, error)
 }
 
 func reFileInDir(path string, re *regexp.Regexp) bool {

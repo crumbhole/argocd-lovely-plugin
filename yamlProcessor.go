@@ -15,7 +15,7 @@ func (yamlProcessor) name() string {
 	return "yaml"
 }
 
-func (yamlProcessor) enabled(_ string) bool {
+func (yamlProcessor) enabled(_ string, _ string) bool {
 	// Always enabled, to pick up if nothing else worked
 	return true
 }
@@ -42,8 +42,8 @@ func (y *yamlProcessor) scanFile(path string, info os.FileInfo, err error) error
 	return nil
 }
 
-func (y yamlProcessor) generate(input *string, path string) (*string, error) {
-	if !y.enabled(path) {
+func (y yamlProcessor) generate(input *string, basePath string, path string) (*string, error) {
+	if !y.enabled(basePath, path) {
 		return input, ErrDisabledProcessor
 	}
 	if input == nil {

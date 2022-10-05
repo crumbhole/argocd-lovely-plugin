@@ -3,7 +3,9 @@ package main
 // The control of this is via environment variables, as that
 // is the way argocd allows you to control plugins
 import (
+	"fmt"
 	"os"
+	yaml "sigs.k8s.io/yaml"
 	"strings"
 )
 
@@ -32,16 +34,54 @@ func getPlugins(envname string) []string {
 	return plugins
 }
 
+type pluginYaml map[string][]string
+
+func getYamlPlugins(envname string) (pluginYaml, error) {
+	pluginsText := getArgoEnv(envname, ``)
+	if pluginsText == `` {
+		return make(pluginYaml), nil
+	}
+	var plugins pluginYaml
+	err := yaml.Unmarshal([]byte(pluginsText), &plugins)
+	if err != nil {
+		return make(pluginYaml), err
+	}
+	return plugins, nil
+}
+
+// Path here must be a relative path
+func pluginsForPath(path string, yamlEnv string, plainEnv string) ([]string, error) {
+	plugins, err := getYamlPlugins(yamlEnv)
+	if err != nil {
+		return make([]string, 0), fmt.Errorf("%s is invalid: %s", yamlEnv, err)
+	}
+	if list, contains := plugins[path]; contains {
+		return list, nil
+	}
+	return getPlugins(plainEnv), nil
+}
+
 // Plugins returns the list of plugins to run during the generate phase after main processing
-// Set ARGOCD_ENV_LOVELY_PLUGINS to a comma separated list of plugins to run after other processing.
-func Plugins() []string {
-	return getPlugins(`LOVELY_PLUGINS`)
+// Set ARGOCD_ENV_LOVELY_PLUGINS_YAML to a map of a list of plugins to run per directory
+// e.g.
+// foo/bar:
+// - plugin1
+// - plugin2
+// helm:
+// - plugin3
+// Or et ARGOCD_ENV_LOVELY_PLUGINS to a comma separated list of plugins to run after other processing.
+// for any directories not in the list from the YAML
+func Plugins(path string) ([]string, error) {
+	fmt.Printf("Plugins Path %s\n", path)
+	return pluginsForPath(path, `LOVELY_PLUGINS_YAML`, `LOVELY_PLUGINS`)
 }
 
 // Preprocessors returns the list of plugins to run before we generate yaml.
-// Set ARGOCD_ENV_LOVELY_PREPROCESSORS to a comma separated list of plugins to run on the directory before any other processing.
-func Preprocessors() []string {
-	return getPlugins(`LOVELY_PREPROCESSORS`)
+// Set ARGOCD_ENV_LOVELY_PREPROCESSORS_YAML to a map of a list of plugins to run per directory
+// Set ARGOCD_ENV_LOVELY_PREPROCESSORS to a comma separated list of plugins to run
+// for any directories not in the list from the YAML
+func Preprocessors(path string) ([]string, error) {
+	return pluginsForPath(path, `LOVELY_PREPROCESSORS_YAML`, `LOVELY_PREPROCESSORS`)
 }
 
 // KustomizeBinary returns the path to kustomize if overridden, otherwise we search the path

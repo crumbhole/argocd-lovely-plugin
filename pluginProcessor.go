@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"os/exec"
+	"path/filepath"
 )
 
 type pluginProcessor struct{}
@@ -15,16 +16,32 @@ func (pluginProcessor) name() string {
 	return "plugin"
 }
 
-func (pluginProcessor) enabled(_ string) bool {
-	return len(Plugins()) > 0
+func getRelPlugins(basePath string, path string) ([]string, error) {
+	relPath, err := filepath.Rel(basePath, path)
+	if err != nil {
+		return nil, fmt.Errorf("Internal relative path error %s", err)
+	}
+	return Plugins(relPath)
 }
 
-func (v pluginProcessor) generate(input *string, path string) (*string, error) {
-	if !v.enabled(path) {
+func (pluginProcessor) enabled(basePath string, path string) bool {
+	plugins, err := getRelPlugins(basePath, path)
+	if err != nil {
+		return true // Enable for error case so errors get reported
+	}
+	return len(plugins) > 0
+}
+
+func (v pluginProcessor) generate(input *string, basePath string, path string) (*string, error) {
+	if !v.enabled(basePath, path) {
 		return input, ErrDisabledProcessor
 	}
 	currentText := *input
-	for _, plugin := range Plugins() {
+	plugins, err := getRelPlugins(basePath, path)
+	if err != nil {
+		return nil, err
+	}
+	for _, plugin := range plugins {
 		cmd := exec.Command(`bash`, `-c`, plugin)
 		cmd.Dir = path
 		stdin, err := cmd.StdinPipe()
