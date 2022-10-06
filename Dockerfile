@@ -9,7 +9,7 @@ RUN curl -s https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 
 RUN curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash && mv /go/kustomize /usr/local/bin
 
 # Install yq
-RUN curl -L -s "https://github.com/mikefarah/yq/releases/download/v4.20.1/yq_linux_amd64" -o /usr/local/bin/yq && chmod +x /usr/local/bin/yq
+RUN curl -L -s "https://github.com/mikefarah/yq/releases/download/v4.27.5/yq_linux_amd64" -o /usr/local/bin/yq && chmod +x /usr/local/bin/yq
 
 ADD . /build
 WORKDIR /build
