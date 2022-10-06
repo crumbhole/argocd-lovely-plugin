@@ -72,7 +72,6 @@ func pluginsForPath(path string, yamlEnv string, plainEnv string) ([]string, err
 // Or et ARGOCD_ENV_LOVELY_PLUGINS to a comma separated list of plugins to run after other processing.
 // for any directories not in the list from the YAML
 func Plugins(path string) ([]string, error) {
-	fmt.Printf("Plugins Path %s\n", path)
 	return pluginsForPath(path, `LOVELY_PLUGINS_YAML`, `LOVELY_PLUGINS`)
 }
 
