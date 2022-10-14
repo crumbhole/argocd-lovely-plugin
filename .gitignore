@@ -101,3 +101,4 @@ go.sum
 got.txt
 test/**/charts/
 test/**/Chart.lock
+_lovely_resource.yaml

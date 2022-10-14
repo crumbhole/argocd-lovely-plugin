@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	yaml "sigs.k8s.io/yaml"
+	"strconv"
 	"strings"
 )
 
@@ -131,4 +132,13 @@ func KustomizeMerge() string {
 // Set ARGOCD_ENV_LOVELY_KUSTOMIZE_PATCH to some yaml you'd like json6902 patched on any kustomization.yaml files used by kustomize
 func KustomizePatch() string {
 	return getArgoEnv(`LOVELY_KUSTOMIZE_PATCH`, ``)
+}
+
+// Set ARGOCD_ENV_ALLOW_GITCHECKOUT to true to say you've told Argo this is safe
+func AllowGitCheckout() bool {
+	res, err := strconv.ParseBool(getArgoEnv(`LOVELY_ALLOW_GITCHECKOUT`, `false`))
+	if err != nil {
+		return false
+	}
+	return res
 }

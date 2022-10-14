@@ -61,7 +61,7 @@ func checkDir(path string) error {
 }
 
 // Finds directories under ./test and evaluates all the .yaml/.ymls
-func TestDirectories(t *testing.T) {
+func testDirs(t *testing.T) {
 	os.Setenv(`ARGOCD_APP_NAME`, `test`)
 	os.Setenv(`ARGOCD_APP_NAMESPACE`, `testnamespace`)
 	dirs, err := ioutil.ReadDir(testsPath)
@@ -79,4 +79,16 @@ func TestDirectories(t *testing.T) {
 			})
 		}
 	}
+}
+
+// Tests with copy
+func TestDirectoriesCopy(t *testing.T) {
+	testDirs(t)
+}
+
+// Tests with git checkout/clean
+func TestDirectoriesGitCheckout(t *testing.T) {
+	os.Setenv(`ARGOCD_ENV_LOVELY_ALLOW_GITCHECKOUT`, `true`)
+	testDirs(t)
+	os.Unsetenv(`ARGOCD_ENV_LOVELY_ALLOW_GITCHECKOUT`)
 }

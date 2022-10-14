@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 )
@@ -82,7 +83,6 @@ func (c *Collection) processOneDir(path string) (string, error) {
 }
 
 // We copy the directory in case we patch some of the files for kustomize or helm
-// ArgoCD doesn't guarantee us an unpatched copy when we run
 func (c *Collection) makeTmpCopy(path string) (string, error) {
 	tmpPath, err := ioutil.TempDir(os.TempDir(), "lovely-plugin-")
 	if err != nil {
@@ -96,13 +96,38 @@ func (c *Collection) makeTmpCopy(path string) (string, error) {
 	return tmpPath, err
 }
 
+func (c *Collection) gitClean(path string) error {
+	chkout := exec.Command("git", "checkout", "HEAD", "--", ".")
+	chkout.Dir = path
+	_, err := chkout.Output()
+	if err != nil {
+		return err
+	}
+	log.Printf("Cleaning %s", path)
+	clean := exec.Command("git", "clean", "-fdx", ".")
+	clean.Dir = path
+	_, err = clean.Output()
+	return err
+}
+
+// Ensure we have a clean working copy
+// ArgoCD doesn't guarantee us an unpatched copy when we run
+func (c *Collection) ensureClean(path string) (string, func(string) error, error) {
+	if AllowGitCheckout() {
+		return path, c.gitClean, c.gitClean(path)
+	} else {
+		newPath, err := c.makeTmpCopy(path)
+		return newPath, os.RemoveAll, err
+	}
+}
+
 func (c *Collection) doAllDirs(path string) (string, error) {
-	workingPath, err := c.makeTmpCopy(path)
+	workingPath, cleanup, err := c.ensureClean(path)
 	if err != nil {
 		log.Fatal(err)
 	}
 	c.baseDir = workingPath
-	defer os.RemoveAll(workingPath)
+	defer cleanup(workingPath)
 	err = c.scanDir(workingPath)
 	if err != nil {
 		log.Fatal(err)

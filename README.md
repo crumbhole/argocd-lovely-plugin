@@ -41,6 +41,7 @@ argocd-lovely-plugin is designed for minimal configuration and to do the right t
 - `ARGOCD_ENV_LOVELY_PREPROCESSORS_YAML` and `ARGOCD_ENV_LOVELY_PLUGINS_YAML`: Set to some yaml or json for a list of binaries to run during preprocessing and as plugins. Read [this](doc/plugins.md) for more on plugins.
 - `ARGOCD_ENV_LOVELY_KUSTOMIZE_PATH`: Set to a path or binary name to use for Kustomize.
 - `ARGOCD_ENV_LOVELY_HELM_PATH`: Set to a path or binary name to use for Helm.
+- `ARGOCD_ENV_LOVELY_ALLOW_GITCHECKOUT`: Allows kustomize base paths to work. Do **not** just set this without reading [this](doc/allow_git.md)
 
 ## Helm variation
 You can use these environment variables for modifying helm's behaviour, and the values.yaml file. More generic manipulation of any file is available through preprocessing.
