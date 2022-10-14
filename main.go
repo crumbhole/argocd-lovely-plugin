@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"github.com/otiai10/copy"
@@ -99,15 +100,20 @@ func (c *Collection) makeTmpCopy(path string) (string, error) {
 func (c *Collection) gitClean(path string) error {
 	chkout := exec.Command("git", "checkout", "HEAD", "--", ".")
 	chkout.Dir = path
+	var stderr bytes.Buffer
+	chkout.Stderr = &stderr
 	_, err := chkout.Output()
 	if err != nil {
-		return err
+		return fmt.Errorf("%s: %v", err, stderr.String())
 	}
-	log.Printf("Cleaning %s", path)
 	clean := exec.Command("git", "clean", "-fdx", ".")
 	clean.Dir = path
+	clean.Stderr = &stderr
 	_, err = clean.Output()
-	return err
+	if err != nil {
+		return fmt.Errorf("%s: %v", err, stderr.String())
+	}
+	return nil
 }
 
 // Ensure we have a clean working copy

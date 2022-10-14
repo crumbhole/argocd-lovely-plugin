@@ -1,6 +1,6 @@
 FROM golang:1.19.2 as builder
 
-RUN apt update && apt install -y curl wget unzip
+RUN apt update && apt install -y curl wget unzip git
 
 # Install Helm
 RUN curl -s https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
