@@ -60,7 +60,7 @@ There is no way to modify any other files, that's what Kustomize itself is for.
 
 You can use the [helm chart inflation generator](https://kubectl.docs.kubernetes.io/references/kustomize/builtins/#_helmchartinflationgenerator_) of kustomize this way. See [the test](test/helm_only_in_kustomize) for an example of this. If you do this none of the helm environment variables will have any effect as you can set those in your kustomization.yaml instead. There is no way to merge/patch your values.yaml with lovely only (you should run a preprocessor for that). Despite this, that is the recommended way to use helm and kustomize together. `ARGOCD_APP_NAME` will also have no effect here.
 
-## Argo CD 2.4 support
+## Argo CD 2.4+ support
 
 All argocd-lovely-plugin environment variables may be prefixed with `ARGOCD_ENV_` for Argo CD 2.4 compatibility. For now, they will be picked up if not prefixed that way for backwards compatibility. If you are deranged and define both the `ARGOCD_ENV_` version will be used. When you put an environment variable into an application in 2.4 or later it will automatically get prefixed with `ARGOCD_ENV_` so you must use the non prefixed variable name there.
 
