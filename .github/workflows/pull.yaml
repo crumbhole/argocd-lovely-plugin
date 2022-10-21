@@ -37,9 +37,9 @@ jobs:
     strategy:
       matrix:
         argocd_version:
-          - "2.5.0-rc2"
-          - "2.4.14"
-          - "2.3.9"
+          - "2.5.0-rc3"
+          - "2.4.15"
+          - "2.3.10"
       fail-fast: true
     steps:
       - uses: actions/checkout@v3
