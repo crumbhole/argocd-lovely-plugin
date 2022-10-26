@@ -121,10 +121,9 @@ func (c *Collection) gitClean(path string) error {
 func (c *Collection) ensureClean(path string) (string, func(string) error, error) {
 	if AllowGitCheckout() {
 		return path, c.gitClean, c.gitClean(path)
-	} else {
-		newPath, err := c.makeTmpCopy(path)
-		return newPath, os.RemoveAll, err
 	}
+	newPath, err := c.makeTmpCopy(path)
+	return newPath, os.RemoveAll, err
 }
 
 func (c *Collection) doAllDirs(path string) (string, error) {

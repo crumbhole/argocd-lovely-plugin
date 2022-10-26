@@ -134,6 +134,7 @@ func KustomizePatch() string {
 	return getArgoEnv(`LOVELY_KUSTOMIZE_PATCH`, ``)
 }
 
+// AllowGitCheckout establishes if git is safe to use
 // Set ARGOCD_ENV_ALLOW_GITCHECKOUT to true to say you've told Argo this is safe
 func AllowGitCheckout() bool {
 	res, err := strconv.ParseBool(getArgoEnv(`LOVELY_ALLOW_GITCHECKOUT`, `false`))
