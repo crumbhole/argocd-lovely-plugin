@@ -15,7 +15,7 @@ ADD . /build
 WORKDIR /build
 RUN make -j4
 
-FROM alpine as putter
+FROM alpine:3.16.2 as putter
 COPY --from=builder /build/build/argocd-lovely-plugin .
 USER 999
 ENTRYPOINT [ "cp", "argocd-lovely-plugin", "/custom-tools/" ]
