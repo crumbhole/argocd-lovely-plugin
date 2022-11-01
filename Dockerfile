@@ -1,4 +1,4 @@
-FROM golang:1.19.2 as builder
+FROM golang:1.19.3 as builder
 
 RUN apt update && apt install -y curl wget unzip git && rm -rf /var/lib/apt/lists/*
 
