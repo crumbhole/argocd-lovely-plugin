@@ -62,4 +62,3 @@ spec:
           httpGet:
             path: /
             port: http
-      serviceAccountName: test-hello-world
