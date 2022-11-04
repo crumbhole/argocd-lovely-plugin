@@ -1,0 +1,103 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: lovelytest-kustomizeonly
+  namespace: argocd
+spec:
+  destination:
+    namespace: 'lovelytest-kustomizeonly'
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: test/kustomize_only
+    repoURL: 'https://github.com/crumbhole/argocd-lovely-plugin.git'
+    targetRevision: HEAD
+    plugin:
+      env:
+        - name: FOO
+          value: bar
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - PrunePropagationPolicy=background
+      - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: lovelytest-helmonly
+  namespace: argocd
+spec:
+  destination:
+    namespace: 'lovelytest-helmonly'
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: test/helm_only
+    repoURL: 'https://github.com/crumbhole/argocd-lovely-plugin.git'
+    targetRevision: HEAD
+    plugin:
+      env:
+        - name: FOO
+          value: bar
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - PrunePropagationPolicy=background
+      - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: lovelytest-helmplusadditions
+  namespace: argocd
+spec:
+  destination:
+    namespace: 'lovelytest-helmplusadditions'
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: test/helm_plus_additions
+    repoURL: 'https://github.com/crumbhole/argocd-lovely-plugin.git'
+    targetRevision: HEAD
+    plugin:
+      env:
+        - name: FOO
+          value: bar
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - PrunePropagationPolicy=background
+      - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: lovelytest-helmpluskustomize
+  namespace: argocd
+spec:
+  destination:
+    namespace: 'lovelytest-helmpluskustomize'
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: test/helm_plus_additions
+    repoURL: 'https://github.com/crumbhole/argocd-lovely-plugin.git'
+    targetRevision: HEAD
+    plugin:
+      env:
+        - name: FOO
+          value: bar
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - PrunePropagationPolicy=background
+      - CreateNamespace=true

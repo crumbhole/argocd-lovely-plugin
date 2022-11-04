@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: argocd
+
+resources:
+- https://raw.githubusercontent.com/argoproj/argo-cd/v2.5.1/manifests/install.yaml
+- plugin-cm.yml
+- test-applications.yml
+
+patches:
+- path: sidecar-plugin.yml
+  target:
+    kind: Deployment
+    name: argocd-repo-server
