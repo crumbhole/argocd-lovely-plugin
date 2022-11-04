@@ -18,7 +18,7 @@
 
 4. `kubectl create ns argocd && kubens argocd`
 
-5. `kubectl apply -k argocd/`
+5. `kubectl apply -k argocd/` (You'll probably need to apply this a couple of times)
 
 
 Argocd should deploy, and then the 3 test apps should also successfully deploy.
