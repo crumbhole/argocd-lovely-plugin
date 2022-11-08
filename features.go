@@ -122,6 +122,20 @@ func HelmPatch() string {
 	return getArgoEnv(`LOVELY_HELM_PATCH`, ``)
 }
 
+// HelmTemplateParams returns extra parameters to pass to helm template
+// Set ARGOCD_ENV_LOVELY_HELM_TEMPLATE_PARAMS to extra parameters to pass to helm template
+func HelmTemplateParams() []string {
+	paramsStr := getArgoEnv(`LOVELY_HELM_TEMPLATE_PARAMS`, ``)
+	if paramsStr == `` {
+		return []string{}
+	}
+	params := strings.Split(paramsStr, ` `)
+	for i, param := range params {
+		params[i] = strings.TrimSpace(param)
+	}
+	return params
+}
+
 // KustomizeMerge returns the yaml to strategic merge into kustomization.yaml
 // Set ARGOCD_ENV_LOVELY_KUSTOMIZE_MERGE to some yaml you'd like strategic merged on any kustomization.yaml files used by kustomize
 func KustomizeMerge() string {
