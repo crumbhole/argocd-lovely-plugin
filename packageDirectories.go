@@ -9,7 +9,7 @@ import (
 // PackageDirectories is an array of sub-application paths
 type PackageDirectories struct {
 	testingRoot string
-	dirs []string
+	dirs        []string
 }
 
 func (d *PackageDirectories) checkFile(path string, info os.DirEntry, err error) error {
@@ -30,7 +30,8 @@ func (d *PackageDirectories) checkFile(path string, info os.DirEntry, err error)
 	return filepath.SkipDir
 }
 
-// CheckDirectory
+// AddDirectoryIfYaml conditionally adds a directory if it directly contains one or
+// more .ya?ml files. Returns true if added, false if not.
 func (d *PackageDirectories) AddDirectoryIfYaml(path string) bool {
 	d.testingRoot = path
 	err := filepath.WalkDir(path, d.checkFile)
