@@ -10,7 +10,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"regexp"
 )
 
 var processors = []Processor{
@@ -31,17 +30,10 @@ func (c *Collection) scanFile(path string, info os.DirEntry, err error) error {
 		return err
 	}
 	if info.IsDir() {
-		if c.dirs.KnownSubDirectory(path) {
-			// We don't allow subdirectories of paths with yaml in
-			// to be packages in their own right
+		if c.dirs.AddDirectoryIfYaml(path) {
 			return filepath.SkipDir
 		}
 		return nil
-	}
-	yamlRegexp := regexp.MustCompile(`\.ya?ml$`)
-	dir := filepath.Dir(path)
-	if yamlRegexp.MatchString(path) {
-		c.dirs.AddDirectory(dir)
 	}
 	return nil
 }
