@@ -1,0 +1,13 @@
+---
+# Source: hello-world/charts/hello-world/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-for-kubernetes-versions-older-than-1-22
+spec:
+  type: ClusterIP
+  ports:
+    - port: 81
+      targetPort: http
+      protocol: TCP
+      name: http
