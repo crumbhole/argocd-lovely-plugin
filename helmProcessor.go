@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"regexp"
+	"strings"
 )
 
 // Dependency is one repository that this chart is dependent upon
@@ -95,6 +96,15 @@ func (h helmProcessor) generate(input *string, basePath string, path string) (*s
 	}
 	params := []string{`template`, `--include-crds`}
 	params = append(params[:], HelmTemplateParams()[:]...)
+	if kubeVersion := os.Getenv(`KUBE_VERSION`); kubeVersion != "" && !contains(params, `--kube-version`) {
+		params = append(params[:], []string{`--kube-version`, kubeVersion}...)
+	}
+	// each API version needs to be added with --api-versions (https://github.com/helm/helm/issues/11485)
+	if apiVersions := strings.Split(os.Getenv(`KUBE_API_VERSIONS`), `,`); apiVersions != nil {
+		for _, apiVersion := range apiVersions {
+			params = append(params[:], []string{"--api-versions", apiVersion}...)
+		}
+	}
 	params = append(params[:], []string{`-n`, os.Getenv(`ARGOCD_APP_NAMESPACE`), os.Getenv(`ARGOCD_APP_NAME`), `.`}...)
 	out, err := h.helmDo(path, params...)
 	return &out, err

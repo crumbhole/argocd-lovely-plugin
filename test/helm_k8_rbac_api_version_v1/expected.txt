@@ -1,0 +1,11 @@
+---
+# Source: hello-world/charts/hello-world/templates/rbac.yaml
+apiVersion: "v1"
+kind: ClusterRole
+metadata:
+  labels:
+rules:
+- apiGroups:
+  - "*"
+  resources:
+  - "*"
