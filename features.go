@@ -12,6 +12,15 @@ import (
 
 const argoPrefix = `ARGOCD_ENV_`
 
+func contains(s []string, str string) bool {
+	for _, v := range s {
+		if v == str {
+			return true
+		}
+	}
+	return false
+}
+
 func getArgoEnv(name string, defaultVal string) string {
 	result, got := os.LookupEnv(argoPrefix + name)
 	if !got {

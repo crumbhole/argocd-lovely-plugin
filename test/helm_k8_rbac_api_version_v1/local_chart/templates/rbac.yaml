@@ -1,0 +1,9 @@
+apiVersion: {{ template "rbac.apiVersion" . }}
+kind: ClusterRole
+metadata:
+  labels:
+rules:
+- apiGroups:
+  - "*"
+  resources:
+  - "*"
