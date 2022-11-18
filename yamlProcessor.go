@@ -27,7 +27,7 @@ func (y *yamlProcessor) scanFile(path string, info os.FileInfo, err error) error
 	if info.IsDir() {
 		return nil
 	}
-	yamlRegexp := regexp.MustCompile(`\.ya?ml$`)
+	yamlRegexp := regexp.MustCompile(`^[^\.].*\.ya?ml$`)
 	if yamlRegexp.MatchString(info.Name()) {
 		yamlcontent, err := ioutil.ReadFile(path)
 		if err != nil {
