@@ -21,6 +21,10 @@ An [Argo CD](https://argoproj.github.io/argo-cd/) plugin that behaves in a way w
 
 argocd-lovely-plugin does not support jsonnet as we do not use jsonnet, and haven't seen the need to use it. We don't know how it would best fit into the structure.
 
+## Plain yaml
+
+All the yaml in the directory and all subdirectories will be used as part of the application only if it is not a kustomize or helm chart. `.hidden` yaml files are not included.
+
 ## Supported Argo CD Versions
 We aim to match the [Argo CD supported versions](https://argo-cd.readthedocs.io/en/stable/operator-manual/installation/#supported-versions) by testing against the Argo CD N and N -1 versions of Argo CD. You can see the current versions of Argo CD that we test against by looking in the [CI bootstrap directory](.github/workflows/assets/bootstrap) in this repo.
 
