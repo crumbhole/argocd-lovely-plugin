@@ -52,6 +52,7 @@ You can use these environment variables for modifying helm's behaviour, and the 
 - `ARGOCD_ENV_LOVELY_HELM_MERGE`: to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) merged into any values.yaml used by Helm.
 - `ARGOCD_ENV_LOVELY_HELM_PATCH`: to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any values.yaml used by Helm.
 - `ARGOCD_ENV_LOVELY_HELM_TEMPLATE_PARAMS`: Space separated extra parameters to `Helm template` as you might use on the command line. You're on your own here if you pass rubbish parameters.
+- `ARGOCD_ENV_LOVELY_HELM_REPO_ADD_PARAMS`: Space separated extra parameters to `Helm repo add` as you might use on the command line. You're on your own here if you pass rubbish parameters. `--insecure-skip-tls-verify` if your helm chart is on an insecure HTTPS server.
 - `ARGOCD_APP_NAME`: This can be used to set the Helm 'name' in the same way as releaseName works in Argo CD's standard Helm processing
 
 There is no way to modify any other Helm files at this time.

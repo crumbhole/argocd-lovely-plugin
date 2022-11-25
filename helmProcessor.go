@@ -48,7 +48,10 @@ func (h helmProcessor) helmDo(path string, params ...string) (string, error) {
 }
 
 func (h helmProcessor) repoEnsure(path string, name string, url string) error {
-	_, err := h.helmDo(path, `repo`, `add`, name, url)
+	params := []string{`repo`, `add`}
+	params = append(params[:], HelmRepoAddParams()[:]...)
+	params = append(params[:], []string{name, url}...)
+	_, err := h.helmDo(path, params...)
 	return err
 }
 
@@ -71,7 +74,10 @@ func (h helmProcessor) reposEnsure(path string) error {
 			return err
 		}
 		for _, dep := range deps.Dependencies {
-			h.repoEnsure(path, dep.Name, dep.Repository)
+			err := h.repoEnsure(path, dep.Name, dep.Repository)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	// Add won't cause an update, so we do an update as well.
