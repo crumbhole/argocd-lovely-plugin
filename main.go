@@ -120,19 +120,19 @@ func (c *Collection) ensureClean(path string) (string, func(string) error, error
 func (c *Collection) doAllDirs(path string) (string, error) {
 	workingPath, cleanup, err := c.ensureClean(path)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 	c.baseDir = workingPath
 	defer cleanup(workingPath)
 	err = c.scanDir(workingPath)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 	output, err := c.processAllDirs()
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
-	return output, err
+	return output, nil
 }
 
 func parseArgs() (bool, error) {
