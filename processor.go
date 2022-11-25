@@ -2,7 +2,7 @@ package main
 
 import (
 	"errors"
-	"io/ioutil"
+	"os"
 	"regexp"
 )
 
@@ -18,7 +18,7 @@ type Processor interface {
 }
 
 func reFileInDir(path string, re *regexp.Regexp) bool {
-	files, err := ioutil.ReadDir(path)
+	files, err := os.ReadDir(path)
 	if err != nil {
 		return false
 	}

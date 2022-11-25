@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"gopkg.in/yaml.v3"
-	"io/ioutil"
 	"os"
 	"testing"
 )
@@ -18,7 +17,7 @@ func setupEnv(path string) (map[string]string, error) {
 	envFile := path + "/env.txt"
 	_, err := os.Stat(envFile)
 	if !errors.Is(err, os.ErrNotExist) {
-		envText, err := ioutil.ReadFile(envFile)
+		envText, err := os.ReadFile(envFile)
 		if err != nil {
 			return envValues, err
 		}
@@ -49,12 +48,12 @@ func checkDir(path string) error {
 	if err != nil {
 		return err
 	}
-	expected, err := ioutil.ReadFile(path + "/expected.txt")
+	expected, err := os.ReadFile(path + "/expected.txt")
 	if err != nil {
 		return err
 	}
 	if out != string(expected) {
-		ioutil.WriteFile(path+"/got.txt", []byte(out), 0444)
+		os.WriteFile(path+"/got.txt", []byte(out), 0444)
 		return fmt.Errorf("Expected >\n%s\n< and got >\n%s\n<", expected, out)
 	}
 	return nil
@@ -64,7 +63,7 @@ func checkDir(path string) error {
 func testDirs(t *testing.T) {
 	os.Setenv(`ARGOCD_APP_NAME`, `test`)
 	os.Setenv(`ARGOCD_APP_NAMESPACE`, `testnamespace`)
-	dirs, err := ioutil.ReadDir(testsPath)
+	dirs, err := os.ReadDir(testsPath)
 	if err != nil {
 		t.Error(err)
 	}

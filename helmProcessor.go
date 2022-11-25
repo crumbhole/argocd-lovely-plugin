@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"gopkg.in/yaml.v3"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"regexp"
@@ -64,7 +63,7 @@ var requirementsFiles = [...]string{
 
 func (h helmProcessor) reposEnsure(path string) error {
 	for _, reqsFile := range requirementsFiles {
-		yamlcontent, err := ioutil.ReadFile(path + "/" + reqsFile)
+		yamlcontent, err := os.ReadFile(path + "/" + reqsFile)
 		if err != nil {
 			continue
 		}

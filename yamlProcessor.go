@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -29,7 +28,7 @@ func (y *yamlProcessor) scanFile(path string, info os.FileInfo, err error) error
 	}
 	yamlRegexp := regexp.MustCompile(`^[^\.].*\.ya?ml$`)
 	if yamlRegexp.MatchString(info.Name()) {
-		yamlcontent, err := ioutil.ReadFile(path)
+		yamlcontent, err := os.ReadFile(path)
 		if err != nil {
 			return err
 		}

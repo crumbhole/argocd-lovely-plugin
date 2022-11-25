@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"regexp"
@@ -49,7 +48,7 @@ func (k kustomizeProcessor) generate(input *string, basePath string, path string
 			return nil, err
 		}
 		intermediateFile.Close()
-		kustContents, err := ioutil.ReadFile(kustYamlPath)
+		kustContents, err := os.ReadFile(kustYamlPath)
 		if err != nil {
 			return nil, err
 		}

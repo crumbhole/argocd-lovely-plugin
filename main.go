@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/otiai10/copy"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -77,7 +76,7 @@ func (c *Collection) processOneDir(path string) (string, error) {
 
 // We copy the directory in case we patch some of the files for kustomize or helm
 func (c *Collection) makeTmpCopy(path string) (string, error) {
-	tmpPath, err := ioutil.TempDir(os.TempDir(), "lovely-plugin-")
+	tmpPath, err := os.MkdirTemp(os.TempDir(), "lovely-plugin-")
 	if err != nil {
 		return tmpPath, err
 	}

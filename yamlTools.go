@@ -2,7 +2,7 @@ package main
 
 import (
 	jsonpatch "github.com/evanphx/json-patch"
-	"io/ioutil"
+	"os"
 	kyamlyaml "sigs.k8s.io/kustomize/kyaml/yaml"
 	"sigs.k8s.io/kustomize/kyaml/yaml/merge2"
 	yaml "sigs.k8s.io/yaml"
@@ -19,7 +19,7 @@ func MergeYaml(path string, mergetext string, patchtext string) error {
 		return nil
 	}
 
-	basetext, err := ioutil.ReadFile(path)
+	basetext, err := os.ReadFile(path)
 	if err != nil {
 		return err
 	}
@@ -64,7 +64,7 @@ func MergeYaml(path string, mergetext string, patchtext string) error {
 		mergedtext = string(patchedtext)
 	}
 
-	if err := ioutil.WriteFile(path, []byte(mergedtext), 0644); err != nil {
+	if err := os.WriteFile(path, []byte(mergedtext), 0644); err != nil {
 		return err
 	}
 	return nil
