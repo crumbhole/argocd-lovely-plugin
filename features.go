@@ -145,7 +145,7 @@ func HelmTemplateParams() []string {
 	return params
 }
 
-// HelmTemplateParams returns extra parameters to pass to helm template
+// HelmRepoAddParams returns extra parameters to pass to helm repo add
 // Set ARGOCD_ENV_LOVELY_HELM_REPO_ADD_PARAMS to extra parameters to pass to helm template
 func HelmRepoAddParams() []string {
 	paramsStr := getArgoEnv(`LOVELY_HELM_REPO_ADD_PARAMS`, ``)
