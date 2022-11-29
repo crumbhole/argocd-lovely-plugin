@@ -1,6 +1,7 @@
 package processor
 
 import (
+	"fmt"
 	"gopkg.in/yaml.v3"
 	"os"
 	"regexp"
@@ -110,5 +111,8 @@ func (h HelmProcessor) Generate(input *string, basePath string, path string) (*s
 	}
 	params = append(params[:], []string{`-n`, os.Getenv(`ARGOCD_APP_NAMESPACE`), os.Getenv(`ARGOCD_APP_NAME`), `.`}...)
 	out, err := h.helmDo(path, params...)
+	if err != nil {
+		return nil, fmt.Errorf("Error running helm: %v", err)
+	}
 	return &out, err
 }

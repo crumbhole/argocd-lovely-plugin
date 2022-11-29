@@ -58,7 +58,9 @@ func checkDir(path string, errorsExpected bool) error {
 			return fmt.Errorf("Expected an error but didn't get one")
 		}
 		if err.Error() != string(expected) {
-			os.WriteFile(path+"/got.txt", []byte(err.Error()), 0444)
+			got := path+"/got.txt"
+			os.Remove(got)
+			os.WriteFile(got, []byte(err.Error()), 0444)
 			return fmt.Errorf("Expected error >\n%s\n< and got >\n%s\n<", expected, err.Error())
 		}
 	} else {
