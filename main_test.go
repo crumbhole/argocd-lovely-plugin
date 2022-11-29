@@ -87,6 +87,7 @@ func testDirs(t *testing.T, path string, errorsExpected bool) {
 	for _, d := range dirs {
 		if d.IsDir() {
 			t.Run(d.Name(), func(t *testing.T) {
+				t.Parallel()
 				err := checkDir(path+d.Name(), errorsExpected)
 				if err != nil {
 					t.Error(err)
