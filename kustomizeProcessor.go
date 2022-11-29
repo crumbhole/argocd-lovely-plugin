@@ -1,9 +1,7 @@
 package main
 
 import (
-	"errors"
 	"os"
-	"os/exec"
 	"regexp"
 
 	"gopkg.in/yaml.v3"
@@ -75,9 +73,9 @@ func (k kustomizeProcessor) generate(input *string, basePath string, path string
 	params := []string{`build`, `--enable-helm`}
 	params = append(params[:], KustomizeParams()[:]...)
 	params = append(params, path)
-	out, err := exec.Command(KustomizeBinary(), params...).CombinedOutput()
+	out, err := execute(path, KustomizeBinary(), params...)
 	if err != nil {
-		return nil, errors.New(string(out))
+		return nil, err
 	}
 	outstr := "---\n" + string(out)
 	return &outstr, nil

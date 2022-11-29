@@ -1,1 +1,0 @@
-exit status 1: Error: cannot load Chart.yaml: error unmarshaling JSON: while decoding JSON: json: cannot unmarshal string into Go value of type chart.Metadata

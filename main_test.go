@@ -109,6 +109,6 @@ func TestDirectoriesGitCheckout(t *testing.T) {
 }
 
 // Error Tests with copy
-func TestDirectoriesErrorCopy(t *testing.T) {
+func TestDirectoriesError(t *testing.T) {
 	testDirs(t, errorsPath, true)
 }

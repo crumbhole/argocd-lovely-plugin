@@ -1,5 +1,5 @@
 ---
-# Source: hello-world/charts/hello-world/templates/service.yaml
+# Source: hello-world/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:

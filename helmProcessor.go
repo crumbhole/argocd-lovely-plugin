@@ -1,11 +1,8 @@
 package main
 
 import (
-	"bytes"
-	"fmt"
 	"gopkg.in/yaml.v3"
 	"os"
-	"os/exec"
 	"regexp"
 	"strings"
 )
@@ -34,20 +31,11 @@ func (helmProcessor) enabled(_ string, path string) bool {
 func (h helmProcessor) helmDo(path string, params ...string) (string, error) {
 	baseParams := [6]string{`--registry-config`, `/tmp/.helm/registry.json`, `--repository-cache`, `/tmp/.helm/cache/repository`, `--repository-config`, `/tmp/.helm/repositories.json`}
 	cmdArray := append(baseParams[:], params[:]...)
-	cmd := exec.Command(HelmBinary(), cmdArray...)
-	cmd.Dir = path
-	var stderr bytes.Buffer
-	cmd.Stderr = &stderr
-	out, err := cmd.Output()
-	//	fmt.Printf("Output from %v in %s is %s\n", params, path, out)
-	if err != nil {
-		return string(out), fmt.Errorf("%s: %v", err, stderr.String())
-	}
-	return string(out), nil
+	return execute(path, HelmBinary(), cmdArray...)
 }
 
 func (h helmProcessor) repoEnsure(path string, name string, url string) error {
-	params := []string{`repo`, `add`}
+	params := []string{`repo`, `add`, `--force-update`}
 	params = append(params[:], HelmRepoAddParams()[:]...)
 	params = append(params[:], []string{name, url}...)
 	_, err := h.helmDo(path, params...)
@@ -78,20 +66,26 @@ func (h helmProcessor) reposEnsure(path string) error {
 				return err
 			}
 		}
+		if len(deps.Dependencies) > 0 {
+			// Add won't cause an update, so we do an update as well.
+			// This is a sledgehammer update all as per-repo update isn't in until helm 3.7
+			// and argo ships with 3.6
+			_, err := h.helmDo(path, `repo`, `update`)
+			return err
+		}
 	}
-	// Add won't cause an update, so we do an update as well.
-	// This is a sledgehammer update all as per-repo update isn't in until helm 3.7
-	// and argo ships with 3.6
-	_, err := h.helmDo(path, `repo`, `update`)
-	return err
+	return nil
 }
 
 func (h helmProcessor) generate(input *string, basePath string, path string) (*string, error) {
 	if !h.enabled(basePath, path) {
 		return input, ErrDisabledProcessor
 	}
-	h.reposEnsure(path)
-	_, err := h.helmDo(path, `dependency`, `build`)
+	err := h.reposEnsure(path)
+	if err != nil {
+		return nil, err
+	}
+	_, err = h.helmDo(path, `dependency`, `build`)
 	if err != nil {
 		return nil, err
 	}
