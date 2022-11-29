@@ -37,3 +37,8 @@ lint: $(DEPS) get
 ## Run golint for this project
 	@echo golint
 	golint $$(go list ./... )
+
+coverage: $(DEPS) get
+#	go test -v ./... -coverpkg=./pkg/processor/... -coverprofile=coverage.out
+	go test -v ./... -parallel=1 -coverpkg=./... -coverprofile=coverage.out
+	go tool cover -html=coverage.out
