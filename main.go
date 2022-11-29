@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"github.com/crumbhole/argocd-lovely-plugin/pkg/processor"
 	"github.com/otiai10/copy"
@@ -136,27 +135,7 @@ func (c *Collection) doAllDirs(path string) (string, error) {
 	return output, nil
 }
 
-func parseArgs() (bool, error) {
-	if len(os.Args[1:]) == 0 {
-		return false, nil
-	}
-	if len(os.Args[1:]) > 1 {
-		return false, errors.New("Too many arguments. Only one optional argument allowed of 'init'")
-	}
-	if os.Args[1] == `init` {
-		return true, nil
-	}
-	return false, errors.New("Invalid argument. Only one optional argument allowed of 'init'")
-}
-
 func main() {
-	initMode, err := parseArgs()
-	if err != nil {
-		log.Fatal(err)
-	}
-	if initMode {
-		return
-	}
 	dir, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
