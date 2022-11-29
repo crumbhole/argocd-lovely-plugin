@@ -1,4 +1,4 @@
-package main
+package processor
 
 import (
 	jsonpatch "github.com/evanphx/json-patch"

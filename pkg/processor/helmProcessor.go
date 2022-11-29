@@ -1,4 +1,4 @@
-package main
+package processor
 
 import (
 	"gopkg.in/yaml.v3"
@@ -18,23 +18,26 @@ type Dependencies struct {
 	Dependencies []Dependency `yaml:"dependencies"`
 }
 
-type helmProcessor struct{}
+// HelmProcessor handles Chart,yaml files via helm
+type HelmProcessor struct{}
 
-func (helmProcessor) name() string {
+// Name returns a string for the plugin's name
+func (HelmProcessor) Name() string {
 	return "helm"
 }
 
-func (helmProcessor) enabled(_ string, path string) bool {
+// Enabled returns true only if this proessor can do work
+func (HelmProcessor) Enabled(_ string, path string) bool {
 	return reFileInDir(path, regexp.MustCompile(`^Chart\.ya?ml$`))
 }
 
-func (h helmProcessor) helmDo(path string, params ...string) (string, error) {
+func (h HelmProcessor) helmDo(path string, params ...string) (string, error) {
 	baseParams := [6]string{`--registry-config`, `/tmp/.helm/registry.json`, `--repository-cache`, `/tmp/.helm/cache/repository`, `--repository-config`, `/tmp/.helm/repositories.json`}
 	cmdArray := append(baseParams[:], params[:]...)
 	return execute(path, HelmBinary(), cmdArray...)
 }
 
-func (h helmProcessor) repoEnsure(path string, name string, url string) error {
+func (h HelmProcessor) repoEnsure(path string, name string, url string) error {
 	params := []string{`repo`, `add`, `--force-update`}
 	params = append(params[:], HelmRepoAddParams()[:]...)
 	params = append(params[:], []string{name, url}...)
@@ -49,7 +52,7 @@ var requirementsFiles = [...]string{
 	`Chart.yml`,
 }
 
-func (h helmProcessor) reposEnsure(path string) error {
+func (h HelmProcessor) reposEnsure(path string) error {
 	for _, reqsFile := range requirementsFiles {
 		yamlcontent, err := os.ReadFile(path + "/" + reqsFile)
 		if err != nil {
@@ -77,8 +80,9 @@ func (h helmProcessor) reposEnsure(path string) error {
 	return nil
 }
 
-func (h helmProcessor) generate(input *string, basePath string, path string) (*string, error) {
-	if !h.enabled(basePath, path) {
+// Generate create the text stream for this plugin
+func (h HelmProcessor) Generate(input *string, basePath string, path string) (*string, error) {
+	if !h.Enabled(basePath, path) {
 		return input, ErrDisabledProcessor
 	}
 	err := h.reposEnsure(path)

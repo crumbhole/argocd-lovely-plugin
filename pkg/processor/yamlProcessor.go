@@ -1,4 +1,4 @@
-package main
+package processor
 
 import (
 	"os"
@@ -6,20 +6,23 @@ import (
 	"regexp"
 )
 
-type yamlProcessor struct {
+// YamlProcessor is the fallback processor for gathering plain yaml files
+type YamlProcessor struct {
 	output string
 }
 
-func (yamlProcessor) name() string {
+// Name returns a string for the plugin's name
+func (YamlProcessor) Name() string {
 	return "yaml"
 }
 
-func (yamlProcessor) enabled(_ string, _ string) bool {
+// Enabled returns true only if this proessor can do work
+func (YamlProcessor) Enabled(_ string, _ string) bool {
 	// Always enabled, to pick up if nothing else worked
 	return true
 }
 
-func (y *yamlProcessor) scanFile(path string, info os.FileInfo, err error) error {
+func (y *YamlProcessor) scanFile(path string, info os.FileInfo, err error) error {
 	if err != nil {
 		return err
 	}
@@ -41,8 +44,9 @@ func (y *yamlProcessor) scanFile(path string, info os.FileInfo, err error) error
 	return nil
 }
 
-func (y yamlProcessor) generate(input *string, basePath string, path string) (*string, error) {
-	if !y.enabled(basePath, path) {
+// Generate create the text stream for this plugin
+func (y YamlProcessor) Generate(input *string, basePath string, path string) (*string, error) {
+	if !y.Enabled(basePath, path) {
 		return input, ErrDisabledProcessor
 	}
 	if input == nil {

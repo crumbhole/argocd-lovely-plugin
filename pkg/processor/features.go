@@ -1,4 +1,4 @@
-package main
+package processor
 
 // The control of this is via environment variables, as that
 // is the way argocd allows you to control plugins

@@ -1,4 +1,4 @@
-package main
+package processor
 
 import (
 	"os"
@@ -10,18 +10,22 @@ import (
 
 const kustomizeIntermediateFilename = `_lovely_resource.yaml`
 
-type kustomizeProcessor struct{}
+// KustomizeProcessor handles kustomization.yaml via kustomize
+type KustomizeProcessor struct{}
 
-func (kustomizeProcessor) name() string {
+// Name returns a string for the plugin's name
+func (KustomizeProcessor) Name() string {
 	return "kustomize"
 }
 
-func (kustomizeProcessor) enabled(_ string, path string) bool {
+// Enabled returns true only if this proessor can do work
+func (KustomizeProcessor) Enabled(_ string, path string) bool {
 	return reFileInDir(path, regexp.MustCompile(`^kustomization\.ya?ml$`))
 }
 
-func (k kustomizeProcessor) generate(input *string, basePath string, path string) (*string, error) {
-	if !k.enabled(basePath, path) {
+// Generate create the text stream for this plugin
+func (k KustomizeProcessor) Generate(input *string, basePath string, path string) (*string, error) {
+	if !k.Enabled(basePath, path) {
 		return input, ErrDisabledProcessor
 	}
 	kustYamlPath := path + "/kustomization.yaml"

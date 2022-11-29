@@ -1,4 +1,4 @@
-package main
+package processor
 
 import (
 	"errors"
@@ -12,9 +12,9 @@ import (
 // generate - call this to invoke main phase on this processor
 // Historically we had an init phase, which has been removed
 type Processor interface {
-	name() string
-	enabled(basePath string, path string) bool
-	generate(input *string, basePath string, path string) (*string, error)
+	Name() string
+	Enabled(basePath string, path string) bool
+	Generate(input *string, basePath string, path string) (*string, error)
 }
 
 func reFileInDir(path string, re *regexp.Regexp) bool {

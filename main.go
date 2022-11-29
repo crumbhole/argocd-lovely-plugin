@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"github.com/crumbhole/argocd-lovely-plugin/pkg/processor"
 	"github.com/otiai10/copy"
 	"log"
 	"os"
@@ -11,11 +12,11 @@ import (
 	"path/filepath"
 )
 
-var processors = []Processor{
-	helmProcessor{},
-	kustomizeProcessor{},
-	yamlProcessor{},
-	pluginProcessor{},
+var processors = []processor.Processor{
+	processor.HelmProcessor{},
+	processor.KustomizeProcessor{},
+	processor.YamlProcessor{},
+	processor.PluginProcessor{},
 }
 
 // Collection is a list of sub-applications making up this application
@@ -55,16 +56,16 @@ func (c *Collection) processAllDirs() (string, error) {
 
 func (c *Collection) processOneDir(path string) (string, error) {
 	var result *string
-	pre := preProcessor{}
-	if pre.enabled(c.baseDir, path) {
-		err := pre.generate(c.baseDir, path)
+	pre := processor.PreProcessor{}
+	if pre.Enabled(c.baseDir, path) {
+		err := pre.Generate(c.baseDir, path)
 		if err != nil {
 			return "", err
 		}
 	}
 	for _, processor := range processors {
-		if processor.enabled(c.baseDir, path) {
-			out, err := processor.generate(result, c.baseDir, path)
+		if processor.Enabled(c.baseDir, path) {
+			out, err := processor.Generate(result, c.baseDir, path)
 			if err != nil {
 				return "", err
 			}
@@ -110,7 +111,7 @@ func (c *Collection) gitClean(path string) error {
 // Ensure we have a clean working copy
 // ArgoCD doesn't guarantee us an unpatched copy when we run
 func (c *Collection) ensureClean(path string) (string, func(string) error, error) {
-	if AllowGitCheckout() {
+	if processor.AllowGitCheckout() {
 		return path, c.gitClean, c.gitClean(path)
 	}
 	newPath, err := c.makeTmpCopy(path)

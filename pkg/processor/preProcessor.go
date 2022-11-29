@@ -1,4 +1,4 @@
-package main
+package processor
 
 // The control of this is via environment variables, as that
 // is the way argocd allows you to control plugins
@@ -8,9 +8,11 @@ import (
 	"path/filepath"
 )
 
-type preProcessor struct{}
+// PreProcessor is not a strict processor, as it handles files on disk
+type PreProcessor struct{}
 
-func (preProcessor) name() string {
+// Name returns a string for the plugin's name
+func (PreProcessor) Name() string {
 	return "preprocessor"
 }
 
@@ -22,7 +24,8 @@ func getRelPreprocessors(basePath string, path string) ([]string, error) {
 	return Preprocessors(relPath)
 }
 
-func (preProcessor) enabled(basePath string, path string) bool {
+// Enabled returns true only if this proessor can do work
+func (PreProcessor) Enabled(basePath string, path string) bool {
 	plugins, err := getRelPreprocessors(basePath, path)
 	if err != nil {
 		return true // Enable for error case so errors get reported
@@ -30,8 +33,9 @@ func (preProcessor) enabled(basePath string, path string) bool {
 	return len(plugins) > 0
 }
 
-func (v preProcessor) generate(basePath string, path string) error {
-	if !v.enabled(basePath, path) {
+// Generate create the text stream for this plugin
+func (v PreProcessor) Generate(basePath string, path string) error {
+	if !v.Enabled(basePath, path) {
 		return ErrDisabledProcessor
 	}
 	plugins, err := getRelPreprocessors(basePath, path)
