@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"gopkg.in/yaml.v3"
 	"os"
+	"regexp"
 	"testing"
 )
 
@@ -38,6 +39,47 @@ func cleanupEnv(env map[string]string) {
 	}
 }
 
+func matchREExpected(path string, givenValue string) error {
+	expected, err := os.ReadFile(path + "/regexp.txt")
+	if _, ok := err.(*os.PathError); ok {
+		return fmt.Errorf("Couldn't find expected.txt nor regexp.txt for test")
+	}
+	if err != nil {
+		return err
+	}
+	expectre := regexp.MustCompile(string(expected))
+	if expectre.MatchString(givenValue) {
+		return nil
+	} else {
+		return fmt.Errorf("Expected regex error >\n%s\n< and got >\n%s\n<", expected, givenValue)
+	}
+}
+
+func matchExpected(path string, givenValue string) error {
+	expected, err := os.ReadFile(path + "/expected.txt")
+	if _, ok := err.(*os.PathError); ok {
+		return matchREExpected(path, givenValue)
+	}
+	if err != nil {
+		return err
+	}
+	if string(expected) == givenValue {
+		return nil
+	} else {
+		return fmt.Errorf("Expected error >\n%s\n< and got >\n%s\n<", expected, givenValue)
+	}
+}
+
+func matchExpectedWithStore(path string, givenValue string) error {
+	err := matchExpected(path, givenValue)
+	if err != nil {
+		got := path + "/got.txt"
+		os.Remove(got)
+		os.WriteFile(got, []byte(givenValue), 0444)
+	}
+	return err
+}
+
 func checkDir(path string, errorsExpected bool) error {
 	env, err := setupEnv(path)
 	defer cleanupEnv(env)
@@ -45,36 +87,23 @@ func checkDir(path string, errorsExpected bool) error {
 		return err
 	}
 	c := Collection{}
-	expected, err := os.ReadFile(path + "/expected.txt")
-	if err != nil {
-		return err
-	}
 
-	out, err := c.doAllDirs(path)
+	out, fullError := c.doAllDirs(path)
 	if errorsExpected {
 		// We expect an error and the error
 		// should match expected.txt
-		if err == nil {
+		if fullError == nil {
 			return fmt.Errorf("Expected an error but didn't get one")
 		}
-		if err.Error() != string(expected) {
-			got := path + "/got.txt"
-			os.Remove(got)
-			os.WriteFile(got, []byte(err.Error()), 0444)
-			return fmt.Errorf("Expected error >\n%s\n< and got >\n%s\n<", expected, err.Error())
-		}
+		return matchExpectedWithStore(path, fullError.Error())
 	} else {
 		// We don't expect and error and
 		// expected.txt should be the output
-		if err != nil {
-			return err
+		if fullError != nil {
+			return fullError
 		}
-		if out != string(expected) {
-			os.WriteFile(path+"/got.txt", []byte(out), 0444)
-			return fmt.Errorf("Expected >\n%s\n< and got >\n%s\n<", expected, out)
-		}
+		return matchExpectedWithStore(path, out)
 	}
-	return nil
 }
 
 // Finds directories under ./test and evaluates all the .yaml/.ymls

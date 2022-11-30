@@ -1,1 +1,0 @@
-exit status 127: bash: line 1: this_is_not_a_binary: command not found
