@@ -50,9 +50,8 @@ func matchREExpected(path string, givenValue string) error {
 	expectre := regexp.MustCompile(string(expected))
 	if expectre.MatchString(givenValue) {
 		return nil
-	} else {
-		return fmt.Errorf("Expected regex error >\n%s\n< and got >\n%s\n<", expected, givenValue)
 	}
+	return fmt.Errorf("Expected regex error >\n%s\n< and got >\n%s\n<", expected, givenValue)
 }
 
 func matchExpected(path string, givenValue string) error {
@@ -65,9 +64,8 @@ func matchExpected(path string, givenValue string) error {
 	}
 	if string(expected) == givenValue {
 		return nil
-	} else {
-		return fmt.Errorf("Expected error >\n%s\n< and got >\n%s\n<", expected, givenValue)
 	}
+	return fmt.Errorf("Expected error >\n%s\n< and got >\n%s\n<", expected, givenValue)
 }
 
 func matchExpectedWithStore(path string, givenValue string) error {
@@ -96,14 +94,13 @@ func checkDir(path string, errorsExpected bool) error {
 			return fmt.Errorf("Expected an error but didn't get one")
 		}
 		return matchExpectedWithStore(path, fullError.Error())
-	} else {
-		// We don't expect and error and
-		// expected.txt should be the output
-		if fullError != nil {
-			return fullError
-		}
-		return matchExpectedWithStore(path, out)
 	}
+	// We don't expect and error and
+	// expected.txt should be the output
+	if fullError != nil {
+		return fullError
+	}
+	return matchExpectedWithStore(path, out)
 }
 
 // Finds directories under ./test and evaluates all the .yaml/.ymls
