@@ -2,7 +2,7 @@
 
 DEPS := $(shell find . -type f -name "*.go" -printf "%p ")
 
-all: code-vet code-fmt test build/argocd-lovely-plugin
+all: code-vet code-fmt lint test build/argocd-lovely-plugin
 
 docker:
 	docker build .
@@ -37,3 +37,7 @@ lint: $(DEPS) get
 ## Run golint for this project
 	@echo golint
 	golint $$(go list ./... )
+
+coverage: $(DEPS) get
+	go test -v ./... -coverpkg=./... -coverprofile=coverage.out
+	go tool cover -html=coverage.out

@@ -1,12 +1,44 @@
 package main
 
 import (
+	"os"
 	"path/filepath"
+	"regexp"
 )
 
 // PackageDirectories is an array of sub-application paths
 type PackageDirectories struct {
-	dirs []string
+	testingRoot string
+	dirs        []string
+}
+
+func (d *PackageDirectories) checkFile(path string, info os.DirEntry, err error) error {
+	if err != nil {
+		return err
+	}
+	if !info.IsDir() {
+		yamlRegexp := regexp.MustCompile(`\.ya?ml$`)
+		dir := filepath.Dir(path)
+		if yamlRegexp.MatchString(path) {
+			d.AddDirectory(dir)
+		}
+		return nil
+	}
+	if path == d.testingRoot {
+		return nil
+	}
+	return filepath.SkipDir
+}
+
+// AddDirectoryIfYaml conditionally adds a directory if it directly contains one or
+// more .ya?ml files. Returns true if added, false if not.
+func (d *PackageDirectories) AddDirectoryIfYaml(path string) bool {
+	d.testingRoot = path
+	err := filepath.WalkDir(path, d.checkFile)
+	if err != nil {
+		return false
+	}
+	return d.IsDirectory(path)
 }
 
 // AddDirectory Adds a directory to PackageDirectories if it isn't in there already

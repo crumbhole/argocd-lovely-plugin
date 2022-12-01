@@ -21,6 +21,10 @@ An [Argo CD](https://argoproj.github.io/argo-cd/) plugin that behaves in a way w
 
 argocd-lovely-plugin does not support jsonnet as we do not use jsonnet, and haven't seen the need to use it. We don't know how it would best fit into the structure.
 
+## Plain yaml
+
+All the yaml in the directory and all subdirectories will be used as part of the application only if it is not a kustomize or helm chart. `.hidden` yaml files are not included.
+
 ## Supported Argo CD Versions
 We aim to match the [Argo CD supported versions](https://argo-cd.readthedocs.io/en/stable/operator-manual/installation/#supported-versions) by testing against the Argo CD N and N -1 versions of Argo CD. You can see the current versions of Argo CD that we test against by looking in the [CI bootstrap directory](.github/workflows/assets/bootstrap) in this repo.
 
@@ -47,6 +51,8 @@ argocd-lovely-plugin is designed for minimal configuration and to do the right t
 You can use these environment variables for modifying helm's behaviour, and the values.yaml file. More generic manipulation of any file is available through preprocessing.
 - `ARGOCD_ENV_LOVELY_HELM_MERGE`: to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) merged into any values.yaml used by Helm.
 - `ARGOCD_ENV_LOVELY_HELM_PATCH`: to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any values.yaml used by Helm.
+- `ARGOCD_ENV_LOVELY_HELM_TEMPLATE_PARAMS`: Space separated extra parameters to `Helm template` as you might use on the command line. You're on your own here if you pass rubbish parameters.
+- `ARGOCD_ENV_LOVELY_HELM_REPO_ADD_PARAMS`: Space separated extra parameters to `Helm repo add` as you might use on the command line. You're on your own here if you pass rubbish parameters. `--insecure-skip-tls-verify` if your helm chart is on an insecure HTTPS server.
 - `ARGOCD_APP_NAME`: This can be used to set the Helm 'name' in the same way as releaseName works in Argo CD's standard Helm processing
 
 There is no way to modify any other Helm files at this time.

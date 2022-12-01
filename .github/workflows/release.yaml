@@ -16,12 +16,12 @@ jobs:
         goos: [linux, darwin]
     steps:
     - uses: actions/checkout@v3
-    - uses: wangyoucao577/go-release-action@v1.32
+    - uses: wangyoucao577/go-release-action@v1.33
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         goos: ${{ matrix.goos }}
         goarch: amd64
-        goversion: "https://golang.org/dl/go1.18.1.linux-amd64.tar.gz"
+        goversion: "https://golang.org/dl/go1.19.3.linux-amd64.tar.gz"
         binary_name: "argocd-lovely-plugin"
         extra_files: LICENSE README.md
         pre_command: go get ./...
