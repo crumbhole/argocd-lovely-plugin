@@ -52,6 +52,7 @@ jobs:
             --k3s-arg "--no-deploy=traefik,servicelb,metrics-server@server:*"
       - name: "Deploy Argocd/Lovely"
         run: |
+          sleep 120
           docker build . -t argocd-lovely-plugin/testing:latest
           k3d image import argocd-lovely-plugin/testing:latest -c test-cluster-1 --verbose
           kubectl apply -k .github/workflows/assets/bootstrap/argocd-${{ matrix.argocd_version }}
@@ -94,6 +95,7 @@ jobs:
             --k3s-arg "--no-deploy=traefik,servicelb,metrics-server@server:*"
       - name: "Deploy Argocd/Lovely"
         run: |
+          sleep 120
           docker build . -t argocd-lovely-plugin/testing:latest
           k3d image import argocd-lovely-plugin/testing:latest -c test-cluster-1 --verbose
           kubectl apply -k .github/workflows/assets/bootstrap/argocd-cmp-${{ matrix.argocd_version }}
