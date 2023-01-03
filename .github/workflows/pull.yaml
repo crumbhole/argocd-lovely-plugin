@@ -32,12 +32,11 @@ jobs:
 
     - name: Test
       run: go test -v ./...
-  test-deploy-argocd:
+  test-deploy-argocd-old:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         argocd_version:
-          - "2.6.0-rc1"
           - "2.5.5"
           - "2.4.18"
       fail-fast: true
@@ -60,6 +59,46 @@ jobs:
           kubectl -n argocd rollout status deployment/argocd-repo-server
           kubectl -n argocd apply -f .github/workflows/assets/applications/helm_only_in_kustomize.yml
           kubectl -n argocd apply -f .github/workflows/assets/applications/helm_plus_additions.yml
+      - name: "Test helmonlyinkustomize"
+        run: |
+          kubectl config use-context k3d-test-cluster-1
+          sleep 10
+          kubectl -n helmonlyinkustomize rollout status deployment/test-hello-world
+          kubectl -n helmonlyinkustomize describe pod -l=app.kubernetes.io/name=hello-world
+          kubectl -n helmonlyinkustomize logs -l=app.kubernetes.io/name=hello-world
+      - name: "Test helmplusadditions"
+        run: |
+          kubectl config use-context k3d-test-cluster-1
+          kubectl -n helmplusadditions rollout status deployment/helmplusadditions-hello-world
+          kubectl -n helmplusadditions describe pod -l=app.kubernetes.io/name=hello-world
+          kubectl -n helmplusadditions logs -l=app.kubernetes.io/name=hello-world
+  test-deploy-argocd-cmp-sidecar:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        argocd_version:
+          - "2.6.0-rc1"
+          - "2.5.5"
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v3
+      - uses: AbsaOSS/k3d-action@v2
+        name: "Create single k3d Cluster and run Argocd/Lovely"
+        with:
+          cluster-name: test-cluster-1
+          args: >-
+            --agents 3
+            --no-lb
+            --k3s-arg "--no-deploy=traefik,servicelb,metrics-server@server:*"
+      - name: "Deploy Argocd/Lovely"
+        run: |
+          docker build . -t argocd-lovely-plugin/testing:latest
+          k3d image import argocd-lovely-plugin/testing:latest -c test-cluster-1 --verbose
+          kubectl apply -k .github/workflows/assets/bootstrap/argocd-cmp-${{ matrix.argocd_version }}
+          kubectl -n argocd rollout status statefulset/argocd-application-controller
+          kubectl -n argocd rollout status deployment/argocd-repo-server
+          kubectl -n argocd apply -f .github/workflows/assets/applications/cmp-helm_only_in_kustomize.yml
+          kubectl -n argocd apply -f .github/workflows/assets/applications/cmp-helm_plus_additions.yml
       - name: "Test helmonlyinkustomize"
         run: |
           kubectl config use-context k3d-test-cluster-1
