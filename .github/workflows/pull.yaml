@@ -75,7 +75,6 @@ jobs:
           kubectl -n helmplusadditions get secrets mysecret
           kubectl -n helmplusadditions get configmaps index.html-g9575k5952
   test-deploy-argocd-cmp-sidecar:
-    needs: test-deploy-argocd-old
     runs-on: ubuntu-latest
     strategy:
       matrix:
