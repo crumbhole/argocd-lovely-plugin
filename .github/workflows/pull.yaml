@@ -33,6 +33,7 @@ jobs:
     - name: Test
       run: go test -v ./...
   test-deploy-argocd-old:
+    needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -52,7 +53,6 @@ jobs:
             --k3s-arg "--no-deploy=traefik,servicelb,metrics-server@server:*"
       - name: "Deploy Argocd/Lovely"
         run: |
-          sleep 120
           docker build . -t argocd-lovely-plugin/testing:latest
           k3d image import argocd-lovely-plugin/testing:latest -c test-cluster-1 --verbose
           kubectl apply -k .github/workflows/assets/bootstrap/argocd-${{ matrix.argocd_version }}
@@ -76,6 +76,7 @@ jobs:
           kubectl -n helmplusadditions get secrets mysecret
           kubectl -n helmplusadditions get configmaps index.html-g9575k5952
   test-deploy-argocd-cmp-sidecar:
+    needs: test-deploy-argocd-old
     runs-on: ubuntu-latest
     strategy:
       matrix:
