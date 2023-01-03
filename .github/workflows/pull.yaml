@@ -72,8 +72,8 @@ jobs:
           kubectl -n helmplusadditions rollout status deployment/helmplusadditions-hello-world
           kubectl -n helmplusadditions describe pod -l=app.kubernetes.io/name=hello-world
           kubectl -n helmplusadditions logs -l=app.kubernetes.io/name=hello-world
-          kubectl -n helmplusadditions get secrets
-          kubectl -n helmplusadditions get configmaps
+          kubectl -n helmplusadditions get secrets mysecret
+          kubectl -n helmplusadditions get configmaps index.html-g9575k5952
   test-deploy-argocd-cmp-sidecar:
     runs-on: ubuntu-latest
     strategy:
@@ -114,23 +114,23 @@ jobs:
           kubectl -n helmplusadditions rollout status deployment/helmplusadditions-hello-world
           kubectl -n helmplusadditions describe pod -l=app.kubernetes.io/name=hello-world
           kubectl -n helmplusadditions logs -l=app.kubernetes.io/name=hello-world
-          kubectl -n helmplusadditions get secrets
-          kubectl -n helmplusadditions get configmaps
-  push_to_registry:
-    name: Push Docker image to GitHub Packages
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v3
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Push to GitHub Packages
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: ./Dockerfile
-          push: false
-          platforms: linux/amd64, linux/arm64
-          tags: ghcr.io/crumbhole/argocd-lovely-plugin:pull
+          kubectl -n helmplusadditions get secrets mysecret
+          kubectl -n helmplusadditions get configmaps index.html-g9575k5952
+  # push_to_registry:
+  #   name: Push Docker image to GitHub Packages
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Check out the repo
+  #       uses: actions/checkout@v3
+  #     - name: Set up QEMU
+  #       uses: docker/setup-qemu-action@v2
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v2
+  #     - name: Push to GitHub Packages
+  #       uses: docker/build-push-action@v3
+  #       with:
+  #         context: .
+  #         file: ./Dockerfile
+  #         push: false
+  #         platforms: linux/amd64, linux/arm64
+  #         tags: ghcr.io/crumbhole/argocd-lovely-plugin:pull
