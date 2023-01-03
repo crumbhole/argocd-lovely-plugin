@@ -33,7 +33,6 @@ jobs:
     - name: Test
       run: go test -v ./...
   test-deploy-argocd-old:
-    needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -63,7 +62,7 @@ jobs:
       - name: "Test helmonlyinkustomize"
         run: |
           kubectl config use-context k3d-test-cluster-1
-          sleep 10
+          sleep 30
           kubectl -n helmonlyinkustomize rollout status deployment/test-hello-world
           kubectl -n helmonlyinkustomize describe pod -l=app.kubernetes.io/name=hello-world
           kubectl -n helmonlyinkustomize logs -l=app.kubernetes.io/name=hello-world
@@ -96,7 +95,6 @@ jobs:
             --k3s-arg "--no-deploy=traefik,servicelb,metrics-server@server:*"
       - name: "Deploy Argocd/Lovely"
         run: |
-          sleep 120
           docker build . -t argocd-lovely-plugin/testing:latest
           k3d image import argocd-lovely-plugin/testing:latest -c test-cluster-1 --verbose
           kubectl apply -k .github/workflows/assets/bootstrap/argocd-cmp-${{ matrix.argocd_version }}
@@ -107,7 +105,7 @@ jobs:
       - name: "Test helmonlyinkustomize"
         run: |
           kubectl config use-context k3d-test-cluster-1
-          sleep 10
+          sleep 30
           kubectl -n helmonlyinkustomize rollout status deployment/test-hello-world
           kubectl -n helmonlyinkustomize describe pod -l=app.kubernetes.io/name=hello-world
           kubectl -n helmonlyinkustomize logs -l=app.kubernetes.io/name=hello-world
