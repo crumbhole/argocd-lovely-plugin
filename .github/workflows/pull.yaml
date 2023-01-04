@@ -8,7 +8,7 @@ on:
 
 env:
   PLATFORMS: linux/amd64
-  #, linux/arm64
+  # , linux/arm64
 
 jobs:
   gogitops:
@@ -94,7 +94,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
-     - name: Build and Push legacy image
+      - name: Build and Push legacy image
         uses: docker/build-push-action@v3
         with:
           context: .
