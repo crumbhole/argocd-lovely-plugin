@@ -3,6 +3,8 @@ name: Build and test
 on:
   pull_request:
     branches: [ main ]
+  push:
+    branches: [ main ]
 
 jobs:
   gogitops:
@@ -82,11 +84,33 @@ jobs:
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      - name: Push to GitHub Packages
+      - name: Build and Push legacy image
         uses: docker/build-push-action@v3
         with:
           context: .
           file: ./Dockerfile
-          push: false
+          push: true
           platforms: linux/amd64, linux/arm64
-          tags: ghcr.io/crumbhole/argocd-lovely-plugin:pull
+          tags: ghcr.io/crumbhole/argocd-lovely-plugin:${{ github.sha }}
+          build-args:
+            - VERSION=${{ github.sha }}
+      - name: Build CMP image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile.cmp
+          push: true
+          platforms: linux/amd64, linux/arm64
+          tags: ghcr.io/crumbhole/argocd-lovely-plugin-cmp:${{ github.sha }}
+          build-args:
+            - VERSION=${{ github.sha }}
+      - name: Build CMP image with vault
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile.cmp-vault
+          push: true
+          platforms: linux/amd64, linux/arm64
+          tags: ghcr.io/crumbhole/argocd-lovely-plugin-cmp-vault:${{ github.sha }}
+          build-args:
+            - VERSION=${{ github.sha }}
