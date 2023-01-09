@@ -17,3 +17,7 @@ patches:
   target:
     kind: Deployment
     name: argocd-repo-server
+- path: argocd-vault-replacer.yml
+  target:
+      kind: Deployment
+      name: argocd-repo-server
