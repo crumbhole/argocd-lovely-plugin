@@ -12,7 +12,9 @@ spec:
     repoURL: 'https://github.com/crumbhole/argocd-lovely-plugin.git'
     targetRevision: HEAD
     plugin:
-      name: argocd-lovely-plugin
+      env:
+        - name: FOO
+          value: bar
   project: default
   syncPolicy:
     automated:

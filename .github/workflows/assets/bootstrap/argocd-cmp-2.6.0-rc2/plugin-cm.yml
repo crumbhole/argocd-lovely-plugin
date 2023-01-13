@@ -10,9 +10,6 @@ data:
       name: argocd-lovely-plugin
     spec:
       version: v1.0
-      init:
-        command: ["argocd-lovely-plugin"]
-        args: ["init"]
       generate:
         command: ["argocd-lovely-plugin"]
       discover:
