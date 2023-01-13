@@ -8,7 +8,7 @@ spec:
       containers:
         - name: cmp
           command: [/var/run/argocd/argocd-cmp-server] # Entrypoint should be Argo CD lightweight CMP server i.e. argocd-cmp-server
-          image: ghcr.io/crumbhole/argocd-lovely-plugin-cmp:49430a742620d24349debdca5ee42945396f6faa
+          image: argocd-lovely-plugin/cmp-testing:latest
           securityContext:
             runAsNonRoot: true
             runAsUser: 999
