@@ -93,7 +93,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
-      - name: Build and Push legacy image
+      - name: Build and Push CMP image
         uses: docker/build-push-action@v3
         with:
           context: .
@@ -102,7 +102,7 @@ jobs:
           platforms:
           tags: ghcr.io/crumbhole/argocd-lovely-plugin-cmp:${{ github.sha }}
           build-args: VERSION=${{ github.sha }}
-      - name: Build CMP image
+      - name: Build legacy image
         uses: docker/build-push-action@v3
         with:
           context: .
