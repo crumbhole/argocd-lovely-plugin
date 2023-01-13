@@ -103,7 +103,11 @@ jobs:
           k3d image import argocd-lovely-plugin/cmp-testing:latest -c test-cluster-1 --verbose
           kubectl apply -k .github/workflows/assets/bootstrap/argocd-cmp-${{ matrix.argocd_version }}
           kubectl -n argocd rollout status statefulset/argocd-application-controller
+
+          sleep 30
+          kubectl -n argocd describe deployment/argocd-repo-server
           kubectl -n argocd rollout status deployment/argocd-repo-server
+
           kubectl -n argocd apply -f .github/workflows/assets/applications/cmp-helm_only_in_kustomize.yml
           kubectl -n argocd apply -f .github/workflows/assets/applications/cmp-helm_plus_additions.yml
       - name: "Test helmonlyinkustomize"
