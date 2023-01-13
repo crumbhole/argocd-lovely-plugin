@@ -3,6 +3,7 @@ package processor
 import (
 	"fmt"
 	"gopkg.in/yaml.v3"
+	"net/url"
 	"os"
 	"regexp"
 	"strings"
@@ -38,11 +39,18 @@ func (h HelmProcessor) helmDo(path string, params ...string) (string, error) {
 	return execute(path, HelmBinary(), cmdArray...)
 }
 
-func (h HelmProcessor) repoEnsure(path string, name string, url string) error {
+func (h HelmProcessor) repoEnsure(path string, name string, repourl string) error {
+	parsedURL, err := url.Parse(repourl)
+	if err != nil {
+		return err
+	}
+	if parsedURL.Scheme == "oci" {
+		return nil
+	}
 	params := []string{`repo`, `add`, `--force-update`}
 	params = append(params[:], HelmRepoAddParams()[:]...)
-	params = append(params[:], []string{name, url}...)
-	_, err := h.helmDo(path, params...)
+	params = append(params[:], []string{name, repourl}...)
+	_, err = h.helmDo(path, params...)
 	return err
 }
 
