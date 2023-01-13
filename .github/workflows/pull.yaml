@@ -87,11 +87,11 @@ jobs:
       matrix:
         argocd_version:
           - "2.6.0-rc2"
-          - "2.5.5"
+          - "2.5.6"
       fail-fast: true
     steps:
       - uses: actions/checkout@v3
-      - name: "build-lovely"
+      - name: "build-lovely-container"
         run: |
           docker build -f Dockerfile -t k3d-registry.localhost:5000/lovely .
       - uses: AbsaOSS/k3d-action@v2
@@ -99,7 +99,6 @@ jobs:
         with:
           cluster-name: lovely
           args: >-
-            --agents 1
             --config=.github/workflows/k3d.conf
       - name: "Deploy Argocd/Lovely"
         run: |
