@@ -91,6 +91,9 @@ jobs:
       fail-fast: true
     steps:
       - uses: actions/checkout@v3
+      - name: "build-lovely"
+        run: |
+          docker build -f Dockerfile -t k3d-registry.localhost:5000/lovely .
       - uses: AbsaOSS/k3d-action@v2
         name: "Create single k3d Cluster and run Argocd/Lovely"
         with:
@@ -100,7 +103,6 @@ jobs:
             --config=.github/workflows/k3d.conf
       - name: "Deploy Argocd/Lovely"
         run: |
-          docker build -f Dockerfile -t k3d-registry.localhost:5000/lovely .
           docker push k3d-registry.localhost:5000/lovely
           kubectl apply -k .github/workflows/assets/bootstrap/argocd-cmp-${{ matrix.argocd_version }}
           kubectl -n argocd rollout status statefulset/argocd-application-controller
