@@ -19,6 +19,8 @@ WORKDIR /build
 RUN make -j4
 
 FROM alpine:3.17.1
+ENV LOVELY_HELM_PATH=/usr/local/bin/helm
+ENV LOVELY_KUSTOMIZE_PATH=/usr/local/bin/kustomize
 COPY --from=builder /usr/local/bin/helm /usr/local/bin/helm
 COPY --from=builder /usr/local/bin/kustomize /usr/local/bin/kustomize
 COPY --from=builder /build/build/argocd-lovely-plugin /usr/local/bin/argocd-lovely-plugin
