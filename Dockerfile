@@ -1,4 +1,4 @@
-FROM golang:1.19.4 as builder
+FROM golang:1.19.5 as builder
 ARG YQ_VERSION=4.30.6 #https://github.com/mikefarah/yq/releases
 ARG KUSTOMIZE_VERSION=4.5.7 #https://github.com/kubernetes-sigs/kustomize/releases
 ARG HELM_VERSION=3.10.3 #https://github.com/helm/helm/releases
@@ -18,7 +18,13 @@ ADD . /build
 WORKDIR /build
 RUN make -j4
 
-FROM alpine:3.17.0 as putter
-COPY --from=builder /build/build/argocd-lovely-plugin .
+FROM alpine:3.17.1
+ENV LOVELY_HELM_PATH=/usr/local/bin/helm
+ENV LOVELY_KUSTOMIZE_PATH=/usr/local/bin/kustomize
+COPY --from=builder /usr/local/bin/helm /usr/local/bin/helm
+COPY --from=builder /usr/local/bin/kustomize /usr/local/bin/kustomize
+COPY --from=builder /build/build/argocd-lovely-plugin /usr/local/bin/argocd-lovely-plugin
+COPY ./plugin.yaml /home/argocd/cmp-server/config/plugin.yaml
 USER 999
-ENTRYPOINT [ "cp", "argocd-lovely-plugin", "/custom-tools/" ]
+# This does NOT exist inside the image, must be mounted from argocd
+ENTRYPOINT [ "/var/run/argocd/argocd-cmp-server" ]

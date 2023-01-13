@@ -53,7 +53,7 @@ You can use these environment variables for modifying helm's behaviour, and the 
 - `ARGOCD_ENV_LOVELY_HELM_PATCH`: to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any values.yaml used by Helm.
 - `ARGOCD_ENV_LOVELY_HELM_TEMPLATE_PARAMS`: Space separated extra parameters to `Helm template` as you might use on the command line. You're on your own here if you pass rubbish parameters.
 - `ARGOCD_ENV_LOVELY_HELM_REPO_ADD_PARAMS`: Space separated extra parameters to `Helm repo add` as you might use on the command line. You're on your own here if you pass rubbish parameters. `--insecure-skip-tls-verify` if your helm chart is on an insecure HTTPS server.
-- `ARGOCD_APP_NAME`: This can be used to set the Helm 'name' in the same way as releaseName works in Argo CD's standard Helm processing
+- `ARGOCD_ENV_LOVELY_HELM_NAME`: This can be used to set the Helm 'name' in the same way as releaseName works in Argo CD's standard Helm processing. (`ARGOCD_APP_NAME` used to be overridable in old versions of ArgoCD, but is no longer)
 
 There is no way to modify any other Helm files at this time.
 
@@ -65,7 +65,7 @@ You can use these environment variables for modifying kustomize's behaviour, and
 
 There is no way to modify any other files, that's what Kustomize itself is for.
 
-You can use the [helm chart inflation generator](https://kubectl.docs.kubernetes.io/references/kustomize/builtins/#_helmchartinflationgenerator_) of kustomize this way. See [the test](test/helm_only_in_kustomize) for an example of this. If you do this none of the helm environment variables will have any effect as you can set those in your kustomization.yaml instead. There is no way to merge/patch your values.yaml with lovely only (you should run a preprocessor for that). Despite this, that is the recommended way to use helm and kustomize together. `ARGOCD_APP_NAME` will also have no effect here.
+You can use the [helm chart inflation generator](https://kubectl.docs.kubernetes.io/references/kustomize/builtins/#_helmchartinflationgenerator_) of kustomize this way. See [the test](test/helm_only_in_kustomize) for an example of this. If you do this none of the helm environment variables will have any effect as you can set those in your kustomization.yaml instead. There is no way to merge/patch your values.yaml with lovely only (you should run a preprocessor for that). Despite this, that is the recommended way to use helm and kustomize together. `ARGOCD_ENV_LOVELY_HELM_NAME` will also have no effect here.
 
 ## Argo CD 2.4 support
 
@@ -93,7 +93,7 @@ All the sub-application yamls will be concatenated and the result will be fed to
 
 You can download `argocd-lovely-plugin` binary and run it in an application directory. Errors will go to stderr, and the rendered yaml will appear on stdout.
 - You will need helm and kustomize on your path if you use those.
-- You should set up the expected environment variables. Remember `ARGOCD_APP_NAME` needs to be set for helm chart rendering.
+- You should set up the expected environment variables. Remember `ARGOCD_APP_NAME` needs to be set for helm chart rendering, or can be overridden with `ARGOCD_ENV_LOVELY_HELM_NAME`. One or other must be set.
 
 # Videos
 If you prefer to watch videos of things rather than read words, we have compiled some demos.
