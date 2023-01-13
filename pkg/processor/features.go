@@ -180,3 +180,18 @@ func AllowGitCheckout() bool {
 	}
 	return res
 }
+
+// HelmName gives us the application name for helm
+// Set ARGOCD_ENV_LOVELY_HELM_NAME to override the default of ARGOCD_APP_NAME
+func HelmName() string {
+	nameOverride := getArgoEnv(`LOVELY_HELM_NAME`, ``)
+	if nameOverride == `` {
+		return os.Getenv(`ARGOCD_APP_NAME`)
+	}
+	return nameOverride
+}
+
+// HelmNamespace gives us the namespace for helm
+func HelmNamespace() string {
+	return os.Getenv(`ARGOCD_APP_NAMESPACE`)
+}

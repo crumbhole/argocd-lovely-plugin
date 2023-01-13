@@ -1,0 +1,8 @@
+ARG VERSION
+FROM ghcr.io/crumbhole/argocd-lovely-plugin:${VERSION} as source
+FROM alpine:3.17.0
+COPY --from=source /argocd-lovely-plugin /usr/local/bin/argocd-lovely-plugin
+COPY ./plugin.yaml /home/argocd/cmp-server/config/plugin.yaml
+USER 999
+# This does NOT exist inside the image, must be mounted from argocd
+ENTRYPOINT [ "/var/run/argocd/argocd-cmp-server" ]

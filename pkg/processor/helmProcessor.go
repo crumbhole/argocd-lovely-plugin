@@ -109,7 +109,7 @@ func (h HelmProcessor) Generate(input *string, basePath string, path string) (*s
 			params = append(params[:], []string{"--api-versions", apiVersion}...)
 		}
 	}
-	params = append(params[:], []string{`-n`, os.Getenv(`ARGOCD_APP_NAMESPACE`), os.Getenv(`ARGOCD_APP_NAME`), `.`}...)
+	params = append(params[:], []string{`-n`, HelmNamespace(), HelmName(), `.`}...)
 	out, err := h.helmDo(path, params...)
 	if err != nil {
 		return nil, fmt.Errorf("Error running helm: %v", err)

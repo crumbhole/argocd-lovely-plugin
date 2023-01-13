@@ -6,6 +6,9 @@ on:
     types: [created]
   workflow_dispatch: {}
 
+env:
+  PLATFORMS: linux/amd64, linux/arm64
+
 jobs:
   releases-matrix:
     name: Release Go Binary
@@ -43,14 +46,32 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
-      - name: Push to GitHub Packages
+      - name: Build and Push legacy image
         uses: docker/build-push-action@v3
         with:
           context: .
           file: ./Dockerfile
           push: true
-          platforms: linux/amd64, linux/arm64
+          platforms:
           tags: |
             ghcr.io/crumbhole/argocd-lovely-plugin:${{ env.GIT_TAG_NAME }}
             ghcr.io/crumbhole/argocd-lovely-plugin:stable
-            ghcr.io/crumbhole/argocd-lovely-plugin:latest
+          build-args: VERSION=${{ env.GIT_TAG_NAME }}
+      - name: Build CMP image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile.cmp
+          push: true
+          platforms: ${{ env.PLATFORMS }}
+          tags: ghcr.io/crumbhole/argocd-lovely-plugin-cmp:${{ env.GIT_TAG_NAME }}
+          build-args: VERSION=${{ env.GIT_TAG_NAME }}
+      - name: Build CMP image with vault
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile.cmp-vault
+          push: true
+          platforms: ${{ env.PLATFORMS }}
+          tags: ghcr.io/crumbhole/argocd-lovely-plugin-cmp-vault:${{ env.GIT_TAG_NAME }}
+          build-args: VERSION=${{ env.GIT_TAG_NAME }}

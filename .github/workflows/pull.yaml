@@ -3,6 +3,11 @@ name: Build and test
 on:
   pull_request:
     branches: [ main ]
+  push:
+    branches: [ main ]
+
+env:
+  PLATFORMS: linux/amd64, linux/arm64
 
 jobs:
   gogitops:
