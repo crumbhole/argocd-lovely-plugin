@@ -95,12 +95,12 @@ jobs:
           cluster-name: lovely
           args: >-
             --agents 1
-            --no-lb
-            --k3s-arg "--no-deploy=traefik,servicelb,metrics-server@server:*"
+            --config=k3d.conf
       - name: "Deploy Argocd/Lovely"
         run: |
-          docker build -f Dockerfile -t argocd-lovely-plugin/cmp-testing:latest .
-          k3d image import argocd-lovely-plugin/cmp-testing:latest -c lovely --trace -k -t
+          docker build -f Dockerfile -t k3d-registry.localhost:5000/lovely .
+          docker push k3d-registry.localhost:5000/lovely
+          #k3d image import argocd-lovely-plugin/cmp-testing:latest -c lovely --trace -k -t
           kubectl apply -k .github/workflows/assets/bootstrap/argocd-cmp-${{ matrix.argocd_version }}
           kubectl -n argocd rollout status statefulset/argocd-application-controller
 
