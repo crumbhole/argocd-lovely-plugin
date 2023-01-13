@@ -139,23 +139,23 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
-      - name: Build and Push legacy image
+      - name: Build CMP image
         uses: docker/build-push-action@v3
         with:
           context: .
           file: ./Dockerfile
           push: true
-          platforms:
-          tags: ghcr.io/crumbhole/argocd-lovely-plugin:${{ github.sha }}
+          platforms: ${{ env.PLATFORMS }}
+          tags: ghcr.io/crumbhole/argocd-lovely-plugin-cmp:${{ github.sha }}
           build-args: VERSION=${{ github.sha }}
-      - name: Build CMP image
+      - name: Build and Push legacy image
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ./Dockerfile.cmp
+          file: ./Dockerfile.legacy
           push: true
-          platforms: ${{ env.PLATFORMS }}
-          tags: ghcr.io/crumbhole/argocd-lovely-plugin-cmp:${{ github.sha }}
+          platforms:
+          tags: ghcr.io/crumbhole/argocd-lovely-plugin:${{ github.sha }}
           build-args: VERSION=${{ github.sha }}
       - name: Build CMP image with vault
         uses: docker/build-push-action@v3
