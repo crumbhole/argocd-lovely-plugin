@@ -95,7 +95,7 @@ jobs:
           cluster-name: lovely
           args: >-
             --agents 1
-            --config=k3d.conf
+            --config=.github/workflows/k3d.conf
       - name: "Deploy Argocd/Lovely"
         run: |
           docker build -f Dockerfile -t k3d-registry.localhost:5000/lovely .
