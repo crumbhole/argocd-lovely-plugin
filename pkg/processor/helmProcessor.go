@@ -39,18 +39,22 @@ func (h HelmProcessor) helmDo(path string, params ...string) (string, error) {
 	return execute(path, HelmBinary(), cmdArray...)
 }
 
-func (h HelmProcessor) repoEnsure(path string, name string, repourl string) error {
+func ociRepo(repourl string) bool {
 	parsedURL, err := url.Parse(repourl)
 	if err != nil {
-		return err
+		return false
 	}
 	if parsedURL.Scheme == "oci" {
-		return nil
+		return true
 	}
+	return false
+}
+
+func (h HelmProcessor) repoEnsure(path string, name string, repourl string) error {
 	params := []string{`repo`, `add`, `--force-update`}
 	params = append(params[:], HelmRepoAddParams()[:]...)
 	params = append(params[:], []string{name, repourl}...)
-	_, err = h.helmDo(path, params...)
+	_, err := h.helmDo(path, params...)
 	return err
 }
 
@@ -72,13 +76,17 @@ func (h HelmProcessor) reposEnsure(path string) error {
 		if err != nil {
 			return err
 		}
+		updateRepos := 0
 		for _, dep := range deps.Dependencies {
-			err := h.repoEnsure(path, dep.Name, dep.Repository)
-			if err != nil {
-				return err
+			if !ociRepo(dep.Repository) {
+				err := h.repoEnsure(path, dep.Name, dep.Repository)
+				if err != nil {
+					return err
+				}
+				updateRepos++
 			}
 		}
-		if len(deps.Dependencies) > 0 {
+		if updateRepos > 0 {
 			// Add won't cause an update, so we do an update as well.
 			// This is a sledgehammer update all as per-repo update isn't in until helm 3.7
 			// and argo ships with 3.6
