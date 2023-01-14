@@ -63,8 +63,9 @@ jobs:
           file: ./Dockerfile.legacy
           push: true
           platforms: ${{ env.PLATFORMS }}
-          tags: ghcr.io/crumbhole/argocd-lovely-plugin:${{ env.GIT_TAG_NAME }}
-          tags: ghcr.io/crumbhole/argocd-lovely-plugin:stable
+          tags: |
+            ghcr.io/crumbhole/argocd-lovely-plugin:${{ env.GIT_TAG_NAME }}
+            ghcr.io/crumbhole/argocd-lovely-plugin:stable
           build-args: VERSION=${{ env.GIT_TAG_NAME }}
       - name: Build CMP image with vault
         uses: docker/build-push-action@v3
