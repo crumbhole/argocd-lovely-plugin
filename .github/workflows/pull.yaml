@@ -93,6 +93,7 @@ jobs:
 
           docker tag k3d-registry.localhost:5000/lovely ghcr.io/crumbhole/argocd-lovely-plugin-cmp:ci
           docker build -f Dockerfile.legacy --build-arg VERSION=ci -t k3d-registry.localhost:5000/lovely-legacy .
+          docker save k3d-registry.localhost:5000/lovely-legacy > /tmp/lovely-cmp/lovely-legacy.tar
       - name: Temporarily save Docker image
         uses: actions/upload-artifact@v2
         with:
@@ -124,8 +125,7 @@ jobs:
             --config=.github/workflows/k3d.conf
       - name: "Deploy Argocd/Lovely"
         run: |
-          cd /tmp/lovely-cmp
-          docker load < lovely-cmp.tar
+          docker load < /tmp/lovely-cmp/lovely-cmp.tar
           docker push k3d-registry.localhost:5000/lovely
           kubectl apply -k .github/workflows/assets/bootstrap/argocd-cmp-${{ matrix.argocd_version }}
           kubectl -n argocd rollout status statefulset/argocd-application-controller
