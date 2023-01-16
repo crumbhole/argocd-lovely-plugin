@@ -80,9 +80,25 @@ jobs:
   #         kubectl -n helmplusadditions logs -l=app.kubernetes.io/name=hello-world
   #         kubectl -n helmplusadditions get secrets mysecret
   #         kubectl -n helmplusadditions get configmaps index.html-g9575k5952
-  test-deploy-argocd-cmp-sidecar:
+  build-ci-lovely:
     runs-on: ubuntu-latest
     needs: build
+      - uses: actions/checkout@v3
+      - name: "build-lovely-container"
+        run: |
+          docker build -f Dockerfile -t k3d-registry.localhost:5000/lovely .
+          mkdir -p /tmp/lovely-cmp
+          docker save k3d-registry.localhost:5000/lovely > /tmp/lovely-cmp/lovely-cmp.tar
+      - name: Temporarily save Docker image
+        uses: actions/upload-artifact@v2
+        with:
+          name: lovely-cmp-docker
+          path: /tmp/lovely-cmp
+          retention-days: 1
+
+  test-deploy-argocd-cmp-sidecar:
+    runs-on: ubuntu-latest
+    needs: build-ci-lovely
     strategy:
       matrix:
         argocd_version:
@@ -91,9 +107,11 @@ jobs:
       fail-fast: true
     steps:
       - uses: actions/checkout@v3
-      - name: "build-lovely-container"
-        run: |
-          docker build -f Dockerfile -t k3d-registry.localhost:5000/lovely .
+      - name: Retrieve saved Docker image
+        uses: actions/download-artifact@v2
+        with:
+          name: lovely-cmp-docker
+          path: /tmp/lovely-cmp
       - uses: AbsaOSS/k3d-action@v2
         name: "Create single k3d Cluster and run Argocd/Lovely"
         with:
@@ -102,6 +120,8 @@ jobs:
             --config=.github/workflows/k3d.conf
       - name: "Deploy Argocd/Lovely"
         run: |
+          cd /tmp/lovely-cmp
+          docker load < lovely-cmp.tar
           docker push k3d-registry.localhost:5000/lovely
           kubectl apply -k .github/workflows/assets/bootstrap/argocd-cmp-${{ matrix.argocd_version }}
           kubectl -n argocd rollout status statefulset/argocd-application-controller
@@ -123,6 +143,10 @@ jobs:
           kubectl -n helmplusadditions logs -l=app.kubernetes.io/name=hello-world
           kubectl -n helmplusadditions get secrets mysecret
           kubectl -n helmplusadditions get configmaps index.html-g9575k5952
+      - name: delete-artifact
+        uses: geekyeggo/delete-artifact@v2
+        with:
+            name: lovely-cmp-docker
   push_to_registry:
     name: Push Docker image to GitHub Packages
     needs: [test-deploy-argocd-cmp-sidecar]
