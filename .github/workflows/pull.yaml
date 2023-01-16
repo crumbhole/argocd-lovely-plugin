@@ -38,48 +38,7 @@ jobs:
 
     - name: Test
       run: go test -v ./...
-  # test-deploy-argocd-old:
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       argocd_version:
-  #         - "2.5.5"
-  #         - "2.4.18"
-  #     fail-fast: true
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: AbsaOSS/k3d-action@v2
-  #       name: "Create single k3d Cluster and run Argocd/Lovely"
-  #       with:
-  #         cluster-name: test-cluster-1
-  #         args: >-
-  #           --agents 3
-  #           --no-lb
-  #           --k3s-arg "--no-deploy=traefik,servicelb,metrics-server@server:*"
-  #     - name: "Deploy Argocd/Lovely"
-  #       run: |
-  #         docker build . -t argocd-lovely-plugin/testing:latest
-  #         k3d image import argocd-lovely-plugin/testing:latest -c test-cluster-1 --verbose
-  #         kubectl apply -k .github/workflows/assets/bootstrap/argocd-${{ matrix.argocd_version }}
-  #         kubectl -n argocd rollout status statefulset/argocd-application-controller
-  #         kubectl -n argocd rollout status deployment/argocd-repo-server
-  #         kubectl -n argocd apply -f .github/workflows/assets/applications/helm_only_in_kustomize.yml
-  #         kubectl -n argocd apply -f .github/workflows/assets/applications/helm_plus_additions.yml
-  #     - name: "Test helmonlyinkustomize"
-  #       run: |
-  #         kubectl config use-context k3d-test-cluster-1
-  #         sleep 30
-  #         kubectl -n helmonlyinkustomize rollout status deployment/test-hello-world
-  #         kubectl -n helmonlyinkustomize describe pod -l=app.kubernetes.io/name=hello-world
-  #         kubectl -n helmonlyinkustomize logs -l=app.kubernetes.io/name=hello-world
-  #     - name: "Test helmplusadditions"
-  #       run: |
-  #         kubectl config use-context k3d-test-cluster-1
-  #         kubectl -n helmplusadditions rollout status deployment/helmplusadditions-hello-world
-  #         kubectl -n helmplusadditions describe pod -l=app.kubernetes.io/name=hello-world
-  #         kubectl -n helmplusadditions logs -l=app.kubernetes.io/name=hello-world
-  #         kubectl -n helmplusadditions get secrets mysecret
-  #         kubectl -n helmplusadditions get configmaps index.html-g9575k5952
+
   build-ci-lovely-containers:
     runs-on: ubuntu-latest
     needs: unittest
@@ -97,7 +56,7 @@ jobs:
       - name: Temporarily save Docker image
         uses: actions/upload-artifact@v2
         with:
-          name: lovely-cmp-docker
+          name: lovely-ci-docker
           path: /tmp/lovely-cmp
           retention-days: 1
 
@@ -115,7 +74,7 @@ jobs:
       - name: Retrieve saved Docker image
         uses: actions/download-artifact@v2
         with:
-          name: lovely-cmp-docker
+          name: lovely-ci-docker
           path: /tmp/lovely-cmp
       - uses: AbsaOSS/k3d-action@v2
         name: "Create single k3d Cluster and run Argocd/Lovely"
@@ -147,13 +106,60 @@ jobs:
           kubectl -n helmplusadditions logs -l=app.kubernetes.io/name=hello-world
           kubectl -n helmplusadditions get secrets mysecret
           kubectl -n helmplusadditions get configmaps index.html-g9575k5952
+
+  test-deploy-argocd-old:
+    runs-on: ubuntu-latest
+    needs: build-ci-lovely-containers
+    strategy:
+      matrix:
+        argocd_version:
+          - "2.5.6"
+          - "2.4.18"
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v3
+      - uses: AbsaOSS/k3d-action@v2
+        name: "Create single k3d Cluster and run Argocd/Lovely"
+        with:
+          cluster-name: lovely-legacy
+          args: >-
+            --config=.github/workflows/k3d.conf
+      - name: "Deploy Argocd/Lovely"
+        run: |
+          docker load < /tmp/lovely-cmp/lovely-legacy.tar
+          docker push k3d-registry.localhost:5000/lovely-legacy
+          kubectl apply -k .github/workflows/assets/bootstrap/argocd-${{ matrix.argocd_version }}
+          kubectl -n argocd rollout status statefulset/argocd-application-controller
+          kubectl -n argocd rollout status deployment/argocd-repo-server
+          kubectl -n argocd apply -f .github/workflows/assets/applications/helm_only_in_kustomize.yml
+          kubectl -n argocd apply -f .github/workflows/assets/applications/helm_plus_additions.yml
+      - name: "Test helmonlyinkustomize"
+        run: |
+          kubectl config use-context k3d-lovely-legacy
+          sleep 30
+          kubectl -n helmonlyinkustomize rollout status deployment/test-hello-world
+          kubectl -n helmonlyinkustomize describe pod -l=app.kubernetes.io/name=hello-world
+          kubectl -n helmonlyinkustomize logs -l=app.kubernetes.io/name=hello-world
+      - name: "Test helmplusadditions"
+        run: |
+          kubectl config use-context k3d-lovely-legacy
+          kubectl -n helmplusadditions rollout status deployment/helmplusadditions-hello-world
+          kubectl -n helmplusadditions describe pod -l=app.kubernetes.io/name=hello-world
+          kubectl -n helmplusadditions logs -l=app.kubernetes.io/name=hello-world
+          kubectl -n helmplusadditions get secrets mysecret
+          kubectl -n helmplusadditions get configmaps index.html-g9575k5952
+  delete-ci-lovely-containers:
+    runs-on: ubuntu-latest
+    needs: [test-deploy-argocd-old, test-deploy-argocd-cmp-sidecar]
+    steps:
       - name: delete-artifact
         uses: geekyeggo/delete-artifact@v2
         with:
-            name: lovely-cmp-docker
+            name: lovely-ci-docker
+
   push_to_registry:
     name: Push Docker image to GitHub Packages
-    needs: [test-deploy-argocd-cmp-sidecar]
+    needs: [delete-ci-lovely-containers]
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
