@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: helmplusadditions
+  namespace: argocd
+spec:
+  destination:
+    namespace: helmplusadditions
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: test/helm_plus_additions
+    repoURL: 'https://github.com/crumbhole/argocd-lovely-plugin.git'
+    targetRevision: HEAD
+    plugin:
+      env:
+        - name: FOO
+          value: bar
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - PrunePropagationPolicy=background
+      - CreateNamespace=true

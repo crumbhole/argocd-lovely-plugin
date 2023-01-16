@@ -17,8 +17,8 @@ spec:
         emptyDir: {}
       initContainers:
       - name: argocd-lovely-plugin-download
-        image: argocd-lovely-plugin/testing:latest
-        imagePullPolicy: Never
+        image: k3d-registry.localhost:5000/lovely-legacy
+        # imagePullPolicy: Never
         volumeMounts:
           - mountPath: /custom-tools
             name: custom-tools
