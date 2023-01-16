@@ -73,7 +73,7 @@ jobs:
     strategy:
       matrix:
         argocd_version:
-          - "2.6.0-rc2"
+          - "2.6.0-rc3"
           - "2.5.6"
       fail-fast: true
     steps:
