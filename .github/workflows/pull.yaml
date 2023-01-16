@@ -90,6 +90,9 @@ jobs:
           docker build -f Dockerfile -t k3d-registry.localhost:5000/lovely .
           mkdir -p /tmp/lovely-cmp
           docker save k3d-registry.localhost:5000/lovely > /tmp/lovely-cmp/lovely-cmp.tar
+
+          docker tag k3d-registry.localhost:5000/lovely ghcr.io/crumbhole/argocd-lovely-plugin-cmp:ci
+          docker build -f Dockerfile.legacy --build-arg VERSION=ci -t k3d-registry.localhost:5000/lovely-legacy
       - name: Temporarily save Docker image
         uses: actions/upload-artifact@v2
         with:
