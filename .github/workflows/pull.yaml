@@ -52,12 +52,18 @@ jobs:
 
           docker tag k3d-registry.localhost:5000/lovely ghcr.io/crumbhole/argocd-lovely-plugin-cmp:ci
           docker build -f Dockerfile.legacy --build-arg VERSION=ci -t k3d-registry.localhost:5000/lovely-legacy .
-          docker save k3d-registry.localhost:5000/lovely-legacy > /tmp/lovely-cmp/lovely-legacy.tar
-      - name: Temporarily save Docker image
+          docker save k3d-registry.localhost:5000/lovely-legacy > /tmp/lovely-legacy/lovely-legacy.tar
+      - name: Temporarily save CMP Docker image
+        uses: actions/upload-artifact@v2
+        with:
+          name: lovely-cmp-docker
+          path: /tmp/lovely-cmp
+          retention-days: 1
+      - name: Temporarily save Legacy Docker image
         uses: actions/upload-artifact@v2
         with:
           name: lovely-ci-docker
-          path: /tmp/lovely-cmp
+          path: /tmp/lovely-legacy
           retention-days: 1
 
   test-deploy-argocd-cmp-sidecar:
@@ -74,7 +80,7 @@ jobs:
       - name: Retrieve saved Docker image
         uses: actions/download-artifact@v2
         with:
-          name: lovely-ci-docker
+          name: lovely-cmp-docker
           path: /tmp/lovely-cmp
       - uses: AbsaOSS/k3d-action@v2
         name: "Create single k3d Cluster and run Argocd/Lovely"
@@ -106,6 +112,10 @@ jobs:
           kubectl -n helmplusadditions logs -l=app.kubernetes.io/name=hello-world
           kubectl -n helmplusadditions get secrets mysecret
           kubectl -n helmplusadditions get configmaps index.html-g9575k5952
+      - name: delete-artifact
+        uses: geekyeggo/delete-artifact@v2
+        with:
+            name: lovely-cmp-docker
 
   test-deploy-argocd-old:
     runs-on: ubuntu-latest
@@ -118,6 +128,11 @@ jobs:
       fail-fast: true
     steps:
       - uses: actions/checkout@v3
+      - name: Retrieve saved Docker image
+        uses: actions/download-artifact@v2
+        with:
+          name: lovely-legacy-docker
+          path: /tmp/lovely-legacy
       - uses: AbsaOSS/k3d-action@v2
         name: "Create single k3d Cluster and run Argocd/Lovely"
         with:
@@ -126,7 +141,7 @@ jobs:
             --config=.github/workflows/k3d.conf
       - name: "Deploy Argocd/Lovely"
         run: |
-          docker load < /tmp/lovely-cmp/lovely-legacy.tar
+          docker load < /tmp/lovely-legacy/lovely-legacy.tar
           docker push k3d-registry.localhost:5000/lovely-legacy
           kubectl apply -k .github/workflows/assets/bootstrap/argocd-${{ matrix.argocd_version }}
           kubectl -n argocd rollout status statefulset/argocd-application-controller
@@ -148,18 +163,14 @@ jobs:
           kubectl -n helmplusadditions logs -l=app.kubernetes.io/name=hello-world
           kubectl -n helmplusadditions get secrets mysecret
           kubectl -n helmplusadditions get configmaps index.html-g9575k5952
-  delete-ci-lovely-containers:
-    runs-on: ubuntu-latest
-    needs: [test-deploy-argocd-old, test-deploy-argocd-cmp-sidecar]
-    steps:
       - name: delete-artifact
         uses: geekyeggo/delete-artifact@v2
         with:
-            name: lovely-ci-docker
+            name: lovely-legacy-docker
 
   push_to_registry:
     name: Push Docker image to GitHub Packages
-    needs: [delete-ci-lovely-containers]
+    needs: [test-deploy-argocd-old, test-deploy-argocd-cmp-sidecar]
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
