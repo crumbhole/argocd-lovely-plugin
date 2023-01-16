@@ -118,9 +118,9 @@ jobs:
         with:
             name: lovely-cmp-docker
 
-  test-deploy-argocd-cmp-sidecar:
+  test-deploy-argocd-legacy:
     runs-on: ubuntu-latest
-    needs: build-ci-lovely-containers
+    needs: test-deploy-argocd-cmp-sidecar
     strategy:
       matrix:
         argocd_version:
