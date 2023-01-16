@@ -44,7 +44,7 @@ jobs:
     needs: unittest
     steps:
       - uses: actions/checkout@v3
-      - name: "build-lovely-container"
+      - name: "build-lovely-containers"
         run: |
           docker build -f Dockerfile -t k3d-registry.localhost:5000/lovely .
           mkdir -p /tmp/lovely-cmp
@@ -52,6 +52,7 @@ jobs:
 
           docker tag k3d-registry.localhost:5000/lovely ghcr.io/crumbhole/argocd-lovely-plugin-cmp:ci
           docker build -f Dockerfile.legacy --build-arg VERSION=ci -t k3d-registry.localhost:5000/lovely-legacy .
+          mkdir -p /tmp/lovely-legacy
           docker save k3d-registry.localhost:5000/lovely-legacy > /tmp/lovely-legacy/lovely-legacy.tar
       - name: Temporarily save CMP Docker image
         uses: actions/upload-artifact@v2
