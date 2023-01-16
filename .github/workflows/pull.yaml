@@ -63,7 +63,7 @@ jobs:
       - name: Temporarily save Legacy Docker image
         uses: actions/upload-artifact@v2
         with:
-          name: lovely-ci-docker
+          name: lovely-legacy-docker
           path: /tmp/lovely-legacy
           retention-days: 1
 
