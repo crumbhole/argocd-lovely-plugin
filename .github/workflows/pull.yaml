@@ -55,13 +55,13 @@ jobs:
           mkdir -p /tmp/lovely-legacy
           docker save k3d-registry.localhost:5000/lovely-legacy > /tmp/lovely-legacy/lovely-legacy.tar
       - name: Temporarily save CMP Docker image
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: lovely-cmp-docker
           path: /tmp/lovely-cmp
           retention-days: 1
       - name: Temporarily save Legacy Docker image
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: lovely-legacy-docker
           path: /tmp/lovely-legacy
