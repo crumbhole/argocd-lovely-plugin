@@ -118,7 +118,7 @@ jobs:
         with:
             name: lovely-cmp-docker
 
-  test-deploy-argocd-old:
+  test-deploy-argocd-cmp-sidecar:
     runs-on: ubuntu-latest
     needs: build-ci-lovely-containers
     strategy:
@@ -171,7 +171,7 @@ jobs:
 
   push_to_registry:
     name: Push Docker image to GitHub Packages
-    needs: [test-deploy-argocd-old, test-deploy-argocd-cmp-sidecar]
+    needs: [test-deploy-argocd-legacy, test-deploy-argocd-cmp-sidecar]
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
