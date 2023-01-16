@@ -83,6 +83,7 @@ jobs:
   build-ci-lovely:
     runs-on: ubuntu-latest
     needs: build
+      steps:
       - uses: actions/checkout@v3
       - name: "build-lovely-container"
         run: |
