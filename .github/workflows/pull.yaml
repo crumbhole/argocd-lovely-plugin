@@ -80,7 +80,7 @@ jobs:
   #         kubectl -n helmplusadditions logs -l=app.kubernetes.io/name=hello-world
   #         kubectl -n helmplusadditions get secrets mysecret
   #         kubectl -n helmplusadditions get configmaps index.html-g9575k5952
-  build-ci-lovely-container:
+  build-ci-lovely-containers:
     runs-on: ubuntu-latest
     needs: unittest
     steps:
@@ -92,7 +92,7 @@ jobs:
           docker save k3d-registry.localhost:5000/lovely > /tmp/lovely-cmp/lovely-cmp.tar
 
           docker tag k3d-registry.localhost:5000/lovely ghcr.io/crumbhole/argocd-lovely-plugin-cmp:ci
-          docker build -f Dockerfile.legacy --build-arg VERSION=ci -t k3d-registry.localhost:5000/lovely-legacy
+          docker build -f Dockerfile.legacy --build-arg VERSION=ci -t k3d-registry.localhost:5000/lovely-legacy .
       - name: Temporarily save Docker image
         uses: actions/upload-artifact@v2
         with:
@@ -102,7 +102,7 @@ jobs:
 
   test-deploy-argocd-cmp-sidecar:
     runs-on: ubuntu-latest
-    needs: build-ci-lovely-container
+    needs: build-ci-lovely-containers
     strategy:
       matrix:
         argocd_version:
