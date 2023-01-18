@@ -3,15 +3,16 @@ kind: Kustomization
 namespace: argocd
 
 resources:
-- github.com/argoproj/argo-cd/manifests/cluster-install?ref=v2.5.6
+- github.com/argoproj/argo-cd/manifests/cluster-install?ref=v2.5.7
 - namespace.yml
+- plugin-cm.yml
 
 patches:
 - path: argo-cm.yml
   target:
     kind: ConfigMap
     name: argocd-cm
-- path: argocd-lovely-plugin.yml
+- path: sidecar-plugin.yml
   target:
     kind: Deployment
     name: argocd-repo-server
