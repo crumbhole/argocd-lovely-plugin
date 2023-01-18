@@ -39,15 +39,17 @@ func (h HelmProcessor) helmDo(path string, params ...string) (string, error) {
 	return execute(path, HelmBinary(), cmdArray...)
 }
 
-func ociRepo(repourl string) bool {
+func downloadableRepo(repourl string) bool {
 	parsedURL, err := url.Parse(repourl)
 	if err != nil {
+		return true // Bad default possibly
+	}
+	if parsedURL.Scheme == "oci" ||
+		parsedURL.Scheme == "file" ||
+		parsedURL.Scheme == "" {
 		return false
 	}
-	if parsedURL.Scheme == "oci" {
-		return true
-	}
-	return false
+	return true
 }
 
 func (h HelmProcessor) repoEnsure(path string, name string, repourl string) error {
@@ -78,7 +80,7 @@ func (h HelmProcessor) reposEnsure(path string) error {
 		}
 		updateRepos := 0
 		for _, dep := range deps.Dependencies {
-			if !ociRepo(dep.Repository) {
+			if downloadableRepo(dep.Repository) {
 				err := h.repoEnsure(path, dep.Name, dep.Repository)
 				if err != nil {
 					return err
