@@ -207,7 +207,7 @@ jobs:
           context: .
           file: ./Dockerfile.legacy
           push: true
-          platforms:
+          platforms: ${{ env.PLATFORMS }}
           tags: ghcr.io/crumbhole/argocd-lovely-plugin:${{ github.sha }}
           build-args: VERSION=${{ github.sha }}
       - name: Build CMP image with vault

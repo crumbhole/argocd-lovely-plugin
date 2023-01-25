@@ -52,7 +52,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          platforms:
+          platforms: ${{ env.PLATFORMS }}
           tags: |
             ghcr.io/crumbhole/argocd-lovely-plugin-cmp:${{ env.GIT_TAG_NAME }}
           build-args: VERSION=${{ env.GIT_TAG_NAME }}
