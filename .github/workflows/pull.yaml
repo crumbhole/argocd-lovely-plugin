@@ -73,8 +73,8 @@ jobs:
     strategy:
       matrix:
         argocd_version:
-          - "2.6.0-rc4"
-          - "2.5.7"
+          - "2.6.0-rc5"
+          - "2.5.8"
       fail-fast: true
     steps:
       - uses: actions/checkout@v3
@@ -120,8 +120,8 @@ jobs:
     strategy:
       matrix:
         argocd_version:
-          - "2.5.7"
-          - "2.4.18"
+          - "2.5.8"
+          - "2.4.20"
       fail-fast: true
     steps:
       - uses: actions/checkout@v3
