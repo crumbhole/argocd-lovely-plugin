@@ -193,7 +193,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
       - name: Build CMP image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile
@@ -202,7 +202,7 @@ jobs:
           tags: ghcr.io/crumbhole/argocd-lovely-plugin-cmp:${{ github.sha }}
           build-args: VERSION=${{ github.sha }}
       - name: Build and Push legacy image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile.legacy
@@ -211,7 +211,7 @@ jobs:
           tags: ghcr.io/crumbhole/argocd-lovely-plugin:${{ github.sha }}
           build-args: VERSION=${{ github.sha }}
       - name: Build CMP image with vault
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./Dockerfile.cmp-vault
