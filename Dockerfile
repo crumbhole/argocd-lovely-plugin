@@ -1,4 +1,4 @@
-FROM golang:1.19.5 as builder
+FROM golang:1.20.0 as builder
 ARG YQ_VERSION=4.30.6 #https://github.com/mikefarah/yq/releases
 ARG KUSTOMIZE_VERSION=4.5.7 #https://github.com/kubernetes-sigs/kustomize/releases
 ARG HELM_VERSION=3.10.3 #https://github.com/helm/helm/releases
