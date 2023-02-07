@@ -120,8 +120,8 @@ jobs:
     strategy:
       matrix:
         argocd_version:
+          - "2.6"
           - "2.5"
-          - "2.4"
       fail-fast: true
     steps:
       - uses: actions/checkout@v3
