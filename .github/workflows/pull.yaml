@@ -160,7 +160,6 @@ jobs:
           kubectl -n helmplusadditions logs -l=app.kubernetes.io/name=hello-world --ignore-errors=true
           kubectl -n helmplusadditions get secrets mysecret
           kubectl -n helmplusadditions get configmaps index.html-g9575k5952
-
   delete-ci-lovely-containers:
     name: Delete CI Lovely Containers
     runs-on: ubuntu-latest
