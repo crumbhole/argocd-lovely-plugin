@@ -18,7 +18,7 @@ ADD . /build
 WORKDIR /build
 RUN make -j4
 
-FROM alpine:3.17.1
+FROM alpine:3.17.2
 ENV LOVELY_HELM_PATH=/usr/local/bin/helm
 ENV LOVELY_KUSTOMIZE_PATH=/usr/local/bin/kustomize
 COPY --from=builder /usr/local/bin/helm /usr/local/bin/helm
