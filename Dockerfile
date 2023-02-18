@@ -1,7 +1,7 @@
-FROM golang:1.20.0 as builder
-ARG YQ_VERSION=4.30.6 #https://github.com/mikefarah/yq/releases
-ARG KUSTOMIZE_VERSION=4.5.7 #https://github.com/kubernetes-sigs/kustomize/releases
-ARG HELM_VERSION=3.10.3 #https://github.com/helm/helm/releases
+FROM golang:1.20.1 as builder
+ARG YQ_VERSION=4.30.8 #https://github.com/mikefarah/yq/releases
+ARG KUSTOMIZE_VERSION=5.0.0 #https://github.com/kubernetes-sigs/kustomize/releases
+ARG HELM_VERSION=3.11.1 #https://github.com/helm/helm/releases
 
 RUN apt update && apt install -y curl wget unzip git golint && rm -rf /var/lib/apt/lists/*
 
