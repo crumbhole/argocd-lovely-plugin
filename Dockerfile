@@ -1,5 +1,7 @@
 FROM golang:1.20.2 as builder
-ARG YQ_VERSION=4.30.8 #https://github.com/mikefarah/yq/releases
+ # https://github.com/mikefarah/yq/releases
+ # renovate: datasource=github-releases depName=mikefarah/yq
+ARG YQ_VERSION=4.30.8
 ARG KUSTOMIZE_VERSION=5.0.0 #https://github.com/kubernetes-sigs/kustomize/releases
 ARG HELM_VERSION=3.11.1 #https://github.com/helm/helm/releases
 
