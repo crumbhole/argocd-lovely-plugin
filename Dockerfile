@@ -7,7 +7,7 @@ ARG YQ_VERSION=v4.30.8
 ARG KUSTOMIZE_VERSION=v5.0.0
  # https://github.com/helm/helm/releases
  # renovate: datasource=github-releases depName=helm/helm
-ARG HELM_VERSION=v3.11.1
+ARG HELM_VERSION=v3.11.2
 
 RUN apt update && apt install -y curl wget unzip git golint && rm -rf /var/lib/apt/lists/*
 
