@@ -30,6 +30,19 @@ jobs:
       with:
         go-version-file: 'go.mod'
 
+    - name: Install Test Dependencies
+      run: |
+        # https://github.com/kubernetes-sigs/kustomize/releases
+        # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize
+        ARG KUSTOMIZE_VERSION=v5.0.0
+        # https://github.com/helm/helm/releases
+        # renovate: datasource=github-releases depName=helm/helm
+        ARG HELM_VERSION=v3.11.2
+        # Install Helm
+        RUN curl -SL https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz | tar -xz linux-amd64/helm && mv linux-amd64/helm /usr/local/bin/
+        # Install Kustomize
+        RUN curl -SL https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F${KUSTOMIZE_VERSION}/kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz | tar -xzC /usr/local/bin
+
     - name: Get
       run: go get -v ./...
 
