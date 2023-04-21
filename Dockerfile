@@ -8,6 +8,9 @@ ARG KUSTOMIZE_VERSION=v5.0.0
  # https://github.com/helm/helm/releases
  # renovate: datasource=github-releases depName=helm/helm
 ARG HELM_VERSION=v3.11.2
+ # https://github.com/helmfile/helmfile/releases
+ # renovate: datasource=github-releases depName=helmfile/helmfile
+ARG HELMFILE_VERSION=0.152.0
 
 RUN apt update && apt install -y curl wget unzip git golint && rm -rf /var/lib/apt/lists/*
 
@@ -19,6 +22,9 @@ RUN curl -SL https://github.com/kubernetes-sigs/kustomize/releases/download/kust
 
 # Install yq
 RUN curl -L -s "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64" -o /usr/local/bin/yq && chmod +x /usr/local/bin/yq
+
+# Install Helmfile
+RUN curl -SL https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz | tar -xzC /usr/local/bin
 
 ADD . /build
 WORKDIR /build

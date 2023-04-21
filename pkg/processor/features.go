@@ -183,3 +183,21 @@ func HelmName() string {
 func HelmNamespace() string {
 	return os.Getenv(`ARGOCD_APP_NAMESPACE`)
 }
+
+// HelmfileBinary returns the path to helm if overridden, otherwise we search the path
+// Set LOVELY_HELMFILE_PATH to the path to the helm binary
+func HelmfileBinary() string {
+	return config.GetStringParam(`LOVELY_HELMFILE_PATH`, `helmfile`)
+}
+
+// HelmfileMerge returns the yaml to strategic merge into values.yaml
+// Set LOVELY_HELMFILE_MERGE to some yaml you'd like strategic merged into any helmfile.yaml files used by helmfile
+func HelmfileMerge() string {
+	return config.GetStringParam(`LOVELY_HELMFILE_MERGE`, ``)
+}
+
+// HelmfilePatch returns the yaml to json6902 patch into values.yaml
+// Set LOVELY_HELMFILE_PATCH to some yaml you'd like json6902 patched into any helmfile.yaml files used by helmfile
+func HelmfilePatch() string {
+	return config.GetStringParam(`LOVELY_HELMFILE_PATCH`, ``)
+}

@@ -12,6 +12,7 @@ import (
 )
 
 var processors = []processor.Processor{
+	processor.HelmfileProcessor{},
 	processor.HelmProcessor{},
 	processor.KustomizeProcessor{},
 	processor.YamlProcessor{},
