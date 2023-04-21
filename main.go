@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"github.com/crumbhole/argocd-lovely-plugin/pkg/processor"
 	"github.com/otiai10/copy"
@@ -54,6 +55,15 @@ func (c *Collection) processAllDirs() (string, error) {
 	return result, nil
 }
 
+func (c *Collection) checkExclusive(path string/* , processors []processor.Processor */) error {
+	helmfileP := processor.HelmfileProcessor{}
+	helmP := processor.HelmProcessor{}
+	if helmfileP.Enabled(c.baseDir, path) && helmP.Enabled(c.baseDir, path) {
+		return errors.New("helmfile.yaml and Chart.yaml should not both exist in the same directory")
+	}
+	return nil
+}
+
 func (c *Collection) processOneDir(path string) (string, error) {
 	var result *string
 	pre := processor.PreProcessor{}
@@ -62,6 +72,10 @@ func (c *Collection) processOneDir(path string) (string, error) {
 		if err != nil {
 			return "", err
 		}
+	}
+	err := c.checkExclusive(path)
+	if err != nil {
+		return "", err
 	}
 	for _, processor := range processors {
 		if processor.Enabled(c.baseDir, path) {

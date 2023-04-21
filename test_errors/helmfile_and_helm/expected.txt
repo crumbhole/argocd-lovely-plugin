@@ -1,0 +1,1 @@
+helmfile.yaml and Chart.yaml should not both exist in the same directory
