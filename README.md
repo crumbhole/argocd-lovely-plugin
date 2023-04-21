@@ -100,3 +100,4 @@ If you prefer to watch videos of things rather than read words, we have compiled
 
 - [Using Argo CD to Kustomize a Helm chart, and deploy additional manifests](https://youtu.be/OMae_8DHELA)
 - [A bit about the general design of lovely plugin](https://youtu.be/5BLHwWlgd1k)
+- [Promoted at ArgoCon 2023 by Michael Crenshaw from Intuit/Argo CD](https://youtu.be/uYKjSlarlN4?t=1175)
