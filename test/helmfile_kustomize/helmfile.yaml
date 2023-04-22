@@ -1,0 +1,8 @@
+repositories:
+  - name: examples
+    url: https://helm.github.io/examples
+
+releases:
+  - name: test
+    namespace: default
+    chart: examples/hello-world

@@ -1,0 +1,1 @@
+You can patch your helmfile dynamically, which may be useful from an applicationset for example, where you'd like to deploy the same basic helmfile to all clusters, with a minor tweak for some of them.
