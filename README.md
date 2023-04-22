@@ -98,7 +98,7 @@ For each sub-application
 
 All the sub-application yamls will be concatenated and the result will be fed to Argo CD (printed to stdout).
 
-Helm and helmfile cannot be used in the same subdirectory, this will cause an error.
+Helm and helmfile cannot be used in the same subdirectory, this will cause an error. Yaml files in the same directory as the `helmfile.d` are silently ignored (so may be referenced from your `helmfile.d` files.
 
 # Debugging lovely's behaviour locally
 
