@@ -38,10 +38,15 @@ jobs:
         # https://github.com/helm/helm/releases
         # renovate: datasource=github-releases depName=helm/helm
         HELM_VERSION=v3.11.2
-        # Install Helm
+        # https://github.com/helmfile/helmfile/releases
+        # renovate: datasource=github-releases depName=helmfile/helmfile
+        HELMFILE_VERSION=0.152.0
+# Install Helm
         curl -SL https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz | tar -xz linux-amd64/helm && mv linux-amd64/helm /usr/local/bin/
         # Install Kustomize
         curl -SL https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F${KUSTOMIZE_VERSION}/kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz | tar -xzC /usr/local/bin
+        # Install Helmfile
+        curl -SL https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz | tar -xzC /usr/local/bin
 
     - name: Get
       run: go get -v ./...
