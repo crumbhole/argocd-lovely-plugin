@@ -31,7 +31,7 @@ func (c *Collection) scanFile(path string, info os.DirEntry, err error) error {
 		return err
 	}
 	if info.IsDir() {
-		if c.dirs.AddDirectoryIfYaml(path) {
+		if c.dirs.AddDirectoryIfWanted(path) {
 			return filepath.SkipDir
 		}
 		return nil
@@ -55,7 +55,9 @@ func (c *Collection) processAllDirs() (string, error) {
 	return result, nil
 }
 
-func (c *Collection) checkExclusive(path string/* , processors []processor.Processor */) error {
+// check exclusive checks for processors which must not both simultaneously be used
+// Currently this means helm and helmfile, as they cannot cope with both being used.
+func (c *Collection) checkExclusive(path string) error {
 	helmfileP := processor.HelmfileProcessor{}
 	helmP := processor.HelmProcessor{}
 	if helmfileP.Enabled(c.baseDir, path) && helmP.Enabled(c.baseDir, path) {

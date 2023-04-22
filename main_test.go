@@ -51,7 +51,7 @@ func matchREExpected(path string, givenValue string) error {
 	if expectre.MatchString(givenValue) {
 		return nil
 	}
-	return fmt.Errorf("Expected regex error >\n%s\n< and got >\n%s\n<", expected, givenValue)
+	return fmt.Errorf("Expected regex >\n%s\n< and got >\n%s\n<", expected, givenValue)
 }
 
 func matchExpected(path string, givenValue string) error {
@@ -65,7 +65,7 @@ func matchExpected(path string, givenValue string) error {
 	if string(expected) == givenValue {
 		return nil
 	}
-	return fmt.Errorf("Expected error >\n%s\n< and got >\n%s\n<", expected, givenValue)
+	return fmt.Errorf("Expected >\n%s\n< and got >\n%s\n<", expected, givenValue)
 }
 
 func matchExpectedWithStore(path string, givenValue string) error {
