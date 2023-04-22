@@ -24,15 +24,19 @@ func (d *PackageDirectories) checkFile(path string, info os.DirEntry, err error)
 		}
 		return nil
 	}
+	if info.IsDir() && filepath.Base(path) == `helmfile.d` {
+		d.AddDirectory(filepath.Dir(path))
+		return filepath.SkipDir
+	}
 	if path == d.testingRoot {
 		return nil
 	}
 	return filepath.SkipDir
 }
 
-// AddDirectoryIfYaml conditionally adds a directory if it directly contains one or
-// more .ya?ml files. Returns true if added, false if not.
-func (d *PackageDirectories) AddDirectoryIfYaml(path string) bool {
+// AddDirectoryIfWanted conditionally adds a directory if it directly contains one or
+// more .ya?ml files or a subdir called helmfile.d. Returns true if added, false if not.
+func (d *PackageDirectories) AddDirectoryIfWanted(path string) bool {
 	d.testingRoot = path
 	err := filepath.WalkDir(path, d.checkFile)
 	if err != nil {

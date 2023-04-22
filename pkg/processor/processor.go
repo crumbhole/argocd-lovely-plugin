@@ -17,7 +17,7 @@ type Processor interface {
 	Generate(input *string, basePath string, path string) (*string, error)
 }
 
-func reFileInDir(path string, re *regexp.Regexp) bool {
+func reEntryInDir(path string, re *regexp.Regexp) bool {
 	files, err := os.ReadDir(path)
 	if err != nil {
 		return false

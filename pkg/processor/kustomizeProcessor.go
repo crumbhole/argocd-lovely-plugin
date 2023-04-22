@@ -21,7 +21,7 @@ func (KustomizeProcessor) Name() string {
 
 // Enabled returns true only if this proessor can do work
 func (KustomizeProcessor) Enabled(_ string, path string) bool {
-	return reFileInDir(path, regexp.MustCompile(`^kustomization\.ya?ml$`))
+	return reEntryInDir(path, regexp.MustCompile(`^kustomization\.ya?ml$`))
 }
 
 // Generate create the text stream for this plugin

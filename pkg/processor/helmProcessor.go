@@ -30,7 +30,7 @@ func (HelmProcessor) Name() string {
 
 // Enabled returns true only if this proessor can do work
 func (HelmProcessor) Enabled(_ string, path string) bool {
-	return reFileInDir(path, regexp.MustCompile(`^Chart\.ya?ml$`))
+	return reEntryInDir(path, regexp.MustCompile(`^Chart\.ya?ml$`))
 }
 
 func (h HelmProcessor) helmDo(path string, params ...string) (string, error) {
