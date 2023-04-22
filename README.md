@@ -6,6 +6,7 @@ An [Argo CD](https://argoproj.github.io/argo-cd/) plugin that behaves in a way w
 - Trivially allows Helm + Kustomize to work together, just works as you'd hope. Put a helm Chart.yaml+values.yaml in a folder, alongside a kustomization.yaml and you can kustomize your helm output or add more objects with kustomize
 - When used with [application sets](https://argocd-applicationset.readthedocs.io/en/stable/) you can apply Kustomization and modify Helm's values.yaml per application to apply minor differences to your applications trivially.
 - Chain several plugins together. argocd-lovely-plugin acts as a master plugin runner (acting as the only plugin to Argo CD), and then runs other Argo CD compatible plugins in a chain. This acts a bit like a unix pipe, so you can helm | kustomize | argocd-vault-replacer.
+- Can also use [helmfiles](https://helmfile.readthedocs.io/en/latest/) and combine them with other things. These can either be a `helmfile.yaml` or some yaml in `helmfile.d/`
 
 ## Why?
 - Allows for better GitOps with one argo application per real application.
@@ -16,6 +17,7 @@ An [Argo CD](https://argoproj.github.io/argo-cd/) plugin that behaves in a way w
 
 ## Supports
 - Helm
+- Helmfile
 - Kustomize
 - Plain YAML
 
@@ -45,6 +47,7 @@ argocd-lovely-plugin is designed for minimal configuration and to do the right t
 - `ARGOCD_ENV_LOVELY_PREPROCESSORS_YAML` and `ARGOCD_ENV_LOVELY_PLUGINS_YAML`: Set to some yaml or json for a list of binaries to run during preprocessing and as plugins. Read [this](doc/plugins.md) for more on plugins.
 - `ARGOCD_ENV_LOVELY_KUSTOMIZE_PATH`: Set to a path or binary name to use for Kustomize.
 - `ARGOCD_ENV_LOVELY_HELM_PATH`: Set to a path or binary name to use for Helm.
+- `ARGOCD_ENV_LOVELY_HELMFILE_PATH`: Set to a path or binary name to use for helmfile.
 - `ARGOCD_ENV_LOVELY_ALLOW_GITCHECKOUT`: Allows kustomize base paths to work. Do **not** just set this without reading [this](doc/allow_git.md)
 
 ## Helm variation
@@ -56,6 +59,11 @@ You can use these environment variables for modifying helm's behaviour, and the 
 - `ARGOCD_ENV_LOVELY_HELM_NAME`: This can be used to set the Helm 'name' in the same way as releaseName works in Argo CD's standard Helm processing. (`ARGOCD_APP_NAME` used to be overridable in old versions of ArgoCD, but is no longer)
 
 There is no way to modify any other Helm files at this time.
+
+## Helmfile variation
+You can use these environment variables for modifying helmfiles's behaviour. More generic manipulation of any file is available through preprocessing. This cannot be used with helmfile.d files.
+- `ARGOCD_ENV_LOVELY_HELMFILE_MERGE`: to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) merged into any helmfile.yaml used by helmfile.
+- `ARGOCD_ENV_LOVELY_HELMFILE_PATCH`: to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any helmfile.yaml used by Helmfile.
 
 ## Kustomize
 You can use these environment variables for modifying kustomize's behaviour, and the kustomization.yaml file. More generic manipulation of any file is available through preprocessing.
@@ -82,12 +90,15 @@ Firstly we scan the working application directory for yaml files. At each shallo
 
 For each sub-application
 - Pre-processors will be run if defined
+- If there is a `helmfile.yaml` or `helmfile.d` directory then helmfile will run the templating engine.
 - If there is a `Chart.yaml` then Helm will run the templating engine.
-- If there is a `kustomization.yaml` then Kustomize will be run. If Helm was previously run the output of Helm will be added to the kustomization.yaml as a resource automatically.
+- If there is a `kustomization.yaml` then Kustomize will be run. If Helm or helmfile was previously run the output of that will be added to the kustomization.yaml as a resource automatically.
 - Only if neither a `Chart.yaml` nor a `kustomization.yaml` were found then all the yaml in the directory tree will be concatentated together.
 - All plugins will be run, in order given to process the data.
 
 All the sub-application yamls will be concatenated and the result will be fed to Argo CD (printed to stdout).
+
+Helm and helmfile cannot be used in the same subdirectory, this will cause an error.
 
 # Debugging lovely's behaviour locally
 
