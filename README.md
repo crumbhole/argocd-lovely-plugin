@@ -33,6 +33,8 @@ We aim to match the [Argo CD supported versions](https://argo-cd.readthedocs.io/
 # Installing as an Argo CD Plugin
 You can use [our Kustomization example](examples/installation/argocd) to install Argo CD and to bootstrap the installation of the plugin at the same time. However the steps below will detail what is required should you wish to do things more manually.
 
+At the moment the helmfile binary is not installed for you if you are running as a configmap plugin, nor is that documented here. You must get the helmfile binary into your repo-server yourself.
+
 ## Environment variables
 
 Lovely is configured through environment variables. These can be set in both the argocd-repo-server and in the application itself.
