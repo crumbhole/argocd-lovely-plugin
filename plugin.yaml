@@ -55,6 +55,18 @@ spec:
         title: "Helm Name"
         tooltip: "Helm application name to use. Will default to the ArgoCD application name"
         collectionType: string
+      - name: helmfile_path
+        title: "Helmfile Path"
+        tooltip: "Path to the helmfile binary used for this application"
+        collectionType: string
+      - name: helmfile_merge
+        title: "Helmfile Merge"
+        tooltip: "YAML to merge into the helmfile.yaml for helmfile"
+        collectionType: string
+      - name: helmfile_patch
+        title: "Helmfile Patch"
+        tooltip: "YAML to json6902 patch into the helmfile.yaml for helmfile"
+        collectionType: string
       - name: kustomize_merge
         title: "Kustomize Merge"
         tooltip: "YAML to merge into the kustomization.yaml for kustomize"
