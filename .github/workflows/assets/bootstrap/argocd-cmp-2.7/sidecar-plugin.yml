@@ -22,8 +22,5 @@ spec:
             - mountPath: /tmp
               name: cmp-tmp
       volumes:
-        - configMap:
-            name: argocd-lovely-plugin
-          name: argocd-lovely-plugin
         - emptyDir: {}
           name: cmp-tmp
