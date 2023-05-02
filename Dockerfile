@@ -10,24 +10,15 @@ ARG KUSTOMIZE_VERSION=v5.0.0
 ARG HELM_VERSION=v3.11.3
  # https://github.com/helmfile/helmfile/releases
  # renovate: datasource=github-releases depName=helmfile/helmfile
-ARG HELMFILE_VERSION=0.152.0
+ARG HELMFILE_VERSION=v0.152.0
 
 RUN apt update && apt install -y curl wget unzip git golint && rm -rf /var/lib/apt/lists/*
 
-# Install Helm
-RUN curl -SL https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz | tar -xz linux-amd64/helm && mv linux-amd64/helm /usr/local/bin/
-
-# Install Kustomize
-RUN curl -SL https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F${KUSTOMIZE_VERSION}/kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz | tar -xzC /usr/local/bin
-
-# Install yq
-RUN curl -L -s "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64" -o /usr/local/bin/yq && chmod +x /usr/local/bin/yq
-
-# Install Helmfile
-RUN curl -SL https://github.com/helmfile/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION}_linux_amd64.tar.gz | tar -xzC /usr/local/bin
-
 ADD . /build
 WORKDIR /build
+# Install Dependencies
+RUN /build/deps.sh
+
 RUN make -j4
 
 FROM alpine:3.17.3
