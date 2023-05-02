@@ -54,9 +54,6 @@ spec:
 ```
 For more information, please refer to the [Argo CD Documentation on discovery](https://argo-cd.readthedocs.io/en/stable/operator-manual/config-management-plugins/#write-discovery-rules-for-your-plugin).
 
-
-Note th
-
 ## Installing as an Argo CD ConfigMap Plugin (Deprecated)
 You can use [our Kustomization example](examples/installation/argocd) to install Argo CD and to bootstrap the installation of the plugin at the same time.
 
