@@ -6,9 +6,6 @@ spec:
   version: v1.0
   generate:
     command: ["argocd-lovely-plugin"]
-  discover:
-    #fileName: "**.y*ml" - This won't work for things that don't have yaml/yml in the base directory (eg helm-plus-additions)
-     fileName: "*"
   parameters:
     static:
       - name: preprocessors
