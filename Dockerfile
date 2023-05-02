@@ -10,7 +10,7 @@ ARG KUSTOMIZE_VERSION=v5.0.0
 ARG HELM_VERSION=v3.11.3
  # https://github.com/helmfile/helmfile/releases
  # renovate: datasource=github-releases depName=helmfile/helmfile
-ARG HELMFILE_VERSION=v0.152.0
+ARG HELMFILE_VERSION=v0.153.1
 
 RUN apt update && apt install -y curl wget unzip git golint && rm -rf /var/lib/apt/lists/*
 
