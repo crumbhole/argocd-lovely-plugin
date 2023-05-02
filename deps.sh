@@ -1,7 +1,7 @@
 #!/bin/bash
 
-case "$(uname -m)" in
-	x84_64)
+case $(uname -m) in
+	x86_64)
 		ARCH=amd64;;
 	aarch64)
 		ARCH=arm64;;
@@ -9,6 +9,8 @@ case "$(uname -m)" in
 		echo Unknown architecture $(uname -m)
 		exit 1;;
 esac
+
+echo Using architecture ${ARCH}
 
 # Install Helm
 curl -SL https://get.helm.sh/helm-${HELM_VERSION}-linux-${ARCH}.tar.gz | tar -xz linux-${ARCH}/helm && mv linux-${ARCH}/helm /usr/local/bin/
