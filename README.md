@@ -30,8 +30,17 @@ All the yaml in the directory and all subdirectories will be used as part of the
 ## Supported Argo CD Versions
 We aim to match the [Argo CD supported versions](https://argo-cd.readthedocs.io/en/stable/operator-manual/installation/#supported-versions) by testing against the Argo CD N and N -1 versions of Argo CD. You can see the current versions of Argo CD that we test against by looking in the [CI bootstrap directory](.github/workflows/assets/bootstrap) in this repo.
 
-# Installing as an Argo CD Plugin
-You can use [our Kustomization example](examples/installation/argocd) to install Argo CD and to bootstrap the installation of the plugin at the same time. However the steps below will detail what is required should you wish to do things more manually.
+# Installing as an Argo CD Sidecar Plugin
+You can use [our Kustomization example](examples/installation/argocd) to install Argo CD and to bootstrap the installation of the plugin at the same time.
+
+We recommend you install as an Argo CD CMP Sidecar Plugin. [Argo CD's documentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/config-management-plugins/#sidecar-plugin) has steps on how to achieve this. You can also observe how we install Lovely for our CI tests in the [CI bootstrap directory](.github/workflows/assets/bootstrap) in this repo.
+
+We offer three pre-built container options:
+
+1. The deprecated `argocd-lovely-plugin` if you wish to install as an older-style configMap plugin.
+2. `argocd-lovely-plugin-cmp` to install as a CMP sidecar plugin.
+3. `argocd-lovely-plugin-cmp-vault` to install as a CMP sidecar plugin with [argocd-vault-replacer](https://github.com/crumbhole/argocd-vault-replacer) already baked in.
+
 
 At the moment the helmfile binary is not installed for you if you are running as a configmap plugin, nor is that documented here. You must get the helmfile binary into your repo-server yourself.
 
