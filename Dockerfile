@@ -29,7 +29,7 @@ COPY --from=builder /usr/local/bin/helmfile /usr/local/bin/helmfile
 COPY --from=builder /usr/local/bin/kustomize /usr/local/bin/kustomize
 COPY --from=builder /build/build/argocd-lovely-plugin /usr/local/bin/argocd-lovely-plugin
 COPY ./plugin.yaml /home/argocd/cmp-server/config/plugin.yaml
-RUN apk add git
+RUN apk add git bash --no-cache
 USER 999
 # This does NOT exist inside the image, must be mounted from argocd
 ENTRYPOINT [ "/var/run/argocd/argocd-cmp-server" ]
