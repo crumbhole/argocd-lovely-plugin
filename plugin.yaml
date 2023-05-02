@@ -11,71 +11,71 @@ spec:
      fileName: "*"
   parameters:
     static:
-      - name: preprocessors
+      - name: lovely_preprocessors
         title: "Pre-Processors"
         tooltip: "Pre-Processors to run on this application, in the order given"
         collectionType: array
         itemType: string
 # todo yaml version
-      - name: plugins
+      - name: lovely_plugins
         title: "Plugins"
         tooltip: "Plugins to run on this application, in the order given"
         collectionType: array
         itemType: string
-      - name: kustomize_path
+      - name: lovely_kustomize_path
         title: "Kustomize Path"
         tooltip: "Path to the kustomize binary used for this application"
         collectionType: string
-      - name: helm_path
+      - name: lovely_helm_path
         title: "Helm Path"
         tooltip: "Path to the helm binary used for this application"
         collectionType: string
-      - name: allow_git_checkout
+      - name: lovely_allow_git_checkout
         title: "Allow Git Checkout"
         tooltip: "See the documentation before setting this parameter"
         string: "false"
         collectionType: string
-      - name: helm_merge
+      - name: lovely_helm_merge
         title: "Helm Merge"
         tooltip: "YAML to merge into the values.yaml for helm"
         collectionType: string
-      - name: helm_patch
+      - name: lovely_helm_patch
         title: "Helm Patch"
         tooltip: "YAML to json6902 patch into the values.yaml for helm"
         collectionType: string
-      - name: helm_template_params
+      - name: lovely_helm_template_params
         title: "Helm Template Parameters"
         tooltip: "Space separated parameter to pass to helm template as you might use on the command line"
         collectionType: string
-      - name: helm_repoadd_params
+      - name: lovely_helm_repoadd_params
         title: "Helm Repo Add Parameters"
         tooltip: "Space separated parameter to pass to helm repo add as you might use on the command line"
         collectionType: string
-      - name: helm_name
+      - name: lovely_helm_name
         title: "Helm Name"
         tooltip: "Helm application name to use. Will default to the ArgoCD application name"
         collectionType: string
-      - name: helmfile_path
+      - name: lovely_helmfile_path
         title: "Helmfile Path"
         tooltip: "Path to the helmfile binary used for this application"
         collectionType: string
-      - name: helmfile_merge
+      - name: lovely_helmfile_merge
         title: "Helmfile Merge"
         tooltip: "YAML to merge into the helmfile.yaml for helmfile"
         collectionType: string
-      - name: helmfile_patch
+      - name: lovely_helmfile_patch
         title: "Helmfile Patch"
         tooltip: "YAML to json6902 patch into the helmfile.yaml for helmfile"
         collectionType: string
-      - name: kustomize_merge
+      - name: lovely_kustomize_merge
         title: "Kustomize Merge"
         tooltip: "YAML to merge into the kustomization.yaml for kustomize"
         collectionType: string
-      - name: kustomize_patch
+      - name: lovely_kustomize_patch
         title: "Kustomize Patch"
         tooltip: "YAML to json6902 patch into the kustomization.yaml for kustomize"
         collectionType: string
-      - name: kustomize_params
+      - name: lovely_kustomize_params
         title: "Kustomize Parameters"
         tooltip: "Space separated parameter to pass to kustomize build as you might use on the command line"
         collectionType: string
