@@ -60,35 +60,35 @@ func pluginsForPath(path string, yamlEnv string, plainEnv string) ([]string, err
 }
 
 // Plugins returns the list of plugins to run during the generate phase after main processing
-// Set ARGOCD_ENV_LOVELY_PLUGINS_YAML to a map of a list of plugins to run per directory
+// Set LOVELY_PLUGINS_YAML to a map of a list of plugins to run per directory
 // e.g.
 // foo/bar:
 // - plugin1
 // - plugin2
 // helm:
 // - plugin3
-// Or et ARGOCD_ENV_LOVELY_PLUGINS to a comma separated list of plugins to run after other processing.
+// Or et LOVELY_PLUGINS to a comma separated list of plugins to run after other processing.
 // for any directories not in the list from the YAML
 func Plugins(path string) ([]string, error) {
 	return pluginsForPath(path, `LOVELY_PLUGINS_YAML`, `LOVELY_PLUGINS`)
 }
 
 // Preprocessors returns the list of plugins to run before we generate yaml.
-// Set ARGOCD_ENV_LOVELY_PREPROCESSORS_YAML to a map of a list of plugins to run per directory
-// Set ARGOCD_ENV_LOVELY_PREPROCESSORS to a comma separated list of plugins to run
+// Set LOVELY_PREPROCESSORS_YAML to a map of a list of plugins to run per directory
+// Set LOVELY_PREPROCESSORS to a comma separated list of plugins to run
 // for any directories not in the list from the YAML
 func Preprocessors(path string) ([]string, error) {
 	return pluginsForPath(path, `LOVELY_PREPROCESSORS_YAML`, `LOVELY_PREPROCESSORS`)
 }
 
 // KustomizeBinary returns the path to kustomize if overridden, otherwise we search the path
-// Set ARGOCD_ENV_LOVELY_KUSTOMIZE_PATH to the path to the kustomize binary
+// Set LOVELY_KUSTOMIZE_PATH to the path to the kustomize binary
 func KustomizeBinary() string {
 	return config.GetStringParam(`LOVELY_KUSTOMIZE_PATH`, `kustomize`)
 }
 
 // KustomizeParams returns extra parameters to pass to kustomize
-// Set ARGOCD_ENV_LOVELY_KUSTOMIZE_PARAMS to extra parameters to pass to kustomize
+// Set LOVELY_KUSTOMIZE_PARAMS to extra parameters to pass to kustomize
 func KustomizeParams() []string {
 	paramsStr := config.GetStringParam(`LOVELY_KUSTOMIZE_PARAMS`, ``)
 	if paramsStr == `` {
@@ -102,25 +102,25 @@ func KustomizeParams() []string {
 }
 
 // HelmBinary returns the path to helm if overridden, otherwise we search the path
-// Set ARGOCD_ENV_LOVELY_HELM_PATH to the path to the helm binary
+// Set LOVELY_HELM_PATH to the path to the helm binary
 func HelmBinary() string {
 	return config.GetStringParam(`LOVELY_HELM_PATH`, `helm`)
 }
 
 // HelmMerge returns the yaml to strategic merge into values.yaml
-// Set ARGOCD_ENV_LOVELY_HELM_MERGE to some yaml you'd like strategic merged into any values.yaml files used by helm
+// Set LOVELY_HELM_MERGE to some yaml you'd like strategic merged into any values.yaml files used by helm
 func HelmMerge() string {
 	return config.GetStringParam(`LOVELY_HELM_MERGE`, ``)
 }
 
 // HelmPatch returns the yaml to json6902 patch into values.yaml
-// Set ARGOCD_ENV_LOVELY_HELM_PATCH to some yaml you'd like json6902 patched into any values.yaml files used by helm
+// Set LOVELY_HELM_PATCH to some yaml you'd like json6902 patched into any values.yaml files used by helm
 func HelmPatch() string {
 	return config.GetStringParam(`LOVELY_HELM_PATCH`, ``)
 }
 
 // HelmTemplateParams returns extra parameters to pass to helm template
-// Set ARGOCD_ENV_LOVELY_HELM_TEMPLATE_PARAMS to extra parameters to pass to helm template
+// Set LOVELY_HELM_TEMPLATE_PARAMS to extra parameters to pass to helm template
 func HelmTemplateParams() []string {
 	paramsStr := config.GetStringParam(`LOVELY_HELM_TEMPLATE_PARAMS`, ``)
 	if paramsStr == `` {
@@ -134,7 +134,7 @@ func HelmTemplateParams() []string {
 }
 
 // HelmRepoAddParams returns extra parameters to pass to helm repo add
-// Set ARGOCD_ENV_LOVELY_HELM_REPO_ADD_PARAMS to extra parameters to pass to helm template
+// Set LOVELY_HELM_REPO_ADD_PARAMS to extra parameters to pass to helm template
 func HelmRepoAddParams() []string {
 	paramsStr := config.GetStringParam(`LOVELY_HELM_REPO_ADD_PARAMS`, ``)
 	if paramsStr == `` {
@@ -148,19 +148,19 @@ func HelmRepoAddParams() []string {
 }
 
 // KustomizeMerge returns the yaml to strategic merge into kustomization.yaml
-// Set ARGOCD_ENV_LOVELY_KUSTOMIZE_MERGE to some yaml you'd like strategic merged on any kustomization.yaml files used by kustomize
+// Set LOVELY_KUSTOMIZE_MERGE to some yaml you'd like strategic merged on any kustomization.yaml files used by kustomize
 func KustomizeMerge() string {
 	return config.GetStringParam(`LOVELY_KUSTOMIZE_MERGE`, ``)
 }
 
 // KustomizePatch returns the yaml to json6902 patch into kustomization.yaml
-// Set ARGOCD_ENV_LOVELY_KUSTOMIZE_PATCH to some yaml you'd like json6902 patched on any kustomization.yaml files used by kustomize
+// Set LOVELY_KUSTOMIZE_PATCH to some yaml you'd like json6902 patched on any kustomization.yaml files used by kustomize
 func KustomizePatch() string {
 	return config.GetStringParam(`LOVELY_KUSTOMIZE_PATCH`, ``)
 }
 
 // AllowGitCheckout establishes if git is safe to use
-// Set ARGOCD_ENV_ALLOW_GITCHECKOUT to true to say you've told Argo this is safe
+// Set ALLOW_GITCHECKOUT to true to say you've told Argo this is safe
 func AllowGitCheckout() bool {
 	res, err := strconv.ParseBool(config.GetStringParam(`LOVELY_ALLOW_GITCHECKOUT`, `false`))
 	if err != nil {
@@ -170,7 +170,7 @@ func AllowGitCheckout() bool {
 }
 
 // HelmName gives us the application name for helm
-// Set ARGOCD_ENV_LOVELY_HELM_NAME to override the default of ARGOCD_APP_NAME
+// Set LOVELY_HELM_NAME to override the default of ARGOCD_APP_NAME
 func HelmName() string {
 	nameOverride := config.GetStringParam(`LOVELY_HELM_NAME`, ``)
 	if nameOverride == `` {
@@ -182,6 +182,17 @@ func HelmName() string {
 // HelmNamespace gives us the namespace for helm
 func HelmNamespace() string {
 	return os.Getenv(`ARGOCD_APP_NAMESPACE`)
+}
+
+// HelmValues gives us the values file we're going to use for helm
+// Set LOVELY_HELM_VALUES to the path to use for the values file
+func HelmValues() string {
+	return config.GetStringParam(`LOVELY_HELM_VALUES`, `values.yaml`)
+}
+
+// HelmValuesSet returns true if HelmValues() is explicily set
+func HelmValuesSet() bool {
+	return config.GetStringParam(`LOVELY_HELM_VALUES`, ``) != ``
 }
 
 // HelmfileBinary returns the path to helm if overridden, otherwise we search the path
