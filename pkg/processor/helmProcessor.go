@@ -112,7 +112,7 @@ func (h HelmProcessor) Generate(input *string, basePath string, path string) (*s
 	if err != nil {
 		return nil, err
 	}
-	err = MergeYaml(path+"/values.yaml", HelmMerge(), HelmPatch())
+	err = MergeYaml(path+"/"+HelmValues(), HelmMerge(), HelmPatch())
 	if err != nil {
 		return nil, err
 	}
@@ -126,6 +126,9 @@ func (h HelmProcessor) Generate(input *string, basePath string, path string) (*s
 		for _, apiVersion := range apiVersions {
 			params = append(params[:], []string{"--api-versions", apiVersion}...)
 		}
+	}
+	if HelmValuesSet() {
+		params = append(params[:], []string{`-f`, HelmValues()}...)
 	}
 	params = append(params[:], []string{`-n`, HelmNamespace(), HelmName(), `.`}...)
 	out, err := h.helmDo(path, params...)

@@ -30,7 +30,7 @@ The order matters in both YAML and non yaml, and the plugins will be called in t
 
 ## Preprocessors
 
-Configured using `ARGOCD_ENV_LOVELY_PREPROCESSORS` and `ARGOCD_ENV_LOVELY_PREPROCESSORS_YAML`.
+Configured using `LOVELY_PREPROCESSORS` and `LOVELY_PREPROCESSORS_YAML`.
 
 These plugins will be called before any other processing. They may add or modify any files inside the current directory, and are intended to do so. This is their only way of interacting with the process.
 
@@ -41,10 +41,8 @@ A preprocessor fails by returning a non-zero exit code and error information on 
 
 ## Plugins
 
-Configured using `ARGOCD_ENV_LOVELY_PLUGINS` and `ARGOCD_ENV_LOVELY_PLUGINS_YAML`.
+Configured using `LOVELY_PLUGINS` and `LOVELY_PLUGINS_YAML`.
 
 These plugins will be called after any other processing happens. These will get the current yaml piped into them on stdin and should output all of the resulting yaml on stdout. If your plugin makes no changes stdin should be echoed to stdout.
 
 A plugin fails by returning a non-zero exit code and error information on stderr.
-
-

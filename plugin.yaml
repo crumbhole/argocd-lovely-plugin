@@ -51,6 +51,9 @@ spec:
       - name: lovely_helm_name
         title: "Helm Name"
         tooltip: "Helm application name to use. Will default to the ArgoCD application name"
+      - name: lovely_helm_values
+        title: "Helm Values"
+        tooltip: "Helm values file to use. Will default to values.yaml"
         collectionType: string
       - name: lovely_helmfile_path
         title: "Helmfile Path"
