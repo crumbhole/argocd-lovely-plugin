@@ -2,6 +2,7 @@ package processor
 
 import (
 	"fmt"
+	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
 	"gopkg.in/yaml.v3"
 	"net/url"
 	"os"
@@ -33,10 +34,19 @@ func (HelmProcessor) Enabled(_ string, path string) bool {
 	return reEntryInDir(path, regexp.MustCompile(`^Chart\.ya?ml$`))
 }
 
+func contains(s []string, str string) bool {
+	for _, v := range s {
+		if v == str {
+			return true
+		}
+	}
+	return false
+}
+
 func (h HelmProcessor) helmDo(path string, params ...string) (string, error) {
 	baseParams := [6]string{`--registry-config`, `/tmp/.helm/registry.json`, `--repository-cache`, `/tmp/.helm/cache/repository`, `--repository-config`, `/tmp/.helm/repositories.json`}
 	cmdArray := append(baseParams[:], params[:]...)
-	return execute(path, HelmBinary(), cmdArray...)
+	return execute(path, features.HelmBinary(), cmdArray...)
 }
 
 func downloadableRepo(repourl string) bool {
@@ -54,7 +64,7 @@ func downloadableRepo(repourl string) bool {
 
 func (h HelmProcessor) repoEnsure(path string, name string, repourl string) error {
 	params := []string{`repo`, `add`, `--force-update`}
-	params = append(params[:], HelmRepoAddParams()[:]...)
+	params = append(params[:], features.HelmRepoAddParams()[:]...)
 	params = append(params[:], []string{name, repourl}...)
 	_, err := h.helmDo(path, params...)
 	return err
@@ -112,12 +122,12 @@ func (h HelmProcessor) Generate(input *string, basePath string, path string) (*s
 	if err != nil {
 		return nil, err
 	}
-	err = MergeYaml(path+"/"+HelmValues(), HelmMerge(), HelmPatch())
+	err = MergeYaml(path+"/"+features.HelmValues(), features.HelmMerge(), features.HelmPatch())
 	if err != nil {
 		return nil, err
 	}
 	params := []string{`template`, `--include-crds`}
-	params = append(params[:], HelmTemplateParams()[:]...)
+	params = append(params[:], features.HelmTemplateParams()[:]...)
 	if kubeVersion := os.Getenv(`KUBE_VERSION`); kubeVersion != "" && !contains(params, `--kube-version`) {
 		params = append(params[:], []string{`--kube-version`, kubeVersion}...)
 	}
@@ -127,10 +137,10 @@ func (h HelmProcessor) Generate(input *string, basePath string, path string) (*s
 			params = append(params[:], []string{"--api-versions", apiVersion}...)
 		}
 	}
-	if HelmValuesSet() {
-		params = append(params[:], []string{`-f`, HelmValues()}...)
+	if features.HelmValuesSet() {
+		params = append(params[:], []string{`-f`, features.HelmValues()}...)
 	}
-	params = append(params[:], []string{`-n`, HelmNamespace(), HelmName(), `.`}...)
+	params = append(params[:], []string{`-n`, features.HelmNamespace(), features.HelmName(), `.`}...)
 	out, err := h.helmDo(path, params...)
 	if err != nil {
 		return nil, fmt.Errorf("error running helm: %v", err)

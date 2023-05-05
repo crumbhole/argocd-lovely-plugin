@@ -1,4 +1,4 @@
-package processor
+package features
 
 // The control of this is via environment variables, as that
 // is the way argocd allows you to control plugins
@@ -79,6 +79,12 @@ func Plugins(path string) ([]string, error) {
 // for any directories not in the list from the YAML
 func Preprocessors(path string) ([]string, error) {
 	return pluginsForPath(path, `LOVELY_PREPROCESSORS_YAML`, `LOVELY_PREPROCESSORS`)
+}
+
+// DetectionRegex returns the regex used to detect applications
+// Set LOVELY_DETECTION_REGEX to the regex to detect applications
+func DetectionRegex() string {
+	return config.GetStringParam(`LOVELY_DETECTION_REGEX`, `\.ya?ml$`)
 }
 
 // KustomizeBinary returns the path to kustomize if overridden, otherwise we search the path

@@ -4,6 +4,7 @@ package processor
 // is the way argocd allows you to control plugins
 import (
 	"fmt"
+	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
 	"os/exec"
 	"path/filepath"
 )
@@ -21,7 +22,7 @@ func getRelPreprocessors(basePath string, path string) ([]string, error) {
 	if err != nil {
 		return make([]string, 0), fmt.Errorf("internal relative path error %s", err)
 	}
-	return Preprocessors(relPath)
+	return features.Preprocessors(relPath)
 }
 
 // Enabled returns true only if this proessor can do work

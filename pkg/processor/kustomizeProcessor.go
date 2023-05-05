@@ -5,6 +5,7 @@ import (
 	"os"
 	"regexp"
 
+	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
 	"gopkg.in/yaml.v3"
 	"sigs.k8s.io/kustomize/api/types"
 )
@@ -36,7 +37,7 @@ func (k KustomizeProcessor) Generate(input *string, basePath string, path string
 			return nil, err
 		}
 	}
-	err := MergeYaml(kustYamlPath, KustomizeMerge(), KustomizePatch())
+	err := MergeYaml(kustYamlPath, features.KustomizeMerge(), features.KustomizePatch())
 	if err != nil {
 		return nil, err
 	}
@@ -76,13 +77,13 @@ func (k KustomizeProcessor) Generate(input *string, basePath string, path string
 		}
 	}
 	params := []string{`build`, `--enable-helm`}
-	params = append(params[:], KustomizeParams()[:]...)
+	params = append(params[:], features.KustomizeParams()[:]...)
 	params = append(params, path)
 	wd, err := os.Getwd()
 	if err != nil {
 		return nil, err
 	}
-	out, err := execute(wd, KustomizeBinary(), params...)
+	out, err := execute(wd, features.KustomizeBinary(), params...)
 	if err != nil {
 		return nil, fmt.Errorf("error running kustomize: %v", err)
 	}

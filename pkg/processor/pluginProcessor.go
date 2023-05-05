@@ -5,6 +5,7 @@ package processor
 import (
 	"bytes"
 	"fmt"
+	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
 	"io"
 	"os/exec"
 	"path/filepath"
@@ -23,7 +24,7 @@ func getRelPlugins(basePath string, path string) ([]string, error) {
 	if err != nil {
 		return nil, fmt.Errorf("internal relative path error %s", err)
 	}
-	return Plugins(relPath)
+	return features.Plugins(relPath)
 }
 
 // Enabled returns true only if this proessor can do work

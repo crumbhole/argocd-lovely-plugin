@@ -78,6 +78,7 @@ argocd-lovely-plugin is designed for minimal configuration and to do the right t
 - `LOVELY_HELM_PATH`: Set to a path or binary name to use for Helm.
 - `LOVELY_HELMFILE_PATH`: Set to a path or binary name to use for helmfile.
 - `LOVELY_ALLOW_GITCHECKOUT`: Allows kustomize base paths to work. Do **not** just set this without reading [this](doc/allow_git.md)
+- `LOVELY_DETECTION_REGEX`: Allow applications to be detected using a different regex so that a PREPROCESSOR that works on non-yaml files can run on this application. The default is `\.ya?ml$`. (Note: currently `helmfile.d/` will always trigger an application being detected, raise an issue if this needs configuring too). This is pointless to change unless you have a PREPROCESSOR defined.
 
 ## Helm variation
 You can use these environment variables for modifying helm's behaviour, and the values.yaml file. More generic manipulation of any file is available through preprocessing.
