@@ -33,9 +33,9 @@ We aim to match the [Argo CD supported versions](https://argo-cd.readthedocs.io/
 # Installing
 We offer three pre-built container options:
 
-1. The deprecated `argocd-lovely-plugin` if you wish to install as an older-style configMap plugin.
-2. `argocd-lovely-plugin-cmp` to install as a CMP sidecar plugin.
-3. `argocd-lovely-plugin-cmp-vault` to install as a CMP sidecar plugin with [argocd-vault-replacer](https://github.com/crumbhole/argocd-vault-replacer) already baked in. [The Dockerfile](Dockerfile.cmp-vault) also serves as a blueprint should you wish to package your own plugins.
+1. `argocd-lovely-plugin-cmp` to install as a CMP sidecar plugin.
+2. `argocd-lovely-plugin-cmp-vault` to install as a CMP sidecar plugin with [argocd-vault-replacer](https://github.com/crumbhole/argocd-vault-replacer) already baked in. [The Dockerfile](Dockerfile.cmp-vault) also serves as a blueprint should you wish to package your own plugins to chain with Lovely.
+3. The deprecated `argocd-lovely-plugin` if you wish to install as an older-style configMap plugin.
 
 ## Installing as an Argo CD Sidecar Plugin
 We recommend you install as an Argo CD CMP Sidecar Plugin. [Argo CD's documentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/config-management-plugins/#sidecar-plugin) has steps on how to achieve this. You can also observe how we install Lovely for our CI tests in the [CI bootstrap directory](.github/workflows/assets/bootstrap) in this repo.
@@ -141,4 +141,4 @@ If you prefer to watch videos of things rather than read words, we have compiled
 
 - [Using Argo CD to Kustomize a Helm chart, and deploy additional manifests](https://youtu.be/OMae_8DHELA)
 - [A bit about the general design of lovely plugin](https://youtu.be/5BLHwWlgd1k)
-- [Promoted at ArgoCon 2023 by Michael Crenshaw from Intuit/Argo CD](https://youtu.be/uYKjSlarlN4?t=1175)
+- [Promoted at ArgoCon EU 2023 by Michael Crenshaw from Intuit/Argo CD](https://youtu.be/uYKjSlarlN4?t=1175)
