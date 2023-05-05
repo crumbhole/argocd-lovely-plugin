@@ -2,9 +2,8 @@ package processor
 
 import (
 	"fmt"
-	// "os"
+	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
 	"regexp"
-	// "strings"
 )
 
 // HelmfileProcessor handles Chart,yaml files via helm
@@ -22,7 +21,7 @@ func (HelmfileProcessor) Enabled(_ string, path string) bool {
 }
 
 func (h HelmfileProcessor) helmfileDo(path string, params ...string) (string, error) {
-	return execute(path, HelmfileBinary(), params...)
+	return execute(path, features.HelmfileBinary(), params...)
 }
 
 // Generate create the text stream for this plugin
@@ -31,7 +30,7 @@ func (h HelmfileProcessor) Generate(input *string, basePath string, path string)
 		return input, ErrDisabledProcessor
 	}
 	if reEntryInDir(path, regexp.MustCompile(`^helmfile\.ya?ml$`)) {
-		err := MergeYaml(path+"/helmfile.yaml", HelmfileMerge(), HelmfilePatch())
+		err := MergeYaml(path+"/helmfile.yaml", features.HelmfileMerge(), features.HelmfilePatch())
 		if err != nil {
 			return nil, err
 		}

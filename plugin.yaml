@@ -13,12 +13,24 @@ spec:
         tooltip: "Pre-Processors to run on this application, in the order given"
         collectionType: array
         itemType: string
-# todo yaml version
+      - name: lovely_preprocessors_yaml
+        title: "Pre-Processors YAML"
+        tooltip: "Pre-Processors to run on this application, in the order given, defined in YAML instead"
+        collectionType: string
       - name: lovely_plugins
         title: "Plugins"
         tooltip: "Plugins to run on this application, in the order given"
         collectionType: array
         itemType: string
+      - name: lovely_plugins_yaml
+        title: "Plugins YAML"
+        tooltip: "Plugins to run on this application, in the order given, defined in YAML instead"
+        collectionType: string
+      - name: lovely_detection_regex
+        title: "Detection Regex"
+        tooltip: "Allow applications to be detected using a different regex so that a PREPROCESSOR that works on non-yaml files can run on this application."
+        collectionType: string
+        string: "\.ya?ml$"
       - name: lovely_kustomize_path
         title: "Kustomize Path"
         tooltip: "Path to the kustomize binary used for this application"

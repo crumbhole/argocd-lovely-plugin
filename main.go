@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
 	"github.com/crumbhole/argocd-lovely-plugin/pkg/processor"
 	"github.com/otiai10/copy"
 	"log"
@@ -127,7 +128,7 @@ func (c *Collection) gitClean(path string) error {
 // Ensure we have a clean working copy
 // ArgoCD doesn't guarantee us an unpatched copy when we run
 func (c *Collection) ensureClean(path string) (string, func(string) error, error) {
-	if processor.AllowGitCheckout() {
+	if features.AllowGitCheckout() {
 		return path, c.gitClean, c.gitClean(path)
 	}
 	newPath, err := c.makeTmpCopy(path)

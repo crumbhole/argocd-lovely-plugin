@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -17,7 +18,7 @@ func (d *PackageDirectories) checkFile(path string, info os.DirEntry, err error)
 		return err
 	}
 	if !info.IsDir() {
-		yamlRegexp := regexp.MustCompile(`\.ya?ml$`)
+		yamlRegexp := regexp.MustCompile(features.DetectionRegex())
 		dir := filepath.Dir(path)
 		if yamlRegexp.MatchString(path) {
 			d.AddDirectory(dir)
