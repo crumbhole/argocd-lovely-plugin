@@ -58,7 +58,7 @@ func (k KustomizeProcessor) Generate(input *string, basePath string, path string
 		var kust types.Kustomization
 		err = yaml.Unmarshal(kustContents, &kust)
 		if err != nil {
-			return nil, fmt.Errorf("Error reading kustomization.yaml: %v", err)
+			return nil, fmt.Errorf("error reading kustomization.yaml: %v", err)
 		}
 		kust.Resources = append(kust.Resources, kustomizeIntermediateFilename)
 
@@ -84,7 +84,7 @@ func (k KustomizeProcessor) Generate(input *string, basePath string, path string
 	}
 	out, err := execute(wd, KustomizeBinary(), params...)
 	if err != nil {
-		return nil, fmt.Errorf("Error running kustomize: %v", err)
+		return nil, fmt.Errorf("error running kustomize: %v", err)
 	}
 	outstr := "---\n" + string(out)
 	return &outstr, nil

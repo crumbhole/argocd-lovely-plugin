@@ -21,7 +21,7 @@ func (PluginProcessor) Name() string {
 func getRelPlugins(basePath string, path string) ([]string, error) {
 	relPath, err := filepath.Rel(basePath, path)
 	if err != nil {
-		return nil, fmt.Errorf("Internal relative path error %s", err)
+		return nil, fmt.Errorf("internal relative path error %s", err)
 	}
 	return Plugins(relPath)
 }
