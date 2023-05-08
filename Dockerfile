@@ -12,7 +12,7 @@ ARG HELM_VERSION=v3.11.3
  # renovate: datasource=github-releases depName=helmfile/helmfile
 ARG HELMFILE_VERSION=v0.153.1
 
-RUN apt update && apt install -y curl wget unzip git golint && rm -rf /var/lib/apt/lists/*
+RUN apt update && apt install -y curl wget unzip git staticcheck && rm -rf /var/lib/apt/lists/*
 
 ADD . /build
 WORKDIR /build
