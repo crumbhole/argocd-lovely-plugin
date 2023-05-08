@@ -11,15 +11,6 @@ import (
 	"strings"
 )
 
-func contains(s []string, str string) bool {
-	for _, v := range s {
-		if v == str {
-			return true
-		}
-	}
-	return false
-}
-
 func getPlugins(envname string) []string {
 	pluginsText := config.GetStringParam(envname, ``)
 	if pluginsText == `` {
