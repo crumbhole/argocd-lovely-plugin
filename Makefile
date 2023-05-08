@@ -34,9 +34,9 @@ code-fmt: $(DEPS) get
 	go fmt $$(go list ./... )
 
 lint: $(DEPS) get
-## Run golint for this project
-	@echo golint
-	golint $$(go list ./... )
+## Run staticcheck for this project
+	@echo staticcheck
+	staticcheck $$(go list ./... )
 
 coverage: $(DEPS) get
 	go test -v ./... -coverpkg=./... -coverprofile=coverage.out
