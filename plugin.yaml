@@ -30,7 +30,7 @@ spec:
         title: "Detection Regex"
         tooltip: "Allow applications to be detected using a different regex so that a PREPROCESSOR that works on non-yaml files can run on this application."
         collectionType: string
-        string: "\.ya?ml$"
+        string: "\\.ya?ml$"
       - name: lovely_kustomize_path
         title: "Kustomize Path"
         tooltip: "Path to the kustomize binary used for this application"
