@@ -23,3 +23,6 @@ curl -L -s "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_l
 
 # Install Helmfile
 curl -SL https://github.com/helmfile/helmfile/releases/download/${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION:1}_linux_${ARCH}.tar.gz | tar -xzC /usr/local/bin
+
+# Install staticcheck
+curl -SL https://github.com/dominikh/go-tools/releases/download/${STATICCHECK_VERSION}/staticcheck_linux_${ARCH}.tar.gz  | tar --strip-components=1 -xzC /usr/local/bin

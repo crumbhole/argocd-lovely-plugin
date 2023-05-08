@@ -11,8 +11,11 @@ ARG HELM_VERSION=v3.11.3
  # https://github.com/helmfile/helmfile/releases
  # renovate: datasource=github-releases depName=helmfile/helmfile
 ARG HELMFILE_VERSION=v0.153.1
+ # https://github.com/dominikh/go-tools/releases
+ # renovate: datasource=github-releases depName=dominikh/go-tools
+ARG STATICCHECK_VERSION=2023.1.3
 
-RUN echo "deb http://deb.debian.org/debian bullseye-backports main" >> /etc/apt/sources.list && apt update && apt install -y curl wget unzip git go-staticcheck && rm -rf /var/lib/apt/lists/*
+RUN apt update && apt install -y curl wget unzip git && rm -rf /var/lib/apt/lists/*
 
 ADD . /build
 WORKDIR /build
