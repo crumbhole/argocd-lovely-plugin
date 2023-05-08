@@ -32,4 +32,4 @@ func reEntryInDir(path string, re *regexp.Regexp) bool {
 }
 
 // ErrDisabledProcessor is the error to return when attempting to use a disabled processor
-var ErrDisabledProcessor = errors.New("Internal Error: attempt to use disabled processor")
+var ErrDisabledProcessor = errors.New("internal Error: attempt to use disabled processor")

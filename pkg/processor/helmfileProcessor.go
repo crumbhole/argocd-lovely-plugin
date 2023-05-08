@@ -39,7 +39,7 @@ func (h HelmfileProcessor) Generate(input *string, basePath string, path string)
 	params := []string{`template`}
 	out, err := h.helmfileDo(path, params...)
 	if err != nil {
-		return nil, fmt.Errorf("Error running helm: %v", err)
+		return nil, fmt.Errorf("error running helmfile: %v", err)
 	}
 	return &out, err
 }

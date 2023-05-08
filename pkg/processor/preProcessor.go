@@ -19,7 +19,7 @@ func (PreProcessor) Name() string {
 func getRelPreprocessors(basePath string, path string) ([]string, error) {
 	relPath, err := filepath.Rel(basePath, path)
 	if err != nil {
-		return make([]string, 0), fmt.Errorf("Internal relative path error %s", err)
+		return make([]string, 0), fmt.Errorf("internal relative path error %s", err)
 	}
 	return Preprocessors(relPath)
 }

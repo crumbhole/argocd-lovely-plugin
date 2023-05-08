@@ -133,7 +133,7 @@ func (h HelmProcessor) Generate(input *string, basePath string, path string) (*s
 	params = append(params[:], []string{`-n`, HelmNamespace(), HelmName(), `.`}...)
 	out, err := h.helmDo(path, params...)
 	if err != nil {
-		return nil, fmt.Errorf("Error running helm: %v", err)
+		return nil, fmt.Errorf("error running helm: %v", err)
 	}
 	return &out, err
 }

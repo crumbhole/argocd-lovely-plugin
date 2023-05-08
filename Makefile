@@ -36,7 +36,7 @@ code-fmt: $(DEPS) get
 lint: $(DEPS) get
 ## Run staticcheck for this project
 	@echo staticcheck
-	staticcheck $$(go list ./... )
+	go-staticcheck $$(go list ./... )
 
 coverage: $(DEPS) get
 	go test -v ./... -coverpkg=./... -coverprofile=coverage.out

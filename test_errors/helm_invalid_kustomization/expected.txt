@@ -1,2 +1,2 @@
-Error reading kustomization.yaml: yaml: unmarshal errors:
+error reading kustomization.yaml: yaml: unmarshal errors:
   line 1: cannot unmarshal !!str `This is...` into types.Kustomization
