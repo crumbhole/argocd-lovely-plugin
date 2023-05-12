@@ -1,1 +1,1 @@
-error running kustomize: exit status 1: Error: invalid Kustomization: error unmarshaling JSON: while decoding JSON: json: cannot unmarshal string into Go value of type types.Kustomization
+error running kustomize: exit status 1: Error: invalid Kustomization: json: cannot unmarshal string into Go value of type types.Kustomization
