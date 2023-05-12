@@ -1,0 +1,34 @@
+# Downloads the plugin and moves it to /custom-tools, which is then mounted on the argocd-repo-server
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argocd-lovely-plugin
+spec:
+  template:
+    spec:
+        - name: lovely-plugin
+          # This command is actually already set in the image.
+          command: [/var/run/argocd/argocd-cmp-server] # Entrypoint should be Argo CD lightweight CMP server i.e. argocd-cmp-server
+          # Choose your image here - this one has vault replacer in it
+          image: ghcr.io/crumbhole/argocd-lovely-plugin-cmp-vault:0.17.0
+          # Here we are configuring default evironment for every app - in this case vault
+          envFrom:
+            - secretRef:
+                name: vault-env
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 999
+          volumeMounts:
+              # Import the repo-server's pliugin binary
+            - mountPath: /var/run/argocd
+              name: var-files
+            - mountPath: /home/argocd/cmp-server/plugins
+              name: plugins
+              # Starting with v2.4, do NOT mount the same tmp volume as the repo-server container. The filesystem separation helps
+              # mitigate path traversal attacks.
+            - mountPath: /tmp
+              name: lovely-tmp
+      volumes:
+        # A temporary directory for the tool to work in.
+        - emptyDir: {}
+          name: lovely-tmp

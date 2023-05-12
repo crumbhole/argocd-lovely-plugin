@@ -31,14 +31,14 @@ All the yaml in the directory and all subdirectories will be used as part of the
 We aim to match the [Argo CD supported versions](https://argo-cd.readthedocs.io/en/stable/operator-manual/installation/#supported-versions) by testing against the Argo CD N and N -1 versions of Argo CD. You can see the current versions of Argo CD that we test against by looking in the [CI bootstrap directory](.github/workflows/assets/bootstrap) in this repo.
 
 # Installing
-We offer three pre-built container options:
+We offer three pre-built container options. We only support the use of these containers, the binaries provided are for convenience:
 
 1. `argocd-lovely-plugin-cmp` to install as a CMP sidecar plugin.
 2. `argocd-lovely-plugin-cmp-vault` to install as a CMP sidecar plugin with [argocd-vault-replacer](https://github.com/crumbhole/argocd-vault-replacer) already baked in. [The Dockerfile](Dockerfile.cmp-vault) also serves as a blueprint should you wish to package your own plugins to chain with Lovely.
 3. The deprecated `argocd-lovely-plugin` if you wish to install as an older-style configMap plugin.
 
 ## Installing as an Argo CD Sidecar Plugin
-We recommend you install as an Argo CD CMP Sidecar Plugin. [Argo CD's documentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/config-management-plugins/#sidecar-plugin) has steps on how to achieve this. You can also observe how we install Lovely for our CI tests in the [CI bootstrap directory](.github/workflows/assets/bootstrap) in this repo.
+We recommend you install as an Argo CD CMP Sidecar Plugin. [Argo CD's documentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/config-management-plugins/#sidecar-plugin) has steps on how to achieve this, or you can see [our Kustomization example](examples/installation/argocd). You can also observe how we install Lovely for our CI tests in the [CI bootstrap directory](.github/workflows/assets/bootstrap) in this repo.
 
 argocd-lovely-plugin has no discovery rules, so will not run by default. You must reference the plugin by name in your application spec. For example:
 
@@ -55,7 +55,7 @@ spec:
 For more information, please refer to the [Argo CD Documentation on discovery](https://argo-cd.readthedocs.io/en/stable/operator-manual/config-management-plugins/#write-discovery-rules-for-your-plugin).
 
 ## Installing as an Argo CD ConfigMap Plugin (Deprecated)
-You can use [our Kustomization example](examples/installation/argocd) to install Argo CD and to bootstrap the installation of the plugin at the same time.
+You can use [our Kustomization example](examples/installation/legacy-argocd) to install Argo CD and to bootstrap the installation of the plugin at the same time.
 
 At the moment the helmfile binary is not installed for you if you are running as a configmap plugin, nor is that documented here. You must get the helmfile binary into your repo-server yourself.
 
@@ -134,7 +134,7 @@ Helm and helmfile cannot be used in the same subdirectory, this will cause an er
 # Debugging lovely's behaviour locally
 
 You can download `argocd-lovely-plugin` binary and run it in an application directory. Errors will go to stderr, and the rendered yaml will appear on stdout.
-- You will need helm and kustomize on your path if you use those.
+- You will need helm, helmfile and kustomize on your path if you use those. You will also need git and bash.
 - You should set up the expected environment variables. Remember `ARGOCD_APP_NAME` needs to be set for helm chart rendering, or can be overridden with `LOVELY_HELM_NAME`. One or other must be set.
 
 # Videos
