@@ -8,19 +8,10 @@ import (
 	"os"
 	yaml "sigs.k8s.io/yaml"
 	"strconv"
-	"strings"
 )
 
 func getPlugins(envname string) []string {
-	pluginsText := config.GetStringParam(envname, ``)
-	if pluginsText == `` {
-		return make([]string, 0)
-	}
-	plugins := strings.Split(pluginsText, `,`)
-	for i, plugin := range plugins {
-		plugins[i] = strings.TrimSpace(plugin)
-	}
-	return plugins
+	return config.GetStringListParam(envname, ``, `,`)
 }
 
 type pluginYaml map[string][]string
@@ -87,15 +78,7 @@ func KustomizeBinary() string {
 // KustomizeParams returns extra parameters to pass to kustomize
 // Set LOVELY_KUSTOMIZE_PARAMS to extra parameters to pass to kustomize
 func KustomizeParams() []string {
-	paramsStr := config.GetStringParam(`LOVELY_KUSTOMIZE_PARAMS`, ``)
-	if paramsStr == `` {
-		return []string{}
-	}
-	params := strings.Split(paramsStr, ` `)
-	for i, param := range params {
-		params[i] = strings.TrimSpace(param)
-	}
-	return params
+	return config.GetStringListParam(`LOVELY_KUSTOMIZE_PARAMS`, ``, ` `)
 }
 
 // HelmBinary returns the path to helm if overridden, otherwise we search the path
@@ -119,29 +102,13 @@ func HelmPatch() string {
 // HelmTemplateParams returns extra parameters to pass to helm template
 // Set LOVELY_HELM_TEMPLATE_PARAMS to extra parameters to pass to helm template
 func HelmTemplateParams() []string {
-	paramsStr := config.GetStringParam(`LOVELY_HELM_TEMPLATE_PARAMS`, ``)
-	if paramsStr == `` {
-		return []string{}
-	}
-	params := strings.Split(paramsStr, ` `)
-	for i, param := range params {
-		params[i] = strings.TrimSpace(param)
-	}
-	return params
+	return config.GetStringListParam(`LOVELY_HELM_TEMPLATE_PARAMS`, ``, ` `)
 }
 
 // HelmRepoAddParams returns extra parameters to pass to helm repo add
 // Set LOVELY_HELM_REPO_ADD_PARAMS to extra parameters to pass to helm template
 func HelmRepoAddParams() []string {
-	paramsStr := config.GetStringParam(`LOVELY_HELM_REPO_ADD_PARAMS`, ``)
-	if paramsStr == `` {
-		return []string{}
-	}
-	params := strings.Split(paramsStr, ` `)
-	for i, param := range params {
-		params[i] = strings.TrimSpace(param)
-	}
-	return params
+	return config.GetStringListParam(`LOVELY_HELM_REPO_ADD_PARAMS`, ``, ` `)
 }
 
 // KustomizeMerge returns the yaml to strategic merge into kustomization.yaml
@@ -181,15 +148,15 @@ func HelmNamespace() string {
 	return os.Getenv(`ARGOCD_APP_NAMESPACE`)
 }
 
-// HelmValues gives us the values file we're going to use for helm
+// HelmValues gives us the values files we're going to use for helm
 // Set LOVELY_HELM_VALUES to the path to use for the values file
-func HelmValues() string {
-	return config.GetStringParam(`LOVELY_HELM_VALUES`, `values.yaml`)
+func HelmValues() []string {
+	return config.GetStringListParam(`LOVELY_HELM_VALUES`, `values.yaml`, ` `)
 }
 
 // HelmValuesSet returns true if HelmValues() is explicily set
 func HelmValuesSet() bool {
-	return config.GetStringParam(`LOVELY_HELM_VALUES`, ``) != ``
+	return len(config.GetStringListParam(`LOVELY_HELM_VALUES`, ``, ` `)) != 0
 }
 
 // HelmfileBinary returns the path to helm if overridden, otherwise we search the path

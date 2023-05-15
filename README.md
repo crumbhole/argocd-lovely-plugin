@@ -82,7 +82,7 @@ argocd-lovely-plugin is designed for minimal configuration and to do the right t
 
 ## Helm variation
 You can use these environment variables for modifying helm's behaviour, and the values.yaml file. More generic manipulation of any file is available through preprocessing.
-- `LOVELY_HELM_VALUES`: This is the values file you'd like to use when rendering the helm chart. Defaults to `values.yaml`. If you override this the file *must* exist. MERGE and PATCH will be applied to this file.
+- `LOVELY_HELM_VALUES`: This is a space separated list values files you'd like to use when rendering the helm chart. Defaults to `values.yaml`. If you override this the file *must* exist. MERGE and PATCH will be applied to the first file in this list.
 - `LOVELY_HELM_MERGE`: to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) merged into the values.yaml (or `LOVELY_HELM_VALUES` specified file)used by Helm.
 - `LOVELY_HELM_PATCH`: to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into the values.yaml (or `LOVELY_HELM_VALUES` specified file) used by Helm.
 - `LOVELY_HELM_TEMPLATE_PARAMS`: Space separated extra parameters to `Helm template` as you might use on the command line. You're on your own here if you pass rubbish parameters.
