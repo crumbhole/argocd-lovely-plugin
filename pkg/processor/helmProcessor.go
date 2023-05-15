@@ -122,7 +122,7 @@ func (h HelmProcessor) Generate(input *string, basePath string, path string) (*s
 	if err != nil {
 		return nil, err
 	}
-	err = MergeYaml(path+"/"+features.HelmValues(), features.HelmMerge(), features.HelmPatch())
+	err = MergeYaml(path+"/"+features.HelmValues()[0], features.HelmMerge(), features.HelmPatch())
 	if err != nil {
 		return nil, err
 	}
@@ -138,7 +138,9 @@ func (h HelmProcessor) Generate(input *string, basePath string, path string) (*s
 		}
 	}
 	if features.HelmValuesSet() {
-		params = append(params[:], []string{`-f`, features.HelmValues()}...)
+		for _, valueFile := range features.HelmValues() {
+			params = append(params[:], []string{`-f`, valueFile}...)
+		}
 	}
 	params = append(params[:], []string{`-n`, features.HelmNamespace(), features.HelmName(), `.`}...)
 	out, err := h.helmDo(path, params...)
