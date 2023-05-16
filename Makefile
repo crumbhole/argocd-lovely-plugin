@@ -26,9 +26,20 @@ test: get
 test_verbose: get
 	go test -v ./...
 
+plugin.yaml: build/generator
+	$<
+
+update:
+	go get -u ./...
+	go mod tidy
+
 build/argocd-lovely-plugin: $(DEPS) get
 	mkdir -p build
-	CGO_ENABLED=0 go build -buildvcs=false -o build ./...
+	CGO_ENABLED=0 go build -buildvcs=false -o build ./cmd/argocd-lovely-plugin/.
+
+build/generator: $(DEPS) get
+	mkdir -p build
+	CGO_ENABLED=0 go build -buildvcs=false -o build ./cmd/generator/.
 
 code-vet: $(DEPS) get
 ## Run go vet for this project. More info: https://golang.org/cmd/vet/
