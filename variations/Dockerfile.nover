@@ -1,0 +1,6 @@
+ARG VERSION
+ARG PARENT
+FROM ${PARENT}:${VERSION}
+USER 0
+RUN yq -i 'del(.spec.version)' /home/argocd/cmp-server/config/plugin.yaml
+USER 999

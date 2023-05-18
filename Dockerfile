@@ -15,24 +15,31 @@ ARG HELMFILE_VERSION=v0.153.1
  # renovate: datasource=github-releases depName=dominikh/go-tools
 ARG STATICCHECK_VERSION=2023.1.3
 
+ARG LOVELY_VERSION
+
 RUN apt update && apt install -y curl wget unzip git && rm -rf /var/lib/apt/lists/*
 
 ADD . /build
 WORKDIR /build
 # Install Dependencies
-RUN /build/deps.sh
+RUN /build/scripts/deps.sh
 
-RUN make -j4
+RUN make plugin_versioned.yaml all -j4
 
 FROM alpine:3.18.0
 ENV LOVELY_HELM_PATH=/usr/local/bin/helm
+ENV LOVELY_HELMFILE_PATH=/usr/local/bin/helmfile
 ENV LOVELY_KUSTOMIZE_PATH=/usr/local/bin/kustomize
+ENV LOVELY_PLUGINS=
+ENV LOVELY_PREPROCESSORS=
+COPY --from=builder /usr/local/bin/yq /usr/local/bin/yq
 COPY --from=builder /usr/local/bin/helm /usr/local/bin/helm
 COPY --from=builder /usr/local/bin/helmfile /usr/local/bin/helmfile
 COPY --from=builder /usr/local/bin/kustomize /usr/local/bin/kustomize
 COPY --from=builder /build/build/argocd-lovely-plugin /usr/local/bin/argocd-lovely-plugin
-COPY ./plugin.yaml /home/argocd/cmp-server/config/plugin.yaml
 RUN apk add git bash --no-cache
+
 USER 999
+COPY --from=builder /build/plugin_versioned.yaml /home/argocd/cmp-server/config/plugin.yaml
 # This does NOT exist inside the image, must be mounted from argocd
 ENTRYPOINT [ "/var/run/argocd/argocd-cmp-server" ]

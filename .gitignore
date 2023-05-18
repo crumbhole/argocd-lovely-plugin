@@ -103,3 +103,4 @@ test/**/charts/
 test/**/Chart.lock
 _lovely_resource.yaml
 coverage.out
+plugin_versioned.yaml

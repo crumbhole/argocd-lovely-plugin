@@ -1,11 +1,18 @@
-.PHONY:	all clean code-vet code-fmt test get docker
+.PHONY:	all clean code-vet code-fmt test get docker variations
 
 DEPS := $(shell find . -type f -name "*.go" -printf "%p ")
-
+IMAGE_REPO := ghcr.io/crumbhole
+BASE_LOVELY_IMAGE := argocd-lovely-plugin-cmp
 all: code-vet code-fmt lint test build/argocd-lovely-plugin
 
-docker:
-	docker build .
+plugin_versioned.yaml: plugin.yaml
+	yq e '.spec.version |= "${LOVELY_VERSION}"' < $< > $@
+
+docker: plugin_versioned.yaml
+	docker build . -t ${IMAGE_REPO}/${BASE_LOVELY_IMAGE}:${LOVELY_VERSION}
+
+variations: docker
+	BASE_LOVELY_IMAGE=${BASE_LOVELY_IMAGE} IMAGE_REPO=${IMAGE_REPO} LOVELY_VERSION=${LOVELY_VERSION} variations/variations.sh
 
 clean:
 	$(RM) -rf build
