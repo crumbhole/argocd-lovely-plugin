@@ -1,4 +1,4 @@
-.PHONY:	all clean code-vet code-fmt test get docker variations
+.PHONY:	all clean code-vet code-fmt test get docker variations generate
 
 DEPS := $(shell find . -type f -name "*.go" -printf "%p ")
 IMAGE_REPO := ghcr.io/crumbhole
@@ -22,6 +22,11 @@ test: get
 
 test_verbose: get
 	go test -v ./...
+
+generate: config.md .github/actions/composite-action/variations.yaml
+
+.github/actions/composite-action/variations.yaml: variations/variationActions.sh variations/variations.txt
+	$<
 
 config.md plugin.yaml &: build/generator
 	$<
