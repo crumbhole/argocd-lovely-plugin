@@ -5,9 +5,6 @@ IMAGE_REPO := ghcr.io/crumbhole
 BASE_LOVELY_IMAGE := argocd-lovely-plugin-cmp
 all: code-vet code-fmt lint test build/argocd-lovely-plugin
 
-plugin_versioned.yaml: plugin.yaml
-	yq e '.spec.version |= "${LOVELY_VERSION}"' < $< > $@
-
 docker: plugin_versioned.yaml
 	docker build . -t ${IMAGE_REPO}/${BASE_LOVELY_IMAGE}:${LOVELY_VERSION}
 
@@ -26,8 +23,11 @@ test: get
 test_verbose: get
 	go test -v ./...
 
-plugin.yaml: build/generator
+config.md plugin.yaml &: build/generator
 	$<
+
+plugin_versioned.yaml: plugin.yaml
+	yq e '.spec.version |= "${LOVELY_VERSION}"' < $< > $@
 
 update:
 	go get -u ./...
