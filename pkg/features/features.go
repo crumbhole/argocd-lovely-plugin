@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/crumbhole/argocd-lovely-plugin/pkg/config"
 	"os"
-	yaml "sigs.k8s.io/yaml"
+	"gopkg.in/yaml.v3"
 	"strconv"
 )
 
