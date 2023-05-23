@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
+	"github.com/gomarkdown/markdown"
+	"jaytaylor.com/html2text"
 	"gopkg.in/yaml.v3"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"os"
@@ -86,7 +88,13 @@ func pluginYaml() error {
 		param.Required = false
 		param.ItemType = `string`
 		param.CollectionType = `string` // feature.CollectionType.String()
-		param.Tooltip = feature.Description
+		tooltip, err := html2text.FromString(
+			string(markdown.ToHTML([]byte(feature.Description), nil, nil)),
+			html2text.Options{OmitLinks: true})
+		if err != nil {
+			return err
+		}
+		param.Tooltip = tooltip
 		param.String_ = feature.DefaultVal
 		plugin.Spec.Parameters.Static = append(plugin.Spec.Parameters.Static, &param)
 	}

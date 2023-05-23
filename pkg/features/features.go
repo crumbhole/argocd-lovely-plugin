@@ -7,6 +7,7 @@ import (
 )
 
 type featureId int
+
 //type CollectionType int
 
 const (
@@ -53,10 +54,13 @@ const (
 // }
 
 type Feature struct {
-	Name           string
-	Title          string
-	DefaultVal     string
-	Description    string
+	// Name is the name of the parameter or environment variable, in lower_snake_case
+	Name        string
+	// Title is plain text user readable name for the parameter
+	Title       string
+	DefaultVal  string
+	// Description is in markdown, but will be rendered as text to plugin.yaml
+	Description string
 	//	CollectionType CollectionType
 }
 
@@ -67,102 +71,103 @@ func (f Feature) EnvName() string {
 var Features = map[featureId]Feature{
 	Plugins: {
 		Title: `Plugins`,
-		Name: `lovely_plugins`,
+		Name:  `lovely_plugins`,
 	},
 	PluginsYaml: {
 		Title: `Plugins YAML`,
-		Name: `lovely_plugins_yaml`,
+		Name:  `lovely_plugins_yaml`,
 	},
 	Preprocessors: {
 		Title: `PreProcessors`,
-		Name: `lovely_preprocessors`,
+		Name:  `lovely_preprocessors`,
 	},
 	PreprocessorsYaml: {
 		Title: `PreProcessors YAML`,
-		Name: `lovely_preprocessors_yaml`,
+		Name:  `lovely_preprocessors_yaml`,
 	},
 	DetectRx: {
-		Title:          `Detection Regular Expression`,
-		Name:           `lovely_detection_regex`,
-		DefaultVal:     `\.ya?ml$`,
-		Description:    `Regular expression used for detecting filenames that denote applications.`,
+		Title:       `Detection Regular Expression`,
+		Name:        `lovely_detection_regex`,
+		DefaultVal:  `\.ya?ml$`,
+		Description: `Regular expression used for detecting filenames that denote applications.`,
 		// CollectionType: Single,
 	},
 	KustomizePath: {
-		Title:          `Kustomize Path`,
-		Name:           `lovely_kustomize_path`,
-		DefaultVal:     `kustomize`,
-		Description:    "Path to the kustomize binary used for this application",
+		Title:       `Kustomize Path`,
+		Name:        `lovely_kustomize_path`,
+		DefaultVal:  `kustomize`,
+		Description: "Path to the kustomize binary used for this application",
 		// CollectionType: Single,
 	},
 	KustomizeParams: {
-		Title:          `Kustomize parameters`,
-		Name: `lovely_kustomize_params`,
+		Title:       `Kustomize parameters`,
+		Name:        `lovely_kustomize_params`,
 		Description: "Space separated extra parameters to `kustomize build` as you might use on the command line. `--enable-helm` is already passed always. You're on your own here if you pass rubbish parameters.",
 		// CollectionType: Array,
 	},
 	HelmPath: {
-		Title:          `Helm Path`,
-		Name:           `lovely_helm_path`,
-		DefaultVal:     `helm`,
-		Description:    "Path to the helm binary used for this application",
+		Title:       `Helm Path`,
+		Name:        `lovely_helm_path`,
+		DefaultVal:  `helm`,
+		Description: "Path to the helm binary used for this application",
 		// CollectionType: Single,
 	},
 	HelmMerge: {
 		Title: `Helm Merge`,
-		Name: `lovely_helm_merge`,
+		Name:  `lovely_helm_merge`,
 	},
 	HelmPatch: {
 		Title: `Helm Patch`,
-		Name: `lovely_helm_patch`,
+		Name:  `lovely_helm_patch`,
 	},
 	HelmTemplateParams: {
 		Title: `Helm Template Parameters`,
-		Name: `lovely_helm_template_params`,
+		Name:  `lovely_helm_template_params`,
 	},
 	HelmRepoAddParams: {
 		Title: `Helm Repo Add Parameters`,
-		Name: `lovely_helm_repo_add_params`,
+		Name:  `lovely_helm_repo_add_params`,
 	},
 	KustomizeMerge: {
 		Title: `Kustomize Merge`,
-		Name: `lovely_kustomize_merge`,
+		Name:  `lovely_kustomize_merge`,
 	},
 	KustomizePatch: {
 		Title: `Kustomize Patch`,
-		Name: `lovely_kustomize_patch`,
+		Name:  `lovely_kustomize_patch`,
 	},
 	AllowGitCheckout: {
-		Title: `Allow Git Checkout`,
+		Title:      `Allow Git Checkout`,
 		Name:       `lovely_allow_gitcheckout`,
 		DefaultVal: `false`,
 	},
 	HelmName: {
 		Title: `Helm Name`,
-		Name: `lovely_helm_name`,
+		Name:  `lovely_helm_name`,
 	},
 	HelmNamespace: {
 		Title: `Helm Namespace`,
-		Name: `lovely_helm_namespace`,
+		Name:  `lovely_helm_namespace`,
 	},
 	HelmValues: {
 		Title: `Helm Values`,
-		Name: `lovely_helm_values`,
+		Name:  `lovely_helm_values`,
 	},
 	HelmfilePath: {
-		Title:          `Helmfile Path`,
-		Name:           `lovely_helmfile_path`,
-		DefaultVal:     `helmfile`,
-		Description:    "Path to the helmfile binary used for this application",
+		Title:       `Helmfile Path`,
+		Name:        `lovely_helmfile_path`,
+		DefaultVal:  `helmfile`,
+		Description: "Path to the helmfile binary used for this application",
 		// CollectionType: Single,
 	},
 	HelmfileMerge: {
-		Title: `Helmfile Merge`,
-		Name: `lovely_helmfile_merge`,
+		Title:       `Helmfile Merge`,
+		Name:        `lovely_helmfile_merge`,
+		Description: `Set to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) into any helmfile.yaml used by helmfile.`,
 	},
 	HelmfilePatch: {
 		Title: `Helmfile Patch`,
-		Name: `lovely_helmfile_patch`,
+		Name:  `lovely_helmfile_patch`,
 	},
 }
 
