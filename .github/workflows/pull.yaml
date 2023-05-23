@@ -65,7 +65,7 @@ jobs:
       - name: "build-lovely-containers"
         run: |
           docker build -f Dockerfile -t lovely-ver .
-          PARENT=lovely-ver VERSION=latest docker build -f variations/Dockerfile.nover -t k3d-registry.localhost:5000/lovely .
+          docker build -f variations/Dockerfile.nover --build-arg "PARENT=lovely-ver" --build-arg="VERSION=latest" -t k3d-registry.localhost:5000/lovely .
 
           mkdir -p /tmp/lovely-cmp
           docker save k3d-registry.localhost:5000/lovely > /tmp/lovely-cmp/lovely-cmp.tar
