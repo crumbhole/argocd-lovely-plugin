@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
 	"github.com/gomarkdown/markdown"
-	"jaytaylor.com/html2text"
 	"gopkg.in/yaml.v3"
+	"jaytaylor.com/html2text"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"os"
 )
@@ -22,14 +22,6 @@ func main() {
 		fmt.Printf("%s\n", err)
 		os.Exit(1)
 	}
-	//		var param apiclient.ParameterAnnouncement;
-	//		param.Name = feature.Name
-	//		param.Title = feature.Title
-	//		param.Required = false
-	//		param.CollectionType = `string`
-	//		param._String = feature.Default
-	//		plugin.Spec.Parameters.Static = append(&param, yaml.Spec.Parameters.Static)
-	//	}
 }
 
 func configMarkdown() error {
@@ -44,7 +36,8 @@ func configMarkdown() error {
 	}
 	fmt.Fprintf(f, "|Name | Environment variable | Description | Default |\n")
 	fmt.Fprintf(f, "| ---- | -------------------- | ----------- | ------- |\n")
-	for _, feature := range features.Features {
+	for featNum := features.FirstFeature; featNum <= features.LastFeature; featNum++ {
+		feature := features.Features[featNum]
 		fmt.Fprintf(f, "| %s | %s | %s | %s |\n",
 			feature.Title,
 			feature.EnvName(),
@@ -81,7 +74,8 @@ func pluginYaml() error {
 			},
 		},
 	}
-	for _, feature := range features.Features {
+	for featNum := features.FirstFeature; featNum <= features.LastFeature; featNum++ {
+		feature := features.Features[featNum]
 		var param ParameterAnnouncement
 		param.Name = feature.Name
 		param.Title = feature.Title
