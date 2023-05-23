@@ -21,7 +21,7 @@ func (HelmfileProcessor) Enabled(_ string, path string) bool {
 }
 
 func (h HelmfileProcessor) helmfileDo(path string, params ...string) (string, error) {
-	return execute(path, features.HelmfileBinary(), params...)
+	return execute(path, features.GetHelmfilePath(), params...)
 }
 
 // Generate create the text stream for this plugin
@@ -30,7 +30,7 @@ func (h HelmfileProcessor) Generate(input *string, basePath string, path string)
 		return input, ErrDisabledProcessor
 	}
 	if reEntryInDir(path, regexp.MustCompile(`^helmfile\.ya?ml$`)) {
-		err := MergeYaml(path+"/helmfile.yaml", features.HelmfileMerge(), features.HelmfilePatch())
+		err := MergeYaml(path+"/helmfile.yaml", features.GetHelmfileMerge(), features.GetHelmfilePatch())
 		if err != nil {
 			return nil, err
 		}

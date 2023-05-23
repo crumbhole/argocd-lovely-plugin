@@ -22,7 +22,7 @@ func getRelPreprocessors(basePath string, path string) ([]string, error) {
 	if err != nil {
 		return make([]string, 0), fmt.Errorf("internal relative path error %s", err)
 	}
-	return features.Preprocessors(relPath)
+	return features.GetPreprocessors(relPath)
 }
 
 // Enabled returns true only if this proessor can do work

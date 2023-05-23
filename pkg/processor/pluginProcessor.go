@@ -24,7 +24,7 @@ func getRelPlugins(basePath string, path string) ([]string, error) {
 	if err != nil {
 		return nil, fmt.Errorf("internal relative path error %s", err)
 	}
-	return features.Plugins(relPath)
+	return features.GetPlugins(relPath)
 }
 
 // Enabled returns true only if this proessor can do work

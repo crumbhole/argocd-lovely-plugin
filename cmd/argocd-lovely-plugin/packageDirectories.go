@@ -18,7 +18,7 @@ func (d *PackageDirectories) checkFile(path string, info os.DirEntry, err error)
 		return err
 	}
 	if !info.IsDir() {
-		yamlRegexp := regexp.MustCompile(features.DetectionRegex())
+		yamlRegexp := regexp.MustCompile(features.GetDetectionRegex())
 		dir := filepath.Dir(path)
 		if yamlRegexp.MatchString(path) {
 			d.AddDirectory(dir)

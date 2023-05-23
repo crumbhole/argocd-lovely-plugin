@@ -128,7 +128,7 @@ func (c *Collection) gitClean(path string) error {
 // Ensure we have a clean working copy
 // ArgoCD doesn't guarantee us an unpatched copy when we run
 func (c *Collection) ensureClean(path string) (string, func(string) error, error) {
-	if features.AllowGitCheckout() {
+	if features.GetAllowGitCheckout() {
 		return path, c.gitClean, c.gitClean(path)
 	}
 	newPath, err := c.makeTmpCopy(path)
