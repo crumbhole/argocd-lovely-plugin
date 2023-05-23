@@ -1,0 +1,7 @@
+lovely BASE Dockerfile.nover
+lovely-vault-ver BASE Dockerfile.vault
+lovely-vault lovely-vault-ver Dockerfile.nover
+lovely-hera-ver BASE Dockerfile.hera
+lovely-hera lovely-hera-ver Dockerfile.nover
+lovely-hera-vault-ver lovely-hera-ver Dockerfile.vault
+lovely-hera-vault lovely-hera-vault-ver Dockerfile.nover

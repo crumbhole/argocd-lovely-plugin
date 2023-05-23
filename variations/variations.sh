@@ -32,7 +32,6 @@ function buildImage() {
 	PARENT="$2"
 	DOCKERFILE="$3"
 	IMAGE="$(imageName "${NAME}" )"
-	echo Building "${IMAGE}"
 	docker build -f "variations/${DOCKERFILE}" --build-arg="VERSION=${LOVELY_VERSION}" --build-arg="NAME=${NAME}" --build-arg="PARENT=${IMAGE_REPO}/${PARENT}" variations -t "${IMAGE}"
 	images+=( "${IMAGE}" )
 }
@@ -43,14 +42,31 @@ function pushImage() {
 	#docker push "${IMAGE}"
 }
 
-buildImage lovely-vault-ver "${BASE_LOVELY_IMAGE}" Dockerfile.vault
-buildImage lovely-vault lovely-vault-ver Dockerfile.nover
-buildImage lovely-hera-ver "${BASE_LOVELY_IMAGE}" Dockerfile.hera
-buildImage lovely-hera lovely-hera-ver Dockerfile.nover
-buildImage lovely-hera-vault-ver lovely-hera-ver Dockerfile.vault
-buildImage lovely-hera-vault lovely-hera-vault-ver Dockerfile.nover
+echo --- Building variations
+while IFS= read -r line; do
+	linesplit=(${line// / })
+	target="${linesplit[0]}"
+	source="${linesplit[1]}"
+	if [ "$source" = "BASE" ]
+	then
+		source="${BASE_LOVELY_IMAGE}"
+	fi
+	dockerfile="${linesplit[2]}"
+	echo "variation: ${target} from ${source} using ${dockerfile}"
+	buildImage "${target}" "${source}" "${dockerfile}"
+done < variations/variations.txt
+echo --- Pushing variations
+
+# buildImage lovely-vault-ver "${BASE_LOVELY_IMAGE}" Dockerfile.vault
+# buildImage lovely-vault lovely-vault-ver Dockerfile.nover
+# buildImage lovely-hera-ver "${BASE_LOVELY_IMAGE}" Dockerfile.hera
+# buildImage lovely-hera lovely-hera-ver Dockerfile.nover
+# buildImage lovely-hera-vault-ver lovely-hera-ver Dockerfile.vault
+# buildImage lovely-hera-vault lovely-hera-vault-ver Dockerfile.nover
 
 for IMG in "${images[@]}"
 do
 	pushImage "${IMG}"
 done
+
+echo --- Done variations

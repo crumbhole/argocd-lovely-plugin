@@ -1,0 +1,68 @@
+name: Variations
+description: Build variations of lovely
+runs:
+  using: "composite"
+  steps:
+    - name: Build and Push lovely
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: ./Dockerfile.nover
+        push: true
+        platforms: ${{ env.PLATFORMS }}
+        tags: ghcr.io/crumbhole/lovely:${{ github.sha }}
+        build-args: VERSION=${{ github.sha }} PARENT=ghcr.io/crumbhole/
+    - name: Build and Push lovely-vault-ver
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: ./Dockerfile.vault
+        push: true
+        platforms: ${{ env.PLATFORMS }}
+        tags: ghcr.io/crumbhole/lovely-vault-ver:${{ github.sha }}
+        build-args: VERSION=${{ github.sha }} PARENT=ghcr.io/crumbhole/
+    - name: Build and Push lovely-vault
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: ./Dockerfile.nover
+        push: true
+        platforms: ${{ env.PLATFORMS }}
+        tags: ghcr.io/crumbhole/lovely-vault:${{ github.sha }}
+        build-args: VERSION=${{ github.sha }} PARENT=ghcr.io/crumbhole/lovely-vault-ver
+    - name: Build and Push lovely-hera-ver
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: ./Dockerfile.hera
+        push: true
+        platforms: ${{ env.PLATFORMS }}
+        tags: ghcr.io/crumbhole/lovely-hera-ver:${{ github.sha }}
+        build-args: VERSION=${{ github.sha }} PARENT=ghcr.io/crumbhole/
+    - name: Build and Push lovely-hera
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: ./Dockerfile.nover
+        push: true
+        platforms: ${{ env.PLATFORMS }}
+        tags: ghcr.io/crumbhole/lovely-hera:${{ github.sha }}
+        build-args: VERSION=${{ github.sha }} PARENT=ghcr.io/crumbhole/lovely-hera-ver
+    - name: Build and Push lovely-hera-vault-ver
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: ./Dockerfile.vault
+        push: true
+        platforms: ${{ env.PLATFORMS }}
+        tags: ghcr.io/crumbhole/lovely-hera-vault-ver:${{ github.sha }}
+        build-args: VERSION=${{ github.sha }} PARENT=ghcr.io/crumbhole/lovely-hera-ver
+    - name: Build and Push lovely-hera-vault
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: ./Dockerfile.nover
+        push: true
+        platforms: ${{ env.PLATFORMS }}
+        tags: ghcr.io/crumbhole/lovely-hera-vault:${{ github.sha }}
+        build-args: VERSION=${{ github.sha }} PARENT=ghcr.io/crumbhole/lovely-hera-vault-ver
