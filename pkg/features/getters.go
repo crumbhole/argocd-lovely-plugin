@@ -133,7 +133,7 @@ func GetHelmNamespace() string {
 	if namespaceOverride == `` {
 		return os.Getenv(`ARGOCD_APP_NAMESPACE`)
 	}
-	return namespaceOverride11
+	return namespaceOverride
 }
 
 // GetHelmValues gives us the values file we're going to use for helm
