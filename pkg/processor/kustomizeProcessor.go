@@ -37,7 +37,7 @@ func (k KustomizeProcessor) Generate(input *string, basePath string, path string
 			return nil, err
 		}
 	}
-	err := MergeYaml(kustYamlPath, features.KustomizeMerge(), features.KustomizePatch())
+	err := MergeYaml(kustYamlPath, features.GetKustomizeMerge(), features.GetKustomizePatch())
 	if err != nil {
 		return nil, err
 	}
@@ -77,13 +77,13 @@ func (k KustomizeProcessor) Generate(input *string, basePath string, path string
 		}
 	}
 	params := []string{`build`, `--enable-helm`}
-	params = append(params[:], features.KustomizeParams()[:]...)
+	params = append(params[:], features.GetKustomizeParams()[:]...)
 	params = append(params, path)
 	wd, err := os.Getwd()
 	if err != nil {
 		return nil, err
 	}
-	out, err := execute(wd, features.KustomizeBinary(), params...)
+	out, err := execute(wd, features.GetKustomizePath(), params...)
 	if err != nil {
 		return nil, fmt.Errorf("error running kustomize: %v", err)
 	}

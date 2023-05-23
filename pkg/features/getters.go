@@ -6,10 +6,9 @@ import (
 	"github.com/crumbhole/argocd-lovely-plugin/pkg/config"
 	"os"
 	"strconv"
-	"strings"
 )
 
-// Plugins returns the list of plugins to run during the generate phase after main processing
+// GetPlugins returns the list of plugins to run during the generate phase after main processing
 // Set LOVELY_PLUGINS_YAML to a map of a list of plugins to run per directory
 // e.g.
 // foo/bar:
@@ -19,155 +18,154 @@ import (
 // - plugin3
 // Or et LOVELY_PLUGINS to a comma separated list of plugins to run after other processing.
 // for any directories not in the list from the YAML
-func Plugins(path string) ([]string, error) {
-	return pluginsForPath(path, `LOVELY_PLUGINS_YAML`, `LOVELY_PLUGINS`)
+func GetPlugins(path string) ([]string, error) {
+	f := Features[Plugins]
+	fy := Features[PluginsYaml]
+	return pluginsForPath(path, fy.EnvName(), f.EnvName())
 }
 
-// Preprocessors returns the list of plugins to run before we generate yaml.
+// GetPreprocessors returns the list of plugins to run before we generate yaml.
 // Set LOVELY_PREPROCESSORS_YAML to a map of a list of plugins to run per directory
 // Set LOVELY_PREPROCESSORS to a comma separated list of plugins to run
 // for any directories not in the list from the YAML
-func Preprocessors(path string) ([]string, error) {
-	return pluginsForPath(path, `LOVELY_PREPROCESSORS_YAML`, `LOVELY_PREPROCESSORS`)
+func GetPreprocessors(path string) ([]string, error) {
+	f := Features[Preprocessors]
+	fy := Features[PreprocessorsYaml]
+	return pluginsForPath(path, fy.EnvName(), f.EnvName())
 }
 
-// DetectionRegex returns the regex used to detect applications
+// GetDetectionRegex returns the regex used to detect applications
 // Set LOVELY_DETECTION_REGEX to the regex to detect applications
-func DetectionRegex() string {
+func GetDetectionRegex() string {
 	f := Features[DetectRx]
 	return config.GetStringParam(f.EnvName(), f.DefaultVal)
 }
 
-// KustomizeBinary returns the path to kustomize if overridden, otherwise we search the path
+// GetKustomizePath returns the path to kustomize if overridden, otherwise we search the path
 // Set LOVELY_KUSTOMIZE_PATH to the path to the kustomize binary
-func KustomizeBinary() string {
+func GetKustomizePath() string {
 	f := Features[KustomizePath]
 	return config.GetStringParam(f.EnvName(), f.DefaultVal)
 }
 
-// KustomizeParams returns extra parameters to pass to kustomize
+// GetKustomizeParams returns extra parameters to pass to kustomize
 // Set LOVELY_KUSTOMIZE_PARAMS to extra parameters to pass to kustomize
-func KustomizeParams() []string {
-	paramsStr := config.GetStringParam(`LOVELY_KUSTOMIZE_PARAMS`, ``)
-	if paramsStr == `` {
-		return []string{}
-	}
-	params := strings.Split(paramsStr, ` `)
-	for i, param := range params {
-		params[i] = strings.TrimSpace(param)
-	}
-	return params
+func GetKustomizeParams() []string {
+	f := Features[KustomizeParams]
+	return config.GetStringListParam(f.EnvName(), f.DefaultVal, ` `)
 }
 
-// HelmBinary returns the path to helm if overridden, otherwise we search the path
+// GetHelmPath returns the path to helm if overridden, otherwise we search the path
 // Set LOVELY_HELM_PATH to the path to the helm binary
-func HelmBinary() string {
+func GetHelmPath() string {
 	f := Features[HelmPath]
 	return config.GetStringParam(f.EnvName(), f.DefaultVal)
 }
 
-// HelmMerge returns the yaml to strategic merge into values.yaml
+// GetHelmMerge returns the yaml to strategic merge into values.yaml
 // Set LOVELY_HELM_MERGE to some yaml you'd like strategic merged into any values.yaml files used by helm
-func HelmMerge() string {
-	return config.GetStringParam(`LOVELY_HELM_MERGE`, ``)
+func GetHelmMerge() string {
+	f := Features[HelmMerge]
+	return config.GetStringParam(f.EnvName(), f.DefaultVal)
 }
 
-// HelmPatch returns the yaml to json6902 patch into values.yaml
+// GetHelmPatch returns the yaml to json6902 patch into values.yaml
 // Set LOVELY_HELM_PATCH to some yaml you'd like json6902 patched into any values.yaml files used by helm
-func HelmPatch() string {
-	return config.GetStringParam(`LOVELY_HELM_PATCH`, ``)
+func GetHelmPatch() string {
+	f := Features[HelmPatch]
+	return config.GetStringParam(f.EnvName(), f.DefaultVal)
 }
 
-// HelmTemplateParams returns extra parameters to pass to helm template
+// GetHelmTemplateParams returns extra parameters to pass to helm template
 // Set LOVELY_HELM_TEMPLATE_PARAMS to extra parameters to pass to helm template
-func HelmTemplateParams() []string {
-	paramsStr := config.GetStringParam(`LOVELY_HELM_TEMPLATE_PARAMS`, ``)
-	if paramsStr == `` {
-		return []string{}
-	}
-	params := strings.Split(paramsStr, ` `)
-	for i, param := range params {
-		params[i] = strings.TrimSpace(param)
-	}
-	return params
+func GetHelmTemplateParams() []string {
+	f := Features[HelmTemplateParams]
+	return config.GetStringListParam(f.EnvName(), f.DefaultVal, ` `)
 }
 
-// HelmRepoAddParams returns extra parameters to pass to helm repo add
+// GetHelmRepoAddParams returns extra parameters to pass to helm repo add
 // Set LOVELY_HELM_REPO_ADD_PARAMS to extra parameters to pass to helm template
-func HelmRepoAddParams() []string {
-	paramsStr := config.GetStringParam(`LOVELY_HELM_REPO_ADD_PARAMS`, ``)
-	if paramsStr == `` {
-		return []string{}
-	}
-	params := strings.Split(paramsStr, ` `)
-	for i, param := range params {
-		params[i] = strings.TrimSpace(param)
-	}
-	return params
+func GetHelmRepoAddParams() []string {
+	f := Features[HelmRepoAddParams]
+	return config.GetStringListParam(f.EnvName(), f.DefaultVal, ` `)
 }
 
-// KustomizeMerge returns the yaml to strategic merge into kustomization.yaml
+// GetKustomizeMerge returns the yaml to strategic merge into kustomization.yaml
 // Set LOVELY_KUSTOMIZE_MERGE to some yaml you'd like strategic merged on any kustomization.yaml files used by kustomize
-func KustomizeMerge() string {
-	return config.GetStringParam(`LOVELY_KUSTOMIZE_MERGE`, ``)
+func GetKustomizeMerge() string {
+	f := Features[KustomizeMerge]
+	return config.GetStringParam(f.EnvName(), f.DefaultVal)
 }
 
-// KustomizePatch returns the yaml to json6902 patch into kustomization.yaml
+// GetKustomizePatch returns the yaml to json6902 patch into kustomization.yaml
 // Set LOVELY_KUSTOMIZE_PATCH to some yaml you'd like json6902 patched on any kustomization.yaml files used by kustomize
-func KustomizePatch() string {
-	return config.GetStringParam(`LOVELY_KUSTOMIZE_PATCH`, ``)
+func GetKustomizePatch() string {
+	f := Features[KustomizePatch]
+	return config.GetStringParam(f.EnvName(), f.DefaultVal)
 }
 
-// AllowGitCheckout establishes if git is safe to use
+// GetAllowGitCheckout establishes if git is safe to use
 // Set ALLOW_GITCHECKOUT to true to say you've told Argo this is safe
-func AllowGitCheckout() bool {
-	res, err := strconv.ParseBool(config.GetStringParam(`LOVELY_ALLOW_GITCHECKOUT`, `false`))
+func GetAllowGitCheckout() bool {
+	f := Features[AllowGitCheckout]
+	res, err := strconv.ParseBool(config.GetStringParam(f.EnvName(), f.DefaultVal))
 	if err != nil {
 		return false
 	}
 	return res
 }
 
-// HelmName gives us the application name for helm
+// GetHelmName gives us the application name for helm
 // Set LOVELY_HELM_NAME to override the default of ARGOCD_APP_NAME
-func HelmName() string {
-	nameOverride := config.GetStringParam(`LOVELY_HELM_NAME`, ``)
+func GetHelmName() string {
+	f := Features[HelmName]
+	nameOverride := config.GetStringParam(f.EnvName(), f.DefaultVal)
 	if nameOverride == `` {
 		return os.Getenv(`ARGOCD_APP_NAME`)
 	}
 	return nameOverride
 }
 
-// HelmNamespace gives us the namespace for helm
-func HelmNamespace() string {
-	return os.Getenv(`ARGOCD_APP_NAMESPACE`)
+// GetHelmNamespace gives us the namespace for helm
+func GetHelmNamespace() string {
+	f := Features[HelmNamespace]
+	namespaceOverride := config.GetStringParam(f.EnvName(), f.DefaultVal)
+	if namespaceOverride == `` {
+		return os.Getenv(`ARGOCD_APP_NAMESPACE`)
+	}
+	return namespaceOverride11
 }
 
-// HelmValues gives us the values file we're going to use for helm
+// GetHelmValues gives us the values file we're going to use for helm
 // Set LOVELY_HELM_VALUES to the path to use for the values file
-func HelmValues() string {
-	return config.GetStringParam(`LOVELY_HELM_VALUES`, `values.yaml`)
+func GetHelmValues() []string {
+	f := Features[HelmValues]
+	return config.GetStringListParam(f.EnvName(), `values.yaml`, ` `)
 }
 
-// HelmValuesSet returns true if HelmValues() is explicily set
-func HelmValuesSet() bool {
-	return config.GetStringParam(`LOVELY_HELM_VALUES`, ``) != ``
+// GetHelmValuesSet returns true if HelmValues() is explicily set
+func GetHelmValuesSet() bool {
+	f := Features[HelmValues]
+	return len(config.GetStringListParam(f.EnvName(), f.DefaultVal, ` `)) != 0
 }
 
-// HelmfileBinary returns the path to helm if overridden, otherwise we search the path
+// GetHelmfilePath returns the path to helm if overridden, otherwise we search the path
 // Set LOVELY_HELMFILE_PATH to the path to the helm binary
-func HelmfileBinary() string {
-	return config.GetStringParam(`LOVELY_HELMFILE_PATH`, `helmfile`)
+func GetHelmfilePath() string {
+	f := Features[HelmfilePath]
+	return config.GetStringParam(f.EnvName(), f.DefaultVal)
 }
 
-// HelmfileMerge returns the yaml to strategic merge into values.yaml
+// GetHelmfileMerge returns the yaml to strategic merge into values.yaml
 // Set LOVELY_HELMFILE_MERGE to some yaml you'd like strategic merged into any helmfile.yaml files used by helmfile
-func HelmfileMerge() string {
-	return config.GetStringParam(`LOVELY_HELMFILE_MERGE`, ``)
+func GetHelmfileMerge() string {
+	f := Features[HelmfileMerge]
+	return config.GetStringParam(f.EnvName(), f.DefaultVal)
 }
 
-// HelmfilePatch returns the yaml to json6902 patch into values.yaml
+// GetHelmfilePatch returns the yaml to json6902 patch into values.yaml
 // Set LOVELY_HELMFILE_PATCH to some yaml you'd like json6902 patched into any helmfile.yaml files used by helmfile
-func HelmfilePatch() string {
-	return config.GetStringParam(`LOVELY_HELMFILE_PATCH`, ``)
+func GetHelmfilePatch() string {
+	f := Features[HelmfilePatch]
+	return config.GetStringParam(f.EnvName(), f.DefaultVal)
 }

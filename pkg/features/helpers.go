@@ -5,20 +5,11 @@ package features
 import (
 	"fmt"
 	"github.com/crumbhole/argocd-lovely-plugin/pkg/config"
-	yaml "sigs.k8s.io/yaml"
-	"strings"
+	"gopkg.in/yaml.v3"
 )
 
 func getPlugins(envname string) []string {
-	pluginsText := config.GetStringParam(envname, ``)
-	if pluginsText == `` {
-		return make([]string, 0)
-	}
-	plugins := strings.Split(pluginsText, `,`)
-	for i, plugin := range plugins {
-		plugins[i] = strings.TrimSpace(plugin)
-	}
-	return plugins
+	return config.GetStringListParam(envname, ``, `,`)
 }
 
 type pluginYaml map[string][]string
