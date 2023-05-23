@@ -5,8 +5,8 @@ package features
 import (
 	"fmt"
 	"github.com/crumbhole/argocd-lovely-plugin/pkg/config"
+	"gopkg.in/yaml.v3"
 	"os"
-	yaml "sigs.k8s.io/yaml"
 	"strconv"
 )
 
