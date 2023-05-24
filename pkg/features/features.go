@@ -55,21 +55,25 @@ const (
 // 	return "unknown"
 // }
 
+// Feature is an individual configurable element of the plugin
 type Feature struct {
 	// Name is the name of the parameter or environment variable, in lower_snake_case
 	Name string
 	// Title is plain text user readable name for the parameter
-	Title      string
+	Title string
+	// DefaultVal is the default value for this parameter under most circumstances
 	DefaultVal string
 	// Description is in markdown, but will be rendered as text to plugin.yaml
 	Description string
 	//	CollectionType CollectionType
 }
 
+// EnvName gives the environment variable name to use for a feature
 func (f Feature) EnvName() string {
 	return strings.ToUpper(f.Name)
 }
 
+// Features are all the actual parameters supported by the plugin
 var Features = map[featureId]Feature{
 	Plugins: {
 		Title:       `Plugins`,
