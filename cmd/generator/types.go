@@ -10,15 +10,19 @@ import (
 )
 
 const (
+	// ConfigManagementPluginKind is the string to use as Kind: in the CMP
+	// plugin.yaml
 	ConfigManagementPluginKind string = "ConfigManagementPlugin"
 )
 
+// PluginConfig is the structure representing a plugin.yaml configuration object
 type PluginConfig struct {
 	metav1.TypeMeta `json:",inline"`
 	Metadata        metav1.ObjectMeta `json:"metadata"`
 	Spec            PluginConfigSpec  `json:"spec"`
 }
 
+// PluginConfigSpec is the spec from a PluginConfig
 type PluginConfigSpec struct {
 	Version          string     `json:"version"`
 	Init             Command    `json:"init,omitempty"`
@@ -52,11 +56,7 @@ type Parameters struct {
 	Dynamic Command                  `yaml:"dynamic"`
 }
 
-// Dynamic hold the dynamic announcements for CMP's
-type Dynamic struct {
-	Command
-}
-
+// ParameterAnnouncement is a description for a single parameter
 type ParameterAnnouncement struct {
 	// name is the name identifying a parameter.
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
