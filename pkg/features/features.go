@@ -7,9 +7,9 @@ import (
 )
 
 type featureId int
-
 //type CollectionType int
 
+// All the features/parameters this module supports
 const (
 	// The order of these is the order they will appear in the docs
 	Plugins featureId = iota
