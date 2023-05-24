@@ -34,7 +34,7 @@ const (
 	HelmfileMerge
 	HelmfilePatch
 	FirstFeature = Plugins
-	LastFeature = HelmfilePatch
+	LastFeature  = HelmfilePatch
 )
 
 // const (
@@ -72,23 +72,23 @@ func (f Feature) EnvName() string {
 
 var Features = map[featureId]Feature{
 	Plugins: {
-		Title: `Plugins`,
-		Name:  `lovely_plugins`,
+		Title:       `Plugins`,
+		Name:        `lovely_plugins`,
 		Description: "Set to a comma separated list of binaries to run as plugins. Read [the documentation](doc/plugins.md) for more on plugins. Will not be used if `Plugins YAML` is set.",
 	},
 	PluginsYaml: {
-		Title: `Plugins YAML`,
-		Name:  `lovely_plugins_yaml`,
+		Title:       `Plugins YAML`,
+		Name:        `lovely_plugins_yaml`,
 		Description: "Set to some YAML describing the binaries to run as plugins. Read [the documentation](doc/plugins.md) for more on plugins. Will override `Plugins` if set.",
 	},
 	Preprocessors: {
-		Title: `PreProcessors`,
-		Name:  `lovely_preprocessors`,
+		Title:       `PreProcessors`,
+		Name:        `lovely_preprocessors`,
 		Description: "Set to a comma separated list of binaries to run as preprocessors. Read [the documentation](doc/plugins.md) for more on plugins. Will not be used if `Preproecessors YAML` is set.",
 	},
 	PreprocessorsYaml: {
-		Title: `PreProcessors YAML`,
-		Name:  `lovely_preprocessors_yaml`,
+		Title:       `PreProcessors YAML`,
+		Name:        `lovely_preprocessors_yaml`,
 		Description: "Set to some YAML describing the binaries to run as preprocessors. Read [the documentation](doc/plugins.md) for more on plugins. Will override `PreProcessors` if set.",
 	},
 	DetectRx: {
