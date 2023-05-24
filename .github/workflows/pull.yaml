@@ -22,7 +22,8 @@ jobs:
   codecheck:
     runs-on: ubuntu-latest
     steps:
-    - uses: ./.github/actions/codecheck
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/codecheck
   unittest:
     runs-on: ubuntu-latest
     steps:
