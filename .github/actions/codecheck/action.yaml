@@ -9,4 +9,5 @@ runs:
       go-version-file: 'go.mod'
 
   - name: Code check
+    shell: bash
     run: make -j code-check
