@@ -60,10 +60,8 @@ func appendFile(file *os.File, name string) error {
 func pluginYaml() error {
 	// return nil
 	plugin := PluginConfig{
-		TypeMeta: metav1.TypeMeta{
-			APIVersion: `argoproj.io/v1alpha1`,
-			Kind:       ConfigManagementPluginKind,
-		},
+		APIVersion: `argoproj.io/v1alpha1`,
+		Kind:       ConfigManagementPluginKind,
 		Metadata: metav1.ObjectMeta{
 			Name: `argocd-lovely-plugin`,
 		},

@@ -17,7 +17,8 @@ const (
 
 // PluginConfig is the structure representing a plugin.yaml configuration object
 type PluginConfig struct {
-	metav1.TypeMeta `json:",inline"`
+ 	APIVersion      string            `json:"apiVersion"`
+ 	Kind            string            `json:"kind"`
 	Metadata        metav1.ObjectMeta `json:"metadata"`
 	Spec            PluginConfigSpec  `json:"spec"`
 }
@@ -27,27 +28,15 @@ type PluginConfigSpec struct {
 	Version          string     `json:"version"`
 	Init             Command    `json:"init,omitempty"`
 	Generate         Command    `json:"generate"`
-	Discover         Discover   `json:"discover"`
+	//	Discover         Discover   `json:"discover"`
 	Parameters       Parameters `yaml:"parameters"`
 	PreserveFileMode bool       `json:"preserveFileMode,omitempty"`
-}
-
-// Discover holds find and fileName
-type Discover struct {
-	Find     Find   `json:"find"`
-	FileName string `json:"fileName"`
 }
 
 // Command holds binary path and arguments list
 type Command struct {
 	Command []string `json:"command,omitempty"`
 	Args    []string `json:"args,omitempty"`
-}
-
-// Find holds find command or glob pattern
-type Find struct {
-	Command
-	Glob string `json:"glob"`
 }
 
 // Parameters holds static and dynamic configurations
