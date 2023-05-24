@@ -22,7 +22,7 @@ jobs:
   codecheck:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/codecheck@v1
+    - uses: ./.github/actions/codecheck
   unittest:
     runs-on: ubuntu-latest
     steps:
