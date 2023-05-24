@@ -1,0 +1,19 @@
+name: "Go Gitops"
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ main ]
+
+jobs:
+  gogitops:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: GoGitOps Step
+      id: gogitops
+      uses: beaujr/gogitops-action@v0.2
+      with:
+        github-actions-token: ${{secrets.GITHUB_TOKEN}}

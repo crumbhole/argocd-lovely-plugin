@@ -29,4 +29,4 @@ set -e
         echo "        build-args: VERSION=\${{ github.sha }} PARENT=ghcr.io/crumbhole/${source}"
 #		echo "  variation: ${target} from ${source} using ${dockerfile}"
 	done < variations/variations.txt
-} > ".github/actions/composite-action/variations.yaml"
+} > ".github/actions/variations/action.yaml"

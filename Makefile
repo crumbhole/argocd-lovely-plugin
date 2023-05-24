@@ -23,12 +23,12 @@ test: get
 test_verbose: get
 	go test -v ./...
 
-generate: config.md .github/actions/composite-action/variations.yaml
+generate: config.md .github/actions/variations/action.yaml
 
 code-check: generate code-fmt
 	git diff --exit-code
 
-.github/actions/composite-action/variations.yaml: variations/variationActions.sh variations/variations.txt
+.github/actions/variations/action.yaml: variations/variationActions.sh variations/variations.txt
 	$<
 
 config.md plugin.yaml &: build/generator
