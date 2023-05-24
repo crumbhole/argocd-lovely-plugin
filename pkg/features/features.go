@@ -7,6 +7,7 @@ import (
 )
 
 type featureId int
+
 //type CollectionType int
 
 // All the features/parameters this module supports
