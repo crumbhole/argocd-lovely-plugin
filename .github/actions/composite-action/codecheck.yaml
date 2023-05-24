@@ -1,0 +1,14 @@
+name: Code Check
+description: Check the code is up to date
+runs:
+  using: "composite"
+  steps:
+  - uses: actions/checkout@v3
+
+  - name: Set up Go
+    uses: actions/setup-go@v4
+    with:
+      go-version-file: 'go.mod'
+
+  - name: Code check
+    run: make -j code-check
