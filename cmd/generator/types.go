@@ -17,17 +17,17 @@ const (
 
 // PluginConfig is the structure representing a plugin.yaml configuration object
 type PluginConfig struct {
- 	APIVersion      string            `json:"apiVersion"`
- 	Kind            string            `json:"kind"`
-	Metadata        metav1.ObjectMeta `json:"metadata"`
-	Spec            PluginConfigSpec  `json:"spec"`
+	APIVersion string            `json:"apiVersion"`
+	Kind       string            `json:"kind"`
+	Metadata   metav1.ObjectMeta `json:"metadata"`
+	Spec       PluginConfigSpec  `json:"spec"`
 }
 
 // PluginConfigSpec is the spec from a PluginConfig
 type PluginConfigSpec struct {
-	Version          string     `json:"version"`
-	Init             Command    `json:"init,omitempty"`
-	Generate         Command    `json:"generate"`
+	Version  string  `json:"version"`
+	Init     Command `json:"init,omitempty"`
+	Generate Command `json:"generate"`
 	//	Discover         Discover   `json:"discover"`
 	Parameters       Parameters `yaml:"parameters"`
 	PreserveFileMode bool       `json:"preserveFileMode,omitempty"`
