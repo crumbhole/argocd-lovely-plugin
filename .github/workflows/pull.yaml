@@ -19,12 +19,14 @@ jobs:
       uses: beaujr/gogitops-action@v0.2
       with:
         github-actions-token: ${{secrets.GITHUB_TOKEN}}
+  codecheck:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/codecheck.yaml
   unittest:
     runs-on: ubuntu-latest
-    needs: gogitops
     steps:
     - uses: actions/checkout@v3
-
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
