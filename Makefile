@@ -29,7 +29,7 @@ code-check: generate code-fmt
 	git diff --exit-code
 
 .github/actions/variations/action.yaml: variations/variationActions.sh variations/variations.txt
-	$<
+	BASE_LOVELY_IMAGE=${BASE_LOVELY_IMAGE} $<
 
 config.md plugin.yaml &: build/generator
 	$<
