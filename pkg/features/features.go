@@ -156,7 +156,7 @@ var Features = map[featureId]Feature{
 		Title:       `Allow Git Checkout`,
 		Name:        `lovely_allow_gitcheckout`,
 		DefaultVal:  `false`,
-		Description: `Allows kustomize base paths to work. Do **not** just set this without reading [the documentation](doc/allow_git.md)`,
+		Description: `This is not necessary when using the plugin as a sidecar. Allows kustomize base paths to work. Do **not** just set this without reading [the documentation](doc/allow_git.md)`,
 	},
 	HelmName: {
 		Title:       `Helm Name`,
