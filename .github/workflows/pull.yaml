@@ -172,7 +172,7 @@ jobs:
 
   build_legacy:
     name: Build legacy docker image
-    needs: [build-sidecar]
+    needs: [build_sidecar]
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
