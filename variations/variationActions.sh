@@ -22,7 +22,7 @@ set -e
         echo "      uses: docker/build-push-action@v4"
         echo "      with:"
         echo "        context: ."
-        echo "        file: ./${dockerfile}"
+        echo "        file: variations/${dockerfile}"
         echo "        push: true"
         echo "        platforms: \${{ env.PLATFORMS }}"
         echo "        tags: ghcr.io/crumbhole/${target}:\${{ github.sha }}"
