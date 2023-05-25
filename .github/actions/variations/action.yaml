@@ -11,7 +11,7 @@ runs:
         push: true
         platforms: ${{ env.PLATFORMS }}
         tags: ghcr.io/crumbhole/lovely:${{ github.sha }}
-        build-args: VERSION=${{ github.sha }} PARENT=ghcr.io/crumbhole/
+        build-args: VERSION=${{ github.sha }} PARENT=ghcr.io/crumbhole/argocd-lovely-plugin-cmp
     - name: Build and Push lovely-vault-ver
       uses: docker/build-push-action@v4
       with:
@@ -20,7 +20,7 @@ runs:
         push: true
         platforms: ${{ env.PLATFORMS }}
         tags: ghcr.io/crumbhole/lovely-vault-ver:${{ github.sha }}
-        build-args: VERSION=${{ github.sha }} PARENT=ghcr.io/crumbhole/
+        build-args: VERSION=${{ github.sha }} PARENT=ghcr.io/crumbhole/argocd-lovely-plugin-cmp
     - name: Build and Push lovely-vault
       uses: docker/build-push-action@v4
       with:
@@ -38,7 +38,7 @@ runs:
         push: true
         platforms: ${{ env.PLATFORMS }}
         tags: ghcr.io/crumbhole/lovely-hera-ver:${{ github.sha }}
-        build-args: VERSION=${{ github.sha }} PARENT=ghcr.io/crumbhole/
+        build-args: VERSION=${{ github.sha }} PARENT=ghcr.io/crumbhole/argocd-lovely-plugin-cmp
     - name: Build and Push lovely-hera
       uses: docker/build-push-action@v4
       with:
