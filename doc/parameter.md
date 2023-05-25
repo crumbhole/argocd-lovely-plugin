@@ -1,4 +1,20 @@
 # Configuration options
+
+## Configuring argocd-lovely-plugin
+
+There are a number of configuration parameters for lovely. Each of them can be configured via various means.
+
+This is a list of those means, in priority order. If a value is found in one of these locations it will be used and further options for finding it will be ignored.
+
+1. As a plugin parameter, when used as a sidecar in ArgoCD. These are in lower case, instead of upper case.
+2. As an environment variable prefixed with `ARGOCD_ENV_`. This is what will happen to `env:` variables entered into the application.
+3. As an environment variable not prefixed with anything. If you are configuring using a kubernetes manifest, this is probably what you'd expect.
+
+## Plugin parameters
+
+Environment variables, are conventionally ALL_CAPS, and for our purposes
+
+## Available parameters
 |Name | Environment variable | Description | Default |
 | ---- | -------------------- | ----------- | ------- |
 | Plugins | LOVELY_PLUGINS | Set to a comma separated list of binaries to run as plugins. Read [the documentation](doc/plugins.md) for more on plugins. Will not be used if `Plugins YAML` is set. |  |
@@ -22,5 +38,6 @@
 | Helmfile Path | LOVELY_HELMFILE_PATH | Path to the helmfile binary used for this application | helmfile |
 | Helmfile Merge | LOVELY_HELMFILE_MERGE | Set to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) into any helmfile.yaml used by helmfile. |  |
 | Helmfile Patch | LOVELY_HELMFILE_PATCH | to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any helmfile.yaml used by Helmfile. |  |
+## Examples
 
-These can be configured in your application.yaml
+We should provide examples of configuring the sidecar itself, or through the paramter list of the application, or the environment of the application

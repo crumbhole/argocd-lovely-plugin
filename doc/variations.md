@@ -2,8 +2,9 @@
 
 All lovely plugin containers have helm, kustomize, helmfile, bash, git, and yq built in to them.
 
-| Container name | Versionbed | Contains |
+| Container name | Versioned | Contains |
 |----------------|-----------|----------|
+| ghcr.io/crumbhole/lovely | No | Plain lovely, but unversioned, `called argocd-lovely-plugin` |
 | ghcr.io/crumbhole/lovely-vault-ver | Yes | [argocd-vault-replacer](https://github.com/crumbhole/argocd-vault-replacer) |
 | ghcr.io/crumbhole/lovely-vault | No | [argocd-vault-replacer](https://github.com/crumbhole/argocd-vault-replacer) |
 | ghcr.io/crumbhole/lovely-hera-ver | Yes | [hera](hera.md) |

@@ -31,11 +31,11 @@ All the yaml in the directory and all subdirectories will be used as part of the
 We aim to match the [Argo CD supported versions](https://argo-cd.readthedocs.io/en/stable/operator-manual/installation/#supported-versions) by testing against the Argo CD N and N -1 versions of Argo CD. You can see the current versions of Argo CD that we test against by looking in the [CI bootstrap directory](.github/workflows/assets/bootstrap) in this repo.
 
 # Installing
-We offer three pre-built container options. We only support the use of these containers, the binaries provided are for convenience:
+We offer many pre-built container options. We only support the use of these containers, the binaries provided are for convenience:
 
-1. `argocd-lovely-plugin-cmp` to install as a CMP sidecar plugin.
-2. `argocd-lovely-plugin-cmp-vault` to install as a CMP sidecar plugin with [argocd-vault-replacer](https://github.com/crumbhole/argocd-vault-replacer) already baked in. [The Dockerfile](Dockerfile.cmp-vault) also serves as a blueprint should you wish to package your own plugins to chain with Lovely.
-3. The deprecated `argocd-lovely-plugin` if you wish to install as an older-style configMap plugin.
+- `argocd-lovely-plugin-cmp` to install as a sidecar plugin, which is versioned.
+- The deprecated `argocd-lovely-plugin` if you wish to install as an older-style configMap plugin.
+- [Variations](doc/variations.md) lists many other versions of the plugin, and explains versioning
 
 ## Installing as an Argo CD Sidecar Plugin
 We recommend you install as an Argo CD CMP Sidecar Plugin. [Argo CD's documentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/config-management-plugins/#sidecar-plugin) has steps on how to achieve this, or you can see [our Kustomization example](examples/installation/argocd). You can also observe how we install Lovely for our CI tests in the [CI bootstrap directory](.github/workflows/assets/bootstrap) in this repo.
@@ -59,50 +59,19 @@ You can use [our Kustomization example](examples/installation/legacy-argocd) to 
 
 At the moment the helmfile binary is not installed for you if you are running as a configmap plugin, nor is that documented here. You must get the helmfile binary into your repo-server yourself.
 
-
 ## Environment variables
 
-argocd-lovely-plugin is configured through environment variables. These can be set in both the argocd-repo-server and in the application itself.
+argocd-lovely-plugin is configured through environment variables and paramteres. These can be set in both the sidecar (or for configmaps, the argocd-repo-server) and in the application itself.
 
 If you are passing the configuration in as application environment variables in Argo CD 2.4 or higher you must not put the `ARGOCD_ENV_` prefix on them, as Argo CD does that for you.
 
 Otherwise argocd-lovely-plugin will accept either form of all of the variables, with or without `ARGOCD_ENV_`, with the `ARGOCD_ENV_` version taking precedence if you set both of them.
 
-See [this](doc/config.md) for more details on how configuration works.
+argocd-lovely-plugin is designed for minimal configuration and to do the right thing. The following environment variables can be used to change some behaviour.
 
-## General configuration
-argocd-lovely-plugin is designed for minimal configuration and to do the right thing. The following environment variables can be used to change some behaviour:
-- `LOVELY_PREPROCESSORS` and `LOVELY_PLUGINS`: Set to a comma separated list of binaries to run during preprocessing and as plugins. Read [this](doc/plugins.md) for more on plugins.
-- `LOVELY_PREPROCESSORS_YAML` and `LOVELY_PLUGINS_YAML`: Set to some yaml or json for a list of binaries to run during preprocessing and as plugins. Read [this](doc/plugins.md) for more on plugins.
-- `LOVELY_KUSTOMIZE_PATH`: Set to a path or binary name to use for Kustomize.
-- `LOVELY_HELM_PATH`: Set to a path or binary name to use for Helm.
-- `LOVELY_HELMFILE_PATH`: Set to a path or binary name to use for helmfile.
-- `LOVELY_ALLOW_GITCHECKOUT`: Allows kustomize base paths to work. Do **not** just set this without reading [this](doc/allow_git.md)
-- `LOVELY_DETECTION_REGEX`: Allow applications to be detected using a different regex so that a PREPROCESSOR that works on non-yaml files can run on this application. The default is `\.ya?ml$`. (Note: currently `helmfile.d/` will always trigger an application being detected, raise an issue if this needs configuring too). This is pointless to change unless you have a PREPROCESSOR defined.
-
-## Helm variation
-You can use these environment variables for modifying helm's behaviour, and the values.yaml file. More generic manipulation of any file is available through preprocessing.
-- `LOVELY_HELM_VALUES`: This is a space separated list values files you'd like to use when rendering the helm chart. Defaults to `values.yaml`. If you override this the file *must* exist. MERGE and PATCH will be applied to the first file in this list.
-- `LOVELY_HELM_MERGE`: to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) merged into the values.yaml (or `LOVELY_HELM_VALUES` specified file)used by Helm.
-- `LOVELY_HELM_PATCH`: to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into the values.yaml (or `LOVELY_HELM_VALUES` specified file) used by Helm.
-- `LOVELY_HELM_TEMPLATE_PARAMS`: Space separated extra parameters to `Helm template` as you might use on the command line. You're on your own here if you pass rubbish parameters.
-- `LOVELY_HELM_REPO_ADD_PARAMS`: Space separated extra parameters to `Helm repo add` as you might use on the command line. You're on your own here if you pass rubbish parameters. `--insecure-skip-tls-verify` if your helm chart is on an insecure HTTPS server.
-- `LOVELY_HELM_NAME`: This can be used to set the Helm 'name' in the same way as releaseName works in Argo CD's standard Helm processing. (`ARGOCD_APP_NAME` used to be overridable in old versions of ArgoCD, but is no longer)
-
-There is no way to modify any other Helm files at this time.
-
-## Helmfile variation
-You can use these environment variables for modifying helmfiles's behaviour. More generic manipulation of any file is available through preprocessing. This cannot be used with helmfile.d files.
-- `LOVELY_HELMFILE_MERGE`: to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) merged into any helmfile.yaml used by helmfile.
-- `LOVELY_HELMFILE_PATCH`: to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any helmfile.yaml used by Helmfile.
+See [this](doc/parameter.md) for more details on how to configure it using parameters and a list of parameters.
 
 ## Kustomize
-You can use these environment variables for modifying kustomize's behaviour, and the kustomization.yaml file. More generic manipulation of any file is available through preprocessing.
-- `LOVELY_KUSTOMIZE_MERGE`: to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) merged into any kustomization.yaml found.
-- `LOVELY_KUSTOMIZE_PATCH`: to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any kustomization.yaml found.
-- `LOVELY_KUSTOMIZE_PARAMS`: Space separated extra parameters to `kustomize build` as you might use on the command line. `--enable-helm` is already passed always. You're on your own here if you pass rubbish parameters.
-
-There is no way to modify any other files, that's what Kustomize itself is for.
 
 You can use the [helm chart inflation generator](https://kubectl.docs.kubernetes.io/references/kustomize/builtins/#_helmchartinflationgenerator_) of kustomize this way. See [the test](test/helm_only_in_kustomize) for an example of this. If you do this none of the helm environment variables will have any effect as you can set those in your kustomization.yaml instead. There is no way to merge/patch your values.yaml with lovely only (you should run a preprocessor for that). Despite this, that is the recommended way to use helm and kustomize together. `LOVELY_HELM_NAME` will also have no effect here.
 

@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	err := configMarkdown()
+	err := parameterMarkdown()
 	if err != nil {
 		fmt.Printf("%s\n", err)
 		os.Exit(1)
@@ -24,13 +24,13 @@ func main() {
 	}
 }
 
-func configMarkdown() error {
-	f, err := os.OpenFile("config.md", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+func parameterMarkdown() error {
+	f, err := os.OpenFile("doc/parameter.md", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
 		return err
 	}
 	defer f.Close()
-	err = appendFile(f, ".docs/configHeader.md")
+	err = appendFile(f, "doc/.snippets/parameterHeader.md")
 	if err != nil {
 		return err
 	}
@@ -44,7 +44,7 @@ func configMarkdown() error {
 			feature.Description,
 			feature.DefaultVal)
 	}
-	err = appendFile(f, ".docs/configFooter.md")
+	err = appendFile(f, "doc/.snippets/parameterFooter.md")
 	return err
 }
 
