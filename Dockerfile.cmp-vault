@@ -1,4 +1,0 @@
-ARG VERSION
-FROM ghcr.io/crumbhole/argocd-lovely-plugin-cmp:${VERSION}
-ENV LOVELY_PLUGINS=argocd-vault-replacer
-COPY --from=ghcr.io/crumbhole/argocd-vault-replacer:0.11.9 /argocd-vault-replacer /usr/local/bin/argocd-vault-replacer

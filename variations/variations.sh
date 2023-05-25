@@ -57,13 +57,6 @@ while IFS= read -r line; do
 done < variations/variations.txt
 echo --- Pushing variations
 
-# buildImage lovely-vault-ver "${BASE_LOVELY_IMAGE}" Dockerfile.vault
-# buildImage lovely-vault lovely-vault-ver Dockerfile.nover
-# buildImage lovely-hera-ver "${BASE_LOVELY_IMAGE}" Dockerfile.hera
-# buildImage lovely-hera lovely-hera-ver Dockerfile.nover
-# buildImage lovely-hera-vault-ver lovely-hera-ver Dockerfile.vault
-# buildImage lovely-hera-vault lovely-hera-vault-ver Dockerfile.nover
-
 for IMG in "${images[@]}"
 do
 	pushImage "${IMG}"
