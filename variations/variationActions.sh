@@ -26,7 +26,9 @@ set -e
         echo "        push: true"
         echo "        platforms: \${{ env.PLATFORMS }}"
         echo "        tags: ghcr.io/crumbhole/${target}:\${{ github.sha }}"
-        echo "        build-args: VERSION=\${{ github.sha }} PARENT=ghcr.io/crumbhole/${source}"
+        echo "        build-args: |"
+		echo "          VERSION=\${{ github.sha }}"
+		echo "          PARENT=ghcr.io/crumbhole/${source}"
 #		echo "  variation: ${target} from ${source} using ${dockerfile}"
 	done < variations/variations.txt
 } > ".github/actions/variations/action.yaml"
