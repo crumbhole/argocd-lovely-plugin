@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"gopkg.in/yaml.v3"
+	"github.com/otiai10/copy"
 	"os"
 	"regexp"
 	"testing"
@@ -11,6 +12,7 @@ import (
 
 const (
 	normalPath = "test/"
+	copyPath = "test_copy/"
 	errorsPath = "test_errors/"
 )
 
@@ -131,9 +133,27 @@ func TestDirectoriesCopy(t *testing.T) {
 
 // Tests with git checkout/clean
 func TestDirectoriesGitCheckout(t *testing.T) {
-	os.Setenv(`ARGOCD_ENV_LOVELY_ALLOW_GITCHECKOUT`, `true`)
+	os.Setenv(`LOVELY_ALLOW_GITCHECKOUT`, `true`)
 	testDirs(t, normalPath, false)
-	os.Unsetenv(`ARGOCD_ENV_LOVELY_ALLOW_GITCHECKOUT`)
+	os.Unsetenv(`LOVELY_ALLOW_GITCHECKOUT`)
+}
+
+// Test as sidecar
+func TestDirectoriesSidecar(t *testing.T) {
+	os.RemoveAll(copyPath)
+	opt := copy.Options{
+		OnDirExists: func(_ string, _ string) copy.DirExistsAction {
+			return copy.Replace
+		},
+	}
+	err := copy.Copy(normalPath, copyPath, opt)
+	if err != nil {
+		t.Error(err)
+	}
+	os.Setenv(`LOVELY_SIDECAR`, `true`)
+	testDirs(t, copyPath, false)
+	os.Unsetenv(`LOVELY_SIDECAR`)
+	os.RemoveAll(copyPath)
 }
 
 // Error Tests with copy

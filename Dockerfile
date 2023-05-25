@@ -32,6 +32,7 @@ ENV LOVELY_HELMFILE_PATH=/usr/local/bin/helmfile
 ENV LOVELY_KUSTOMIZE_PATH=/usr/local/bin/kustomize
 ENV LOVELY_PLUGINS=
 ENV LOVELY_PREPROCESSORS=
+ENV LOVELY_SIDECAR=true
 COPY --from=builder /usr/local/bin/yq /usr/local/bin/yq
 COPY --from=builder /usr/local/bin/helm /usr/local/bin/helm
 COPY --from=builder /usr/local/bin/helmfile /usr/local/bin/helmfile

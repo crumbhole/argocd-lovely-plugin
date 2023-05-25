@@ -125,9 +125,18 @@ func (c *Collection) gitClean(path string) error {
 	return nil
 }
 
+func donothing(_ string) error {
+	return nil
+}
+
 // Ensure we have a clean working copy
 // ArgoCD doesn't guarantee us an unpatched copy when we run
+// as a configmap plugin. It does when as a sidecar.
 func (c *Collection) ensureClean(path string) (string, func(string) error, error) {
+	sidecar, got := os.LookupEnv(`LOVELY_SIDECAR`)
+	if got && sidecar == "true" {
+		return path, donothing, nil
+	}
 	if features.GetAllowGitCheckout() {
 		return path, c.gitClean, c.gitClean(path)
 	}
