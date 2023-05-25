@@ -3,8 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
-	"gopkg.in/yaml.v3"
 	"github.com/otiai10/copy"
+	"gopkg.in/yaml.v3"
 	"os"
 	"regexp"
 	"testing"
@@ -12,7 +12,7 @@ import (
 
 const (
 	normalPath = "test/"
-	copyPath = "test_copy/"
+	copyPath   = "test_copy/"
 	errorsPath = "test_errors/"
 )
 
