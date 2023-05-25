@@ -1,5 +1,6 @@
 ARG VERSION
-FROM ghcr.io/crumbhole/argocd-lovely-plugin-cmp:${VERSION} as source
+ARG PARENT
+FROM ${PARENT}:${VERSION} as source
 FROM alpine:3.18.0
 COPY --from=source /usr/local/bin/argocd-lovely-plugin .
 USER 999
