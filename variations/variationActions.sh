@@ -5,6 +5,10 @@ set -e
 {
 	echo "name: Variations"
 	echo "description: Build variations of lovely"
+	echo "inputs:"
+	echo "  version:"
+    echo "    description: 'Version to build'"
+    echo "    required: true"
 	echo "runs:"
 	echo "  using: \"composite\""
 	echo "  steps:"
@@ -25,9 +29,9 @@ set -e
         echo "        file: variations/${dockerfile}"
         echo "        push: true"
         echo "        platforms: \${{ env.PLATFORMS }}"
-        echo "        tags: ghcr.io/crumbhole/${target}:\${{ github.sha }}"
+        echo "        tags: ghcr.io/crumbhole/${target}:\${{ inputs.version }}"
         echo "        build-args: |"
-		echo "          VERSION=\${{ github.sha }}"
+		echo "          VERSION=\${{ inputs.version }}"
 		echo "          PARENT=ghcr.io/crumbhole/${source}"
 #		echo "  variation: ${target} from ${source} using ${dockerfile}"
 	done < variations/variations.txt

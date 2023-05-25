@@ -1,5 +1,9 @@
 name: Variations
 description: Build variations of lovely
+inputs:
+  version:
+    description: 'Version to build'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -10,9 +14,9 @@ runs:
         file: variations/Dockerfile.legacy
         push: true
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/argocd-lovely-plugin:${{ github.sha }}
+        tags: ghcr.io/crumbhole/argocd-lovely-plugin:${{ inputs.version }}
         build-args: |
-          VERSION=${{ github.sha }}
+          VERSION=${{ inputs.version }}
           PARENT=ghcr.io/crumbhole/argocd-lovely-plugin-cmp
     - name: Build and Push lovely
       uses: docker/build-push-action@v4
@@ -21,9 +25,9 @@ runs:
         file: variations/Dockerfile.nover
         push: true
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/lovely:${{ github.sha }}
+        tags: ghcr.io/crumbhole/lovely:${{ inputs.version }}
         build-args: |
-          VERSION=${{ github.sha }}
+          VERSION=${{ inputs.version }}
           PARENT=ghcr.io/crumbhole/argocd-lovely-plugin-cmp
     - name: Build and Push lovely-vault-ver
       uses: docker/build-push-action@v4
@@ -32,9 +36,9 @@ runs:
         file: variations/Dockerfile.vault
         push: true
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/lovely-vault-ver:${{ github.sha }}
+        tags: ghcr.io/crumbhole/lovely-vault-ver:${{ inputs.version }}
         build-args: |
-          VERSION=${{ github.sha }}
+          VERSION=${{ inputs.version }}
           PARENT=ghcr.io/crumbhole/argocd-lovely-plugin-cmp
     - name: Build and Push lovely-vault
       uses: docker/build-push-action@v4
@@ -43,9 +47,9 @@ runs:
         file: variations/Dockerfile.nover
         push: true
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/lovely-vault:${{ github.sha }}
+        tags: ghcr.io/crumbhole/lovely-vault:${{ inputs.version }}
         build-args: |
-          VERSION=${{ github.sha }}
+          VERSION=${{ inputs.version }}
           PARENT=ghcr.io/crumbhole/lovely-vault-ver
     - name: Build and Push lovely-hera-ver
       uses: docker/build-push-action@v4
@@ -54,9 +58,9 @@ runs:
         file: variations/Dockerfile.hera
         push: true
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/lovely-hera-ver:${{ github.sha }}
+        tags: ghcr.io/crumbhole/lovely-hera-ver:${{ inputs.version }}
         build-args: |
-          VERSION=${{ github.sha }}
+          VERSION=${{ inputs.version }}
           PARENT=ghcr.io/crumbhole/argocd-lovely-plugin-cmp
     - name: Build and Push lovely-hera
       uses: docker/build-push-action@v4
@@ -65,9 +69,9 @@ runs:
         file: variations/Dockerfile.nover
         push: true
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/lovely-hera:${{ github.sha }}
+        tags: ghcr.io/crumbhole/lovely-hera:${{ inputs.version }}
         build-args: |
-          VERSION=${{ github.sha }}
+          VERSION=${{ inputs.version }}
           PARENT=ghcr.io/crumbhole/lovely-hera-ver
     - name: Build and Push lovely-hera-vault-ver
       uses: docker/build-push-action@v4
@@ -76,9 +80,9 @@ runs:
         file: variations/Dockerfile.vault
         push: true
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/lovely-hera-vault-ver:${{ github.sha }}
+        tags: ghcr.io/crumbhole/lovely-hera-vault-ver:${{ inputs.version }}
         build-args: |
-          VERSION=${{ github.sha }}
+          VERSION=${{ inputs.version }}
           PARENT=ghcr.io/crumbhole/lovely-hera-ver
     - name: Build and Push lovely-hera-vault
       uses: docker/build-push-action@v4
@@ -87,7 +91,7 @@ runs:
         file: variations/Dockerfile.nover
         push: true
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/lovely-hera-vault:${{ github.sha }}
+        tags: ghcr.io/crumbhole/lovely-hera-vault:${{ inputs.version }}
         build-args: |
-          VERSION=${{ github.sha }}
+          VERSION=${{ inputs.version }}
           PARENT=ghcr.io/crumbhole/lovely-hera-vault-ver
