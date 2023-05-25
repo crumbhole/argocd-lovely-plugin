@@ -87,7 +87,7 @@ func pluginYaml() error {
 			return err
 		}
 		param.Tooltip = tooltip
-		param.String_ = feature.DefaultVal
+		param.StringDefault = feature.DefaultVal
 		plugin.Spec.Parameters.Static = append(plugin.Spec.Parameters.Static, &param)
 	}
 	var yamlText bytes.Buffer

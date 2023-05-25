@@ -63,7 +63,7 @@ type ParameterAnnouncement struct {
 	// set, `string` is the default. If collectionType is set to an invalid value, a validation error is thrown.
 	CollectionType string `protobuf:"bytes,6,opt,name=collectionType,proto3" json:"collectionType,omitempty"`
 	// string is the default value of the parameter if the parameter is a string.
-	String_ string `protobuf:"bytes,7,opt,name=string,proto3" json:"string,omitempty"`
+	StringDefault string `protobuf:"bytes,7,opt,name=string,proto3" json:"string,omitempty"`
 	// array is the default value of the parameter if the parameter is an array.
 	Array []string `protobuf:"bytes,8,rep,name=array,proto3" json:"array,omitempty"`
 	// map is the default value of the parameter if the parameter is a map.
