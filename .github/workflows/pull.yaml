@@ -141,7 +141,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
-      - name: Build CMP image
+      - name: Build sidecar image
         uses: docker/build-push-action@v4
         with:
           context: .
@@ -169,3 +169,5 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
       - uses: ./.github/actions/variations
+        with:
+          version: ${{ github.sha }}
