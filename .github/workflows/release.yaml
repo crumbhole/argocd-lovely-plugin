@@ -24,8 +24,9 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         goos: ${{ matrix.goos }}
         goarch: amd64
-        goversion: "https://golang.org/dl/go1.20.1.linux-amd64.tar.gz"
+        goversion: "https://golang.org/dl/go1.20.4.linux-amd64.tar.gz"
         binary_name: "argocd-lovely-plugin"
+        project_path: cmd/argocd-lovely-plugin
         extra_files: LICENSE README.md
         pre_command: go get ./...
   build_sidecar:
@@ -64,6 +65,8 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
+      - name: Get git tag
+        uses: little-core-labs/get-git-tag@v3.0.2
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
