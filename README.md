@@ -61,7 +61,7 @@ At the moment the helmfile binary is not installed for you if you are running as
 
 ## Environment variables
 
-argocd-lovely-plugin is configured through environment variables and paramteres. These can be set in both the sidecar (or for configmaps, the argocd-repo-server) and in the application itself.
+argocd-lovely-plugin is configured through environment variables and parameters. These can be set in both the sidecar (or for configmaps, the argocd-repo-server) and in the application itself.
 
 If you are passing the configuration in as application environment variables in Argo CD 2.4 or higher you must not put the `ARGOCD_ENV_` prefix on them, as Argo CD does that for you.
 
