@@ -1,5 +1,5 @@
 ---
-# Downloads the plugin and moves it to /custom-tools, which is then mounted on the argocd-repo-server
+# Downloads the argocd-vault-plugin and moves it to /custom-tools, which is then mounted on the sidecar.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -7,6 +7,27 @@ metadata:
 spec:
   template:
     spec:
+      # -- load env from secret
+      envFrom:
+        - secretRef:
+            name: vault-env
+      # -- init container to download vault plugin
+      initContainers:
+        - name: download-tools
+          image: registry.access.redhat.com/ubi8
+          env:
+            - name: AVP_VERSION
+              # renovate: datasource=github-releases depName=argoproj-labs/argocd-vault-plugin
+              value: 1.14.0
+          command: [sh, -c]
+          args:
+            - >-
+              curl -L https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v$(AVP_VERSION)/argocd-vault-plugin_$(AVP_VERSION)_linux_amd64 -o argocd-vault-plugin &&
+              chmod +x argocd-vault-plugin &&
+              mv argocd-vault-plugin /custom-tools/
+          volumeMounts:
+            - mountPath: /custom-tools
+              name: custom-tools
       containers:
         - name: lovely-plugin
           # This command is actually already set in the image.
@@ -21,7 +42,7 @@ spec:
             runAsNonRoot: true
             runAsUser: 999
           volumeMounts:
-              # Import the repo-server's pliugin binary
+            # Import the repo-server's plugin binary
             - mountPath: /var/run/argocd
               name: var-files
             - mountPath: /home/argocd/cmp-server/plugins
@@ -30,7 +51,13 @@ spec:
               # mitigate path traversal attacks.
             - mountPath: /tmp
               name: lovely-tmp
+              # Mount the custom-tools volume, which contains the plugin binary.
+            - name: custom-tools
+              subPath: argocd-vault-plugin
+              mountPath: /usr/local/bin/argocd-vault-plugin
       volumes:
         # A temporary directory for the tool to work in.
         - emptyDir: {}
           name: lovely-tmp
+        - name: custom-tools
+          emptyDir: {}
