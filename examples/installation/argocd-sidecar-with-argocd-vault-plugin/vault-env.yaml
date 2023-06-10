@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+stringData:
+  VAULT_ADDR: https://vault.mycompany.com/
+  VAULT_AUTH_PATH: kubernetes
+kind: Secret
+metadata:
+  name: vault-env
+type: Opaque

@@ -18,5 +18,7 @@ Additional examples also serve as CI/CD tests and can be found in the [test](../
 
 |Name|Description|
 |--|--|
-|[Installing argocd-lovely-plugin into Argo CD using Kustomize](../examples/installation/argocd)|An example of how to install and configure Argo CD and argo-cd-lovely-plugin using Kustomize|
-|[Installing argocd-lovely-plugin and argocd-vault-replacer into Argo CD using Kustomize](../examples/installation/argocd-with-argocd-vault-replacer)|An example of how to install and configure Argo CD, argo-cd-lovely-plugin and argocd-vault-replacer using Kustomize|
+|[Installing argocd-lovely-plugin with argocd-vault-replacer into Argo CD as a sidecar using Kustomize](../examples/installation/argocd-sidecar)|An example of how to install and configure Argo CD and argocd-lovely-plugin, including argocd-vault-replacer plugin using Kustomize|
+|[Installing argocd-lovely-plugin and the official argocd-vault-plugin into Argo CD as a sidecar using Kustomize](../examples/installation/argocd-with-vault-plugin-sidecar)|An example of how to install and configure Argo CD and argo-cd-lovely-plugin, including the official argocd-vault-plugin using Kustomize|
+|[Installing argocd-lovely-plugin into Argo CD using Kustomize](../examples/installation/legacy-argocd)|An example of how to install and configure Argo CD and argo-cd-lovely-plugin using Kustomize (deprecated)|
+|[Installing argocd-lovely-plugin and argocd-vault-replacer into Argo CD using Kustomize](../examples/installation/legacy-argocd-with-argocd-vault-replacer)|An example of how to install and configure Argo CD, argo-cd-lovely-plugin and argocd-vault-replacer using Kustomize (deprecated)|

@@ -1,0 +1,21 @@
+---
+# kustomize build . >argocd-deploy.yml
+#
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: argocd
+
+resources:
+  - github.com/argoproj/argo-cd/manifests/ha/cluster-install?ref=v2.7.1
+  - namespace.yaml
+  - vault-env.yaml
+
+patches:
+  - path: argo-cm.yaml
+    target:
+      kind: ConfigMap
+      name: argocd-cm
+  - path: argocd-lovely-plugin.yaml
+    target:
+      kind: Deployment
+      name: argocd-repo-server
