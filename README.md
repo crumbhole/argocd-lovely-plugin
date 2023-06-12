@@ -86,19 +86,7 @@ Have a look at the [examples directory](examples/README.md) for a list of exampl
 This is not a templating tool, there are plenty of choices out there to that stuff. It just brings together external tools.
 
 # How does it work?
-Firstly we scan the working application directory for yaml files. At each shallowest point where one is found then it is marked as a separate sub-application for working on.
-
-For each sub-application
-- Pre-processors will be run if defined
-- If there is a `helmfile.yaml` or `helmfile.d` directory then helmfile will run the templating engine.
-- If there is a `Chart.yaml` then Helm will run the templating engine.
-- If there is a `kustomization.yaml` then Kustomize will be run. If Helm or helmfile was previously run the output of that will be added to the kustomization.yaml as a resource automatically.
-- Only if neither a `Chart.yaml` nor a `kustomization.yaml` were found then all the yaml in the directory tree will be concatentated together.
-- All plugins will be run, in order given to process the data.
-
-All the sub-application yamls will be concatenated and the result will be fed to Argo CD (printed to stdout).
-
-Helm and helmfile cannot be used in the same subdirectory, this will cause an error. Yaml files in the same directory as the `helmfile.d` are silently ignored (so may be referenced from your `helmfile.d` files.
+For more details on what lovely does read [this](doc/how.md)
 
 # Debugging lovely's behaviour locally
 
