@@ -7,10 +7,14 @@ All lovely plugin containers have helm, kustomize, helmfile, bash, git, and yq b
 | ghcr.io/crumbhole/lovely | No | Plain lovely, but unversioned, `called argocd-lovely-plugin` |
 | ghcr.io/crumbhole/lovely-vault-ver | Yes | [argocd-vault-replacer](https://github.com/crumbhole/argocd-vault-replacer) |
 | ghcr.io/crumbhole/lovely-vault | No | [argocd-vault-replacer](https://github.com/crumbhole/argocd-vault-replacer) |
+| ghcr.io/crumbhole/lovely-vault-plugin-ver | Yes | [argocd-vault-plugin](https://github.com/argoproj-labs/argocd-vault-plugin) |
+| ghcr.io/crumbhole/lovely-vault-plugin | No | [argocd-vault-plugin](https://github.com/argoproj-labs/argocd-vault-plugin) |
 | ghcr.io/crumbhole/lovely-hera-ver | Yes | [hera](hera.md) |
 | ghcr.io/crumbhole/lovely-hera | No | [hera](hera.md) |
 | ghcr.io/crumbhole/lovely-hera-vault-ver | Yes | [argocd-vault-replacer](https://github.com/crumbhole/argocd-vault-replacer) + [hera](hera.md) |
 | ghcr.io/crumbhole/lovely-hera-vault | No | [argocd-vault-replacer](https://github.com/crumbhole/argocd-vault-replacer) + [hera](hera.md) |
+| ghcr.io/crumbhole/lovely-hera-vault-plugin-ver | Yes | [argocd-vault-plugin](https://github.com/argoproj-labs/argocd-vault-plugin) + [hera](hera.md) |
+| ghcr.io/crumbhole/lovely-hera-vault-plugin | No | [argocd-vault-plugin](https://github.com/argoproj-labs/argocd-vault-plugin) + [hera](hera.md) |
 
 Each of these comes ready setup to perform the processing using these plugins.
 

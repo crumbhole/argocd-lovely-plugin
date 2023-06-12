@@ -2,7 +2,11 @@ argocd-lovely-plugin BASE Dockerfile.legacy
 lovely BASE Dockerfile.nover
 lovely-vault-ver BASE Dockerfile.vault
 lovely-vault lovely-vault-ver Dockerfile.nover
+lovely-vault-plugin-ver BASE Dockerfile.vault-plugin
+lovely-vault-plugin BASE Dockerfile.nover
 lovely-hera-ver BASE Dockerfile.hera
 lovely-hera lovely-hera-ver Dockerfile.nover
 lovely-hera-vault-ver lovely-hera-ver Dockerfile.vault
 lovely-hera-vault lovely-hera-vault-ver Dockerfile.nover
+lovely-hera-vault-plugin-ver lovely-hera-ver Dockerfile.vault-plugin
+lovely-hera-vault-plugin lovely-hera-vault-plugin-ver Dockerfile.nover

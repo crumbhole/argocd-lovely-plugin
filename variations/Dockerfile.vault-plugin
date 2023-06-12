@@ -1,0 +1,17 @@
+ARG VERSION
+ARG PARENT
+FROM ${PARENT}:${VERSION}
+ARG NAME
+ # https://github.com/argoproj-labs/argocd-vault-plugin/releases
+ # renovate: datasource=github-releases depName=argoproj-labs/argocd-vault-plugin
+ARG AVP_VERSION=v1.14.0
+USER 0
+RUN yq -i e ".metadata.name |= \"${NAME}\"" /home/argocd/cmp-server/config/plugin.yaml
+RUN <<EOF
+	set -eux
+	apk add curl
+	curl -L https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v${AVP_VERSION}/argocd-vault-plugin_$(echo ${AVP_VERSION}|tr -d v)_linux_amd64 -o /usr/local/bin/argocd-vault-plugin
+	chmod +x /usr/local/bin/argocd-vault-plugin
+EOF
+USER 999
+ENV LOVELY_PLUGINS="argocd-vault-plugin generate -"

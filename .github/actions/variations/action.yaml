@@ -51,6 +51,28 @@ runs:
         build-args: |
           VERSION=${{ inputs.version }}
           PARENT=ghcr.io/crumbhole/lovely-vault-ver
+    - name: Build and Push lovely-vault-plugin-ver
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: variations/Dockerfile.vault-plugin
+        push: true
+        platforms: ${{ env.PLATFORMS }}
+        tags: ghcr.io/crumbhole/lovely-vault-plugin-ver:${{ inputs.version }}
+        build-args: |
+          VERSION=${{ inputs.version }}
+          PARENT=ghcr.io/crumbhole/argocd-lovely-plugin-cmp
+    - name: Build and Push lovely-vault-plugin
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: variations/Dockerfile.nover
+        push: true
+        platforms: ${{ env.PLATFORMS }}
+        tags: ghcr.io/crumbhole/lovely-vault-plugin:${{ inputs.version }}
+        build-args: |
+          VERSION=${{ inputs.version }}
+          PARENT=ghcr.io/crumbhole/argocd-lovely-plugin-cmp
     - name: Build and Push lovely-hera-ver
       uses: docker/build-push-action@v4
       with:
@@ -95,3 +117,25 @@ runs:
         build-args: |
           VERSION=${{ inputs.version }}
           PARENT=ghcr.io/crumbhole/lovely-hera-vault-ver
+    - name: Build and Push lovely-hera-vault-plugin-ver
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: variations/Dockerfile.vault-plugin
+        push: true
+        platforms: ${{ env.PLATFORMS }}
+        tags: ghcr.io/crumbhole/lovely-hera-vault-plugin-ver:${{ inputs.version }}
+        build-args: |
+          VERSION=${{ inputs.version }}
+          PARENT=ghcr.io/crumbhole/lovely-hera-ver
+    - name: Build and Push lovely-hera-vault-plugin
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: variations/Dockerfile.nover
+        push: true
+        platforms: ${{ env.PLATFORMS }}
+        tags: ghcr.io/crumbhole/lovely-hera-vault-plugin:${{ inputs.version }}
+        build-args: |
+          VERSION=${{ inputs.version }}
+          PARENT=ghcr.io/crumbhole/lovely-hera-vault-plugin-ver
