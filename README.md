@@ -38,7 +38,7 @@ We offer many pre-built container options. We only support the use of these cont
 - [Variations](doc/variations.md) lists many other versions of the plugin, and explains versioning
 
 ## Installing as an Argo CD Sidecar Plugin
-We recommend you install as an Argo CD CMP Sidecar Plugin. [Argo CD's documentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/config-management-plugins/#sidecar-plugin) has steps on how to achieve this, or you can see [our Kustomization example](examples/installation/argocd). You can also observe how we install Lovely for our CI tests in the [CI bootstrap directory](.github/workflows/assets/bootstrap) in this repo.
+We recommend you install as an Argo CD CMP Sidecar Plugin. [Argo CD's documentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/config-management-plugins/#sidecar-plugin) has steps on how to achieve this, or you can see [our Kustomization example](examples/installation). You can also observe how we install Lovely for our CI tests in the [CI bootstrap directory](.github/workflows/assets/bootstrap) in this repo.
 
 argocd-lovely-plugin has no discovery rules, so will not run by default. You must reference the plugin by name in your application spec. For example:
 
