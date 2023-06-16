@@ -33,6 +33,7 @@ set -e
         echo "        build-args: |"
 		echo "          VERSION=\${{ inputs.version }}"
 		echo "          PARENT=ghcr.io/crumbhole/${source}"
+		echo "          NAME=${target}"
 #		echo "  variation: ${target} from ${source} using ${dockerfile}"
 	done < variations/variations.txt
 } > ".github/actions/variations/action.yaml"
