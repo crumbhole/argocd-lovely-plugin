@@ -38,7 +38,6 @@ The idea is that you can modify Chart.yaml or kustomization.yaml before the main
 
 A preprocessor fails by returning a non-zero exit code and error information on stderr.
 
-
 ## Plugins
 
 Configured using `LOVELY_PLUGINS` and `LOVELY_PLUGINS_YAML`.

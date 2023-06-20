@@ -93,6 +93,7 @@ For more details on what lovely does read [this](doc/how.md)
 You can download `argocd-lovely-plugin` binary and run it in an application directory. Errors will go to stderr, and the rendered yaml will appear on stdout.
 - You will need helm, helmfile and kustomize on your path if you use those. You will also need git and bash.
 - You should set up the expected environment variables. Remember `ARGOCD_APP_NAME` needs to be set for helm chart rendering, or can be overridden with `LOVELY_HELM_NAME`. One or other must be set.
+- Understand [the docs](docs/how.md), especially the 'clean copy' section
 
 # Videos
 If you prefer to watch videos of things rather than read words, we have compiled some demos.
