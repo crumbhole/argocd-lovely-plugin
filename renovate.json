@@ -11,5 +11,13 @@
       ],
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     }
+  ],
+  "packageRules": [
+    {
+      "matchFiles": [".github/workflows/assets/bootstrap/*/kustomization.yaml"],
+      "matchDepNames": ["argoproj/argo-cd"],
+      "matchUpdateTypes": ["major", "minor"],
+      "enabled": false
+    }
   ]
 }
