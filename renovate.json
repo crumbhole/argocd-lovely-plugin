@@ -15,7 +15,7 @@
   ],
   "packageRules": [
     {
-      "matchPaths": [".github/workflows/assets/bootstrap/**/kustomization.yaml"],
+      "matchPaths": [".github/workflows/assets/bootstrap/**/kustomization.yaml", "examples/installation/**"],
       "matchDepNames": ["argoproj/argo-cd"],
       "matchUpdateTypes": ["major", "minor"],
       "enabled": false
