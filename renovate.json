@@ -3,6 +3,7 @@
   "extends": [
     "config:base"
   ],
+  "ignorePaths": ["test_errors/**"],
   "regexManagers": [
     {
       "fileMatch": ["^Dockerfile$", "\\.yaml$"],
