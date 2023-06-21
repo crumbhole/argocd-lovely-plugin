@@ -3,5 +3,5 @@ version: 1.0.0
 name: karpenter
 dependencies:
 - name: karpenter
-  version: v0.22.1
+  version: v0.28.0
   repository: oci://public.ecr.aws/karpenter
