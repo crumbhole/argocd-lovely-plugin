@@ -77,7 +77,7 @@ runs:
         tags: ghcr.io/crumbhole/lovely-vault-plugin:${{ inputs.version }}
         build-args: |
           VERSION=${{ inputs.version }}
-          PARENT=ghcr.io/crumbhole/argocd-lovely-plugin-cmp
+          PARENT=ghcr.io/crumbhole/lovel-vault-plugin-ver
           NAME=lovely-vault-plugin
     - name: Build and Push lovely-hera-ver
       uses: docker/build-push-action@v4
