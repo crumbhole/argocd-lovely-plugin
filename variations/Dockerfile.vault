@@ -6,4 +6,4 @@ USER 0
 RUN yq -i e ".metadata.name |= \"${NAME}\"" /home/argocd/cmp-server/config/plugin.yaml
 USER 999
 ENV LOVELY_PLUGINS=argocd-vault-replacer
-COPY --from=ghcr.io/crumbhole/argocd-vault-replacer:0.11.9 /argocd-vault-replacer /usr/local/bin/argocd-vault-replacer
+COPY --from=ghcr.io/crumbhole/argocd-vault-replacer:0.11.10 /argocd-vault-replacer /usr/local/bin/argocd-vault-replacer
