@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/evanphx/json-patch v5.6.0+incompatible
-	github.com/gomarkdown/markdown v0.0.0-20230322041520-c84983bdbf2a
+	github.com/gomarkdown/markdown 531d2d74bc12
 	github.com/otiai10/copy v1.12.0
 	gopkg.in/yaml.v3 v3.0.1
 	jaytaylor.com/html2text v0.0.0-20230321000545-74c2419ad056
