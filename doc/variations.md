@@ -20,7 +20,7 @@ Each of these comes ready setup to perform the processing using these plugins.
 
 ## Versioned vs unversioned
 
-The versioned containers require you to specify the version of the plugin as in `pluginname-version`. When you upgrade the plugin you will need to update all your applications, but this approach allows you to run multiple versions of the same plugin. The version will match the container tag, as in `plugin-1.2` will be usableplugin
+The versioned containers require you to specify the version of the plugin as in `pluginname-version`. When you upgrade the plugin you will need to update all your applications, but this approach allows you to run multiple versions of the same plugin. The version will match the container tag, as in `plugin-1.2` will be plugin from release 1.2.
 
 The unversioned do not have the version, so all versions of the unversioned plugin have the same identifier. This means you cannot run two versions of the same plugin, but you also do not have to do any work when upgrading the plugin, your applications will automatically use the new plugin.
 
