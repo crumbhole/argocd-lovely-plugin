@@ -7,7 +7,6 @@ spec:
     spec:
       containers:
         - name: cmp
-          command: [/var/run/argocd/argocd-cmp-server] # Entrypoint should be Argo CD lightweight CMP server i.e. argocd-cmp-server
           image: k3d-registry.localhost:5000/lovely
           securityContext:
             runAsNonRoot: true
@@ -17,7 +16,7 @@ spec:
               name: var-files
             - mountPath: /home/argocd/cmp-server/plugins
               name: plugins
-            # Starting with v2.4, do NOT mount the same tmp volume as the repo-server container. The filesystem separation helps 
+            # Starting with v2.4, do NOT mount the same tmp volume as the repo-server container. The filesystem separation helps
             # mitigate path traversal attacks.
             - mountPath: /tmp
               name: cmp-tmp
