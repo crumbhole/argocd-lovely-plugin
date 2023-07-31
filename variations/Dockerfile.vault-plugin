@@ -10,7 +10,7 @@ RUN yq -i e ".metadata.name |= \"${NAME}\"" /home/argocd/cmp-server/config/plugi
 RUN <<EOF
 	set -eux
 	apk add curl
-	curl -L https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/${AVP_VERSION}/argocd-vault-plugin_$(echo ${AVP_VERSION}|tr -d v)_linux_amd64 -o /usr/local/bin/argocd-vault-plugin
+	curl -L https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/${AVP_VERSION}/argocd-vault-plugin_$(echo ${AVP_VERSION}|tr -d v)_linux_${TARGETARCH} -o /usr/local/bin/argocd-vault-plugin
 	chmod +x /usr/local/bin/argocd-vault-plugin
 EOF
 USER 999
