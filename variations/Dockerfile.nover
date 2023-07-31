@@ -2,7 +2,5 @@ ARG VERSION
 ARG PARENT
 FROM ${PARENT}:${VERSION}
 ARG NAME
-USER 0
-RUN yq -i e ".metadata.name |= \"${NAME}\"" /home/argocd/cmp-server/config/plugin.yaml
+ENV PLUGIN_NAME="${NAME}"
 RUN yq -i 'del(.spec.version)' /home/argocd/cmp-server/config/plugin.yaml
-USER 999

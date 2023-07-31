@@ -24,6 +24,10 @@ The versioned containers require you to specify the version of the plugin as in 
 
 The unversioned do not have the version, so all versions of the unversioned plugin have the same identifier. This means you cannot run two versions of the same plugin, but you also do not have to do any work when upgrading the plugin, your applications will automatically use the new plugin.
 
+## Plugin Name
+
+You can set `PLUGIN_NAME` in the environment of the sidecar to override the default name of the plugin. This allows you to supply multiple pre-configured plugins (with different environment, but the same variation). For example, if you have two vaults, you could set VAULT_ADDR differently for the two.
+
 ## Lovely does not do [discovery](https://argo-cd.readthedocs.io/en/stable/operator-manual/config-management-plugins/#write-discovery-rules-for-your-plugin)
 
 You must specify that you'd like your application processed with lovely explitly by putting the name of the plugin in the application.
