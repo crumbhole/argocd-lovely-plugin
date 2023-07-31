@@ -38,6 +38,6 @@ Environment variables, are conventionally ALL_CAPS, and for our purposes
 | Helmfile Path | LOVELY_HELMFILE_PATH | Path to the helmfile binary used for this application | helmfile |
 | Helmfile Merge | LOVELY_HELMFILE_MERGE | Set to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) into any helmfile.yaml used by helmfile. |  |
 | Helmfile Patch | LOVELY_HELMFILE_PATCH | to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any helmfile.yaml used by Helmfile. |  |
-## Examples
+## Plugin Name
 
-We should provide examples of configuring the sidecar itself, or through the paramter list of the application, or the environment of the application
+For sidecar images only you can set `PLUGIN_NAME` in the environment of the sidecar to override the default name of the plugin. This allows you to supply multiple pre-configured plugins (with different environment, but the same variation).

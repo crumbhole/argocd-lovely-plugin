@@ -6,13 +6,13 @@ ARG NAME
  # renovate: datasource=github-releases depName=argoproj-labs/argocd-vault-plugin
 ARG AVP_VERSION=v1.14.0
 ARG TARGETARCH
+ENV PLUGIN_NAME="${NAME}"
 USER 0
-RUN yq -i e ".metadata.name |= \"${NAME}\"" /home/argocd/cmp-server/config/plugin.yaml
 RUN <<EOF
-	set -eux
-	apk add curl
-	curl -L https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/${AVP_VERSION}/argocd-vault-plugin_$(echo ${AVP_VERSION}|tr -d v)_linux_${TARGETARCH} -o /usr/local/bin/argocd-vault-plugin
-	chmod +x /usr/local/bin/argocd-vault-plugin
+    set -eux
+    apk add curl
+    curl -L https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/${AVP_VERSION}/argocd-vault-plugin_$(echo ${AVP_VERSION}|tr -d v)_linux_${TARGETARCH} -o /usr/local/bin/argocd-vault-plugin
+    chmod +x /usr/local/bin/argocd-vault-plugin
 EOF
 USER 999
 ENV LOVELY_PLUGINS="argocd-vault-plugin generate -"
