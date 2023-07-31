@@ -97,7 +97,6 @@ tags
 # End of https://www.toptal.com/developers/gitignore/api/go,emacs,vim
 
 /build/
-go.sum
 got.txt
 test/**/charts/
 test/**/Chart.lock
