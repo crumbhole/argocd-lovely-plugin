@@ -4,4 +4,4 @@ FROM ${PARENT}:${VERSION}
 ARG NAME
 ENV PLUGIN_NAME="${NAME}"
 ENV LOVELY_PLUGINS=argocd-vault-replacer
-COPY --from=ghcr.io/crumbhole/argocd-vault-replacer:0.11.10 /argocd-vault-replacer /usr/local/bin/argocd-vault-replacer
+COPY --from=ghcr.io/crumbhole/argocd-vault-replacer:0.11.11 /argocd-vault-replacer /usr/local/bin/argocd-vault-replacer
