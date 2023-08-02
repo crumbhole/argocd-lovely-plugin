@@ -6,7 +6,7 @@
   "ignorePaths": ["test_errors/**", "test/**"],
   "regexManagers": [
     {
-      "fileMatch": ["^Dockerfile$", "\\.yaml$"],
+      "fileMatch": ["^Dockerfile$", "\\.yaml$", "^Dockerfile..*"],
       "matchStrings": [
         "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\sARG .*?_VERSION=(?<currentValue>.*)\\s"
       ],
