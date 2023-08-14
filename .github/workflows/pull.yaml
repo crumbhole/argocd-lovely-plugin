@@ -22,7 +22,7 @@ jobs:
     - name: Install Test Dependencies
       run: |
         # https://github.com/kubernetes-sigs/kustomize/releases
-        # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize
+        # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize versioning=regex:^kustomize\/v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)?$
         KUSTOMIZE_VERSION=kustomize\v5.0.3
         # https://github.com/helm/helm/releases
         # renovate: datasource=github-releases depName=helm/helm
