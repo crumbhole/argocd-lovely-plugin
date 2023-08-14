@@ -3,7 +3,7 @@ FROM golang:1.21.0 as builder
  # renovate: datasource=github-releases depName=mikefarah/yq
 ARG YQ_VERSION=v4.35.1
  # https://github.com/kubernetes-sigs/kustomize/releases
- # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize
+ # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize/kustomize
 ARG KUSTOMIZE_VERSION=kustomize/v5.0.3
  # https://github.com/helm/helm/releases
  # renovate: datasource=github-releases depName=helm/helm
