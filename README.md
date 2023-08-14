@@ -54,7 +54,7 @@ spec:
 ```
 For more information, please refer to the [Argo CD Documentation on discovery](https://argo-cd.readthedocs.io/en/stable/operator-manual/config-management-plugins/#write-discovery-rules-for-your-plugin).
 
-## Installing as an Argo CD ConfigMap Plugin (Deprecated)
+## Installing as an Argo CD ConfigMap Plugin (Deprecated - Will not work in Argo CD 2.8+)
 You can use [our Kustomization example](examples/installation/legacy-argocd) to install Argo CD and to bootstrap the installation of the plugin at the same time.
 
 At the moment the helmfile binary is not installed for you if you are running as a configmap plugin, nor is that documented here. You must get the helmfile binary into your repo-server yourself.
