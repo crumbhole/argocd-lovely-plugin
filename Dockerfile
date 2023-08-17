@@ -13,7 +13,7 @@ ARG HELM_VERSION=v3.12.3
 ARG HELMFILE_VERSION=v0.155.1
  # https://github.com/dominikh/go-tools/releases
  # renovate: datasource=github-releases depName=dominikh/go-tools
-ARG STATICCHECK_VERSION=2023.1.3
+ARG STATICCHECK_VERSION=2023.1.4
 
 ARG LOVELY_VERSION
 
