@@ -4,7 +4,7 @@ FROM ${PARENT}:${VERSION}
 ARG NAME
  # https://github.com/argoproj-labs/argocd-vault-plugin/releases
  # renovate: datasource=github-releases depName=argoproj-labs/argocd-vault-plugin
-ARG AVP_VERSION=v1.16.0
+ARG AVP_VERSION=v1.16.1
 ARG TARGETARCH
 ENV PLUGIN_NAME="${NAME}"
 USER 0
