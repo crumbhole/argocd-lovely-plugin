@@ -79,22 +79,22 @@ var Features = map[featureId]Feature{
 	Plugins: {
 		Title:       `Plugins`,
 		Name:        `lovely_plugins`,
-		Description: "Set to a comma separated list of binaries to run as plugins. Read [the documentation](doc/plugins.md) for more on plugins. Will not be used if `Plugins YAML` is set.",
+		Description: "Set to a comma separated list of binaries to run as plugins. Read [the documentation](plugins.md) for more on plugins. Will not be used if `Plugins YAML` is set.",
 	},
 	PluginsYaml: {
 		Title:       `Plugins YAML`,
 		Name:        `lovely_plugins_yaml`,
-		Description: "Set to some YAML describing the binaries to run as plugins. Read [the documentation](doc/plugins.md) for more on plugins. Will override `Plugins` if set.",
+		Description: "Set to some YAML describing the binaries to run as plugins. Read [the documentation](plugins.md) for more on plugins. Will override `Plugins` if set.",
 	},
 	Preprocessors: {
 		Title:       `PreProcessors`,
 		Name:        `lovely_preprocessors`,
-		Description: "Set to a comma separated list of binaries to run as preprocessors. Read [the documentation](doc/plugins.md) for more on plugins. Will not be used if `Preproecessors YAML` is set.",
+		Description: "Set to a comma separated list of binaries to run as preprocessors. Read [the documentation](plugins.md) for more on plugins. Will not be used if `Preproecessors YAML` is set.",
 	},
 	PreprocessorsYaml: {
 		Title:       `PreProcessors YAML`,
 		Name:        `lovely_preprocessors_yaml`,
-		Description: "Set to some YAML describing the binaries to run as preprocessors. Read [the documentation](doc/plugins.md) for more on plugins. Will override `PreProcessors` if set.",
+		Description: "Set to some YAML describing the binaries to run as preprocessors. Read [the documentation](plugins.md) for more on plugins. Will override `PreProcessors` if set.",
 	},
 	DetectRx: {
 		Title:       `Detection Regular Expression`,
@@ -156,7 +156,7 @@ var Features = map[featureId]Feature{
 		Title:       `Allow Git Checkout`,
 		Name:        `lovely_allow_gitcheckout`,
 		DefaultVal:  `false`,
-		Description: `This is not necessary when using the plugin as a sidecar. Allows kustomize base paths to work. Do **not** just set this without reading [the documentation](doc/allow_git.md)`,
+		Description: `This is not necessary when using the plugin as a sidecar. Allows kustomize base paths to work. Do **not** just set this without reading [the documentation](allow_git.md)`,
 	},
 	HelmName: {
 		Title:       `Helm Name`,
