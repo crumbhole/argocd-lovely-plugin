@@ -3,5 +3,5 @@ version: 1.0.0
 name: nginx
 dependencies:
 - name: nginx
-  version: 15.1.4
+  version: 15.2.0
   repository: https://charts.bitnami.com/bitnami
