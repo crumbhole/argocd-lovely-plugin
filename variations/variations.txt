@@ -10,3 +10,5 @@ lovely-hera-vault-ver lovely-hera-ver Dockerfile.vault
 lovely-hera-vault lovely-hera-vault-ver Dockerfile.nover
 lovely-hera-vault-plugin-ver lovely-hera-ver Dockerfile.vault-plugin
 lovely-hera-vault-plugin lovely-hera-vault-plugin-ver Dockerfile.nover
+lovely-ytt-ver BASE Dockerfile.ytt
+lovely-ytt lovely-ytt-ver Dockerfile.nover

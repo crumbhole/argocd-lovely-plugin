@@ -1,0 +1,17 @@
+ARG VERSION
+ARG PARENT
+FROM ${PARENT}:${VERSION}
+ARG NAME
+ # https://github.com/carvel-dev/ytt/releases
+ # renovate: datasource=github-releases depName=carvel-dev/ytt
+ARG YTT_VERSION=v0.45.4
+ARG TARGETARCH
+ENV PLUGIN_NAME="${NAME}"
+USER 0
+RUN <<EOF
+    set -eux
+    apk add curl
+    curl -L https://github.com/carvel-dev/releases/download/${YTT_VERSION}/ytt-linux-${TARGETARCH} -o /usr/local/bin/ytt
+    chmod +x /usr/local/bin/ytt
+EOF
+USER 999
