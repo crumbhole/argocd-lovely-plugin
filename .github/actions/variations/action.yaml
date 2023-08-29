@@ -151,3 +151,27 @@ runs:
           VERSION=${{ inputs.version }}
           PARENT=ghcr.io/crumbhole/lovely-hera-vault-plugin-ver
           NAME=lovely-hera-vault-plugin
+    - name: Build and Push lovely-ytt-ver
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: variations/Dockerfile.ytt
+        push: true
+        platforms: ${{ env.PLATFORMS }}
+        tags: ghcr.io/crumbhole/lovely-ytt-ver:${{ inputs.version }}
+        build-args: |
+          VERSION=${{ inputs.version }}
+          PARENT=ghcr.io/crumbhole/argocd-lovely-plugin-cmp
+          NAME=lovely-ytt-ver
+    - name: Build and Push lovely-ytt
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        file: variations/Dockerfile.nover
+        push: true
+        platforms: ${{ env.PLATFORMS }}
+        tags: ghcr.io/crumbhole/lovely-ytt:${{ inputs.version }}
+        build-args: |
+          VERSION=${{ inputs.version }}
+          PARENT=ghcr.io/crumbhole/lovely-ytt-ver
+          NAME=lovely-ytt
