@@ -15,8 +15,10 @@ All lovely plugin containers have helm, kustomize, helmfile, bash, git, and yq b
 | ghcr.io/crumbhole/lovely-hera-vault | No | [argocd-vault-replacer](https://github.com/crumbhole/argocd-vault-replacer) + [hera](hera.md) |
 | ghcr.io/crumbhole/lovely-hera-vault-plugin-ver | Yes | [argocd-vault-plugin](https://github.com/argoproj-labs/argocd-vault-plugin) + [hera](hera.md) |
 | ghcr.io/crumbhole/lovely-hera-vault-plugin | No | [argocd-vault-plugin](https://github.com/argoproj-labs/argocd-vault-plugin) + [hera](hera.md) |
+| ghcr.io/crumbhole/lovely-ytt-ver | Yes | [ytt](ytt.md) |
+| ghcr.io/crumbhole/lovely-ytt | No | [ytt](ytt.md) |
 
-Each of these comes ready setup to perform the processing using these plugins.
+Each of these comes ready setup to perform the processing using these plugins, except for the `ytt` variation, where the configuration is [explained here](ytt.md).
 
 ## Versioned vs unversioned
 
