@@ -11,7 +11,7 @@ USER 0
 RUN <<EOF
     set -eux
     apk add curl
-    curl -L https://github.com/carvel-dev/releases/download/${YTT_VERSION}/ytt-linux-${TARGETARCH} -o /usr/local/bin/ytt
+    curl -L https://github.com/carvel-dev/ytt/releases/download/${YTT_VERSION}/ytt-linux-${TARGETARCH} -o /usr/local/bin/ytt
     chmod +x /usr/local/bin/ytt
 EOF
 USER 999
