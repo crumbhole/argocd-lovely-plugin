@@ -11,7 +11,7 @@ jobs:
   gogitops:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: GoGitOps Step
       id: gogitops
       uses: beaujr/gogitops-action@v0.2
