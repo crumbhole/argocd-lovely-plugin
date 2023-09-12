@@ -10,7 +10,7 @@ ARG KUSTOMIZE_VERSION=v5.0.3
 ARG HELM_VERSION=v3.12.3
  # https://github.com/helmfile/helmfile/releases
  # renovate: datasource=github-releases depName=helmfile/helmfile
-ARG HELMFILE_VERSION=v0.156.0
+ARG HELMFILE_VERSION=v0.157.0
  # https://github.com/dominikh/go-tools/releases
  # renovate: datasource=github-releases depName=dominikh/go-tools
 ARG STATICCHECK_VERSION=2023.1.5
