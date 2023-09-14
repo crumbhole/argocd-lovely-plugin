@@ -23,7 +23,7 @@ set -e
 		dockerfile="${linesplit[2]}"
 
 		echo "    - name: Build and Push ${target}"
-        echo "      uses: docker/build-push-action@v4"
+        echo "      uses: docker/build-push-action@v5"
         echo "      with:"
         echo "        context: ."
         echo "        file: variations/${dockerfile}"
