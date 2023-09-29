@@ -1,7 +1,7 @@
 ARG VERSION
 ARG PARENT
 FROM ${PARENT}:${VERSION} as source
-FROM alpine:3.18.3
+FROM alpine:3.18.4
 COPY --from=source /usr/local/bin/argocd-lovely-plugin .
 USER 999
 ENTRYPOINT [ "cp", "argocd-lovely-plugin", "/custom-tools/" ]
