@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/evanphx/json-patch v5.7.0+incompatible
 	github.com/gomarkdown/markdown v0.0.0-20230922112808-5421fefb8386
-	github.com/otiai10/copy v1.12.0
+	github.com/otiai10/copy v1.14.0
 	gopkg.in/yaml.v3 v3.0.1
 	jaytaylor.com/html2text v0.0.0-20230321000545-74c2419ad056
 	k8s.io/apimachinery v0.28.2
@@ -37,6 +37,7 @@ require (
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/ssor/bom v0.0.0-20170718123548-6386211fdfcf // indirect
 	golang.org/x/net v0.13.0 // indirect
+	golang.org/x/sync v0.3.0 // indirect
 	golang.org/x/sys v0.10.0 // indirect
 	golang.org/x/text v0.11.0 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
