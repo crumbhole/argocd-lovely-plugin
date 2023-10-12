@@ -7,7 +7,7 @@ ARG YQ_VERSION=v4.35.2
 ARG KUSTOMIZE_VERSION=v5.0.3
  # https://github.com/helm/helm/releases
  # renovate: datasource=github-releases depName=helm/helm
-ARG HELM_VERSION=v3.12.3
+ARG HELM_VERSION=v3.13.1
  # https://github.com/helmfile/helmfile/releases
  # renovate: datasource=github-releases depName=helmfile/helmfile
 ARG HELMFILE_VERSION=v0.157.0
