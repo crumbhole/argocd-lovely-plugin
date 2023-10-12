@@ -32,6 +32,12 @@
       "matchDepNames": ["argoproj/argo-cd"],
       "matchUpdateTypes": ["major", "minor"],
       "enabled": false
+    },
+    {
+      "matchPaths": [".github/workflows/assets/bootstrap/argocd-cmp-2.9/kustomization.yaml", "examples/installation/**"],
+      "matchDepNames": ["argoproj/argo-cd"],
+      "matchUpdateTypes": ["major", "minor"],
+      "enabled": false
     }
   ]
-}
+}}
