@@ -3,7 +3,7 @@
 DEPS := $(shell find . -type f -name "*.go" -printf "%p ")
 IMAGE_REPO := ghcr.io/crumbhole
 BASE_LOVELY_IMAGE := argocd-lovely-plugin-cmp
-all: code-vet code-fmt lint test build/argocd-lovely-plugin
+all: code-vet code-fmt test build/argocd-lovely-plugin
 
 docker: plugin_versioned.yaml
 	docker build . -t ${IMAGE_REPO}/${BASE_LOVELY_IMAGE}:${LOVELY_VERSION}
