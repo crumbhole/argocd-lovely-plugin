@@ -43,7 +43,8 @@ func cleanupEnv(env map[string]string) {
 
 func matchREExpected(path string, givenValue string) error {
 	expected, err := os.ReadFile(path + "/regexp.txt")
-	if _, ok := err.(*os.PathError); ok {
+	var pathErr *os.PathError
+	if errors.As(err, &pathErr) {
 		return fmt.Errorf("Couldn't find expected.txt nor regexp.txt for test")
 	}
 	if err != nil {
@@ -58,7 +59,8 @@ func matchREExpected(path string, givenValue string) error {
 
 func matchExpected(path string, givenValue string) error {
 	expected, err := os.ReadFile(path + "/expected.txt")
-	if _, ok := err.(*os.PathError); ok {
+	var pathErr *os.PathError
+	if errors.As(err, &pathErr) {
 		return matchREExpected(path, givenValue)
 	}
 	if err != nil {
@@ -75,7 +77,8 @@ func matchExpectedWithStore(path string, givenValue string) error {
 	if err != nil {
 		got := path + "/got.txt"
 		os.Remove(got)
-		os.WriteFile(got, []byte(givenValue), 0444)
+		// #nosec - G306 - this is just for test logging/helping
+		_ = os.WriteFile(got, []byte(givenValue), 0444)
 	}
 	return err
 }
@@ -107,8 +110,9 @@ func checkDir(path string, errorsExpected bool) error {
 
 // Finds directories under ./test and evaluates all the .yaml/.ymls
 func testDirs(t *testing.T, path string, errorsExpected bool) {
-	os.Setenv(`ARGOCD_APP_NAME`, `test`)
-	os.Setenv(`ARGOCD_APP_NAMESPACE`, `testnamespace`)
+	t.Helper()
+	t.Setenv(`ARGOCD_APP_NAME`, `test`)
+	t.Setenv(`ARGOCD_APP_NAMESPACE`, `testnamespace`)
 	dirs, err := os.ReadDir(path)
 	if err != nil {
 		t.Error(err)
@@ -133,9 +137,8 @@ func TestDirectoriesCopy(t *testing.T) {
 
 // Tests with git checkout/clean
 func TestDirectoriesGitCheckout(t *testing.T) {
-	os.Setenv(`LOVELY_ALLOW_GITCHECKOUT`, `true`)
+	t.Setenv(`LOVELY_ALLOW_GITCHECKOUT`, `true`)
 	testDirs(t, normalPath, false)
-	os.Unsetenv(`LOVELY_ALLOW_GITCHECKOUT`)
 }
 
 // Test as sidecar
@@ -150,9 +153,8 @@ func TestDirectoriesSidecar(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	os.Setenv(`LOVELY_SIDECAR`, `true`)
+	t.Setenv(`LOVELY_SIDECAR`, `true`)
 	testDirs(t, copyPath, false)
-	os.Unsetenv(`LOVELY_SIDECAR`)
 	os.RemoveAll(copyPath)
 }
 

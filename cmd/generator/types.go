@@ -25,10 +25,9 @@ type PluginConfig struct {
 
 // PluginConfigSpec is the spec from a PluginConfig
 type PluginConfigSpec struct {
-	Version  string  `json:"version"`
-	Init     Command `json:"init,omitempty"`
-	Generate Command `json:"generate"`
-	//	Discover         Discover   `json:"discover"`
+	Version          string     `json:"version"`
+	Init             Command    `json:"init,omitempty"`
+	Generate         Command    `json:"generate"`
 	Parameters       Parameters `yaml:"parameters"`
 	PreserveFileMode bool       `json:"preserveFileMode,omitempty"`
 }

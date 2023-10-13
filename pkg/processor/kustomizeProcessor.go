@@ -59,7 +59,7 @@ func (k KustomizeProcessor) Generate(input *string, basePath string, path string
 		var kust types.Kustomization
 		err = yaml.Unmarshal(kustContents, &kust)
 		if err != nil {
-			return nil, fmt.Errorf("error reading kustomization.yaml: %v", err)
+			return nil, fmt.Errorf("error reading kustomization.yaml: %w", err)
 		}
 		kust.Resources = append(kust.Resources, kustomizeIntermediateFilename)
 
@@ -77,7 +77,7 @@ func (k KustomizeProcessor) Generate(input *string, basePath string, path string
 		}
 	}
 	params := []string{`build`, `--enable-helm`}
-	params = append(params[:], features.GetKustomizeParams()[:]...)
+	params = append(params, features.GetKustomizeParams()...)
 	params = append(params, path)
 	wd, err := os.Getwd()
 	if err != nil {
@@ -85,8 +85,8 @@ func (k KustomizeProcessor) Generate(input *string, basePath string, path string
 	}
 	out, err := execute(wd, features.GetKustomizePath(), params...)
 	if err != nil {
-		return nil, fmt.Errorf("error running kustomize: %v", err)
+		return nil, fmt.Errorf("error running kustomize: %w", err)
 	}
-	outstr := "---\n" + string(out)
+	outstr := "---\n" + out
 	return &outstr, nil
 }

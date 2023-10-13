@@ -24,7 +24,7 @@ func reEntryInDir(path string, re *regexp.Regexp) bool {
 	}
 
 	for _, file := range files {
-		if re.Match([]byte(file.Name())) {
+		if re.MatchString(file.Name()) {
 			return true
 		}
 	}

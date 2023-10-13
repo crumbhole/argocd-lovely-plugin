@@ -20,7 +20,7 @@ func (PreProcessor) Name() string {
 func getRelPreprocessors(basePath string, path string) ([]string, error) {
 	relPath, err := filepath.Rel(basePath, path)
 	if err != nil {
-		return make([]string, 0), fmt.Errorf("internal relative path error %s", err)
+		return make([]string, 0), fmt.Errorf("internal relative path error %w", err)
 	}
 	return features.GetPreprocessors(relPath)
 }
@@ -48,7 +48,7 @@ func (v PreProcessor) Generate(basePath string, path string) error {
 		cmd.Dir = path
 		out, err := cmd.CombinedOutput()
 		if err != nil {
-			return fmt.Errorf("%s: %s", err, out)
+			return fmt.Errorf("%w: %s", err, out)
 		}
 	}
 	return nil

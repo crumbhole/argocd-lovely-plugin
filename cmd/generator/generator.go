@@ -37,7 +37,7 @@ func parameterMarkdown() error {
 	fmt.Fprintf(f, "|Name | Environment variable | Description | Default |\n")
 	fmt.Fprintf(f, "| ---- | -------------------- | ----------- | ------- |\n")
 	for featNum := features.FirstFeature; featNum <= features.LastFeature; featNum++ {
-		feature := features.Features[featNum]
+		feature := features.Features()[featNum]
 		fmt.Fprintf(f, "| %s | %s | %s | %s |\n",
 			feature.Title,
 			feature.EnvName(),
@@ -73,7 +73,7 @@ func pluginYaml() error {
 		},
 	}
 	for featNum := features.FirstFeature; featNum <= features.LastFeature; featNum++ {
-		feature := features.Features[featNum]
+		feature := features.Features()[featNum]
 		var param ParameterAnnouncement
 		param.Name = feature.Name
 		param.Title = feature.Title
@@ -97,6 +97,7 @@ func pluginYaml() error {
 	if err != nil {
 		return err
 	}
+	// #nosec - G306 - this needs to be readable by argocd
 	err = os.WriteFile(`plugin.yaml`, yamlText.Bytes(), 0644)
 	if err != nil {
 		return err

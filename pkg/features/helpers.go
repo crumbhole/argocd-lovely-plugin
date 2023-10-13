@@ -31,7 +31,7 @@ func getYamlPlugins(envname string) (pluginYaml, error) {
 func pluginsForPath(path string, yamlEnv string, plainEnv string) ([]string, error) {
 	plugins, err := getYamlPlugins(yamlEnv)
 	if err != nil {
-		return make([]string, 0), fmt.Errorf("%s is invalid: %s", yamlEnv, err)
+		return make([]string, 0), fmt.Errorf("%s is invalid: %w", yamlEnv, err)
 	}
 	if list, contains := plugins[path]; contains {
 		return list, nil

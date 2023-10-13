@@ -22,7 +22,7 @@ func (PluginProcessor) Name() string {
 func getRelPlugins(basePath string, path string) ([]string, error) {
 	relPath, err := filepath.Rel(basePath, path)
 	if err != nil {
-		return nil, fmt.Errorf("internal relative path error %s", err)
+		return nil, fmt.Errorf("internal relative path error %w", err)
 	}
 	return features.GetPlugins(relPath)
 }
@@ -57,12 +57,12 @@ func (v PluginProcessor) Generate(input *string, basePath string, path string) (
 		}
 		go func() {
 			defer stdin.Close()
-			io.WriteString(stdin, currentText)
+			_, _ = io.WriteString(stdin, currentText)
 		}()
 
 		out, err := cmd.Output()
 		if err != nil {
-			return nil, fmt.Errorf("%s: %s", err, stderr.String())
+			return nil, fmt.Errorf("%w: %s", err, stderr.String())
 		}
 		currentText = string(out)
 	}

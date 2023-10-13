@@ -13,14 +13,6 @@ import (
 	"path/filepath"
 )
 
-var processors = []processor.Processor{
-	processor.HelmfileProcessor{},
-	processor.HelmProcessor{},
-	processor.KustomizeProcessor{},
-	processor.YamlProcessor{},
-	processor.PluginProcessor{},
-}
-
 // Collection is a list of sub-applications making up this application
 type Collection struct {
 	baseDir string
@@ -80,7 +72,13 @@ func (c *Collection) processOneDir(path string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	for _, processor := range processors {
+	for _, processor := range []processor.Processor{
+		processor.HelmfileProcessor{},
+		processor.HelmProcessor{},
+		processor.KustomizeProcessor{},
+		processor.YamlProcessor{},
+		processor.PluginProcessor{},
+	} {
 		if processor.Enabled(c.baseDir, path) {
 			out, err := processor.Generate(result, c.baseDir, path)
 			if err != nil {
@@ -113,14 +111,14 @@ func (c *Collection) gitClean(path string) error {
 	chkout.Stderr = &stderr
 	_, err := chkout.Output()
 	if err != nil {
-		return fmt.Errorf("%s: %v", err, stderr.String())
+		return fmt.Errorf("%w: %v", err, stderr.String())
 	}
 	clean := exec.Command("git", "clean", "-fdx", ".")
 	clean.Dir = path
 	clean.Stderr = &stderr
 	_, err = clean.Output()
 	if err != nil {
-		return fmt.Errorf("%s: %v", err, stderr.String())
+		return fmt.Errorf("%w: %v", err, stderr.String())
 	}
 	return nil
 }
@@ -150,7 +148,12 @@ func (c *Collection) doAllDirs(path string) (string, error) {
 		return "", err
 	}
 	c.baseDir = workingPath
-	defer cleanup(workingPath)
+	defer func() {
+		err := cleanup(workingPath)
+		if err != nil {
+			fmt.Printf("%s", err)
+		}
+	}()
 	err = c.scanDir(workingPath)
 	if err != nil {
 		return "", err
