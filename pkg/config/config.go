@@ -1,8 +1,8 @@
 package config
 
 import (
+	"github.com/go-andiamo/splitter"
 	"os"
-	"strings"
 )
 
 const paramPrefix = `PARAM_`
@@ -29,14 +29,15 @@ func GetStringParam(name string, defaultVal string) string {
 // GetStringListParam returns a string array from the first available configuration source it can find
 // or the default value listified if that fails. The separator is used
 // to separate list items
-func GetStringListParam(name string, defaultVal string, separator string) []string {
+func GetStringListParam(name string, defaultVal string, separator rune) ([]string, error) {
 	paramsStr := GetStringParam(name, defaultVal)
 	if paramsStr == `` {
-		return []string{}
+		return []string{}, nil
 	}
-	params := strings.Split(paramsStr, separator)
-	for i, param := range params {
-		params[i] = strings.TrimSpace(param)
+	encs := []*splitter.Enclosure{
+		splitter.DoubleQuotesBackSlashEscaped, splitter.SingleQuotesBackSlashEscaped,
 	}
-	return params
+	s := splitter.MustCreateSplitter(separator, encs...).
+		AddDefaultOptions(splitter.TrimSpaces, splitter.NoEmpties)
+	return s.Split(paramsStr)
 }

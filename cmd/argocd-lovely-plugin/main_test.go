@@ -3,12 +3,20 @@ package main
 import (
 	"errors"
 	"fmt"
+	"github.com/hexops/gotextdiff"
+	"github.com/hexops/gotextdiff/myers"
+	"github.com/hexops/gotextdiff/span"
 	"github.com/otiai10/copy"
 	"gopkg.in/yaml.v3"
 	"os"
 	"regexp"
 	"testing"
 )
+
+func prettyDiff(expected, got string) string {
+	edits := myers.ComputeEdits(span.URIFromPath("expected.txt"), expected, got)
+	return fmt.Sprint(gotextdiff.ToUnified("expected.txt", "got.txt", expected, edits))
+}
 
 const (
 	normalPath = "test/"
@@ -69,7 +77,7 @@ func matchExpected(path string, givenValue string) error {
 	if string(expected) == givenValue {
 		return nil
 	}
-	return fmt.Errorf("Expected >\n%s\n< and got >\n%s\n<", expected, givenValue)
+	return fmt.Errorf(prettyDiff(string(expected), givenValue))
 }
 
 func matchExpectedWithStore(path string, givenValue string) error {

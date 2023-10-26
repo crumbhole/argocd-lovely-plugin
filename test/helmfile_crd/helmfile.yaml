@@ -1,0 +1,12 @@
+repositories:
+  - name: otel
+    url: https://open-telemetry.github.io/opentelemetry-helm-charts
+
+releases:
+  - name: test
+    namespace: default
+    chart: otel/opentelemetry-operator
+    version: 0.41.0
+    set:
+      - name: replicaCount
+        value: "2"

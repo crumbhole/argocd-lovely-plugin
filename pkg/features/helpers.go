@@ -8,8 +8,8 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func getPlugins(envname string) []string {
-	return config.GetStringListParam(envname, ``, `,`)
+func getPlugins(envname string) ([]string, error) {
+	return config.GetStringListParam(envname, ``, ',')
 }
 
 type pluginYaml map[string][]string
@@ -36,5 +36,5 @@ func pluginsForPath(path string, yamlEnv string, plainEnv string) ([]string, err
 	if list, contains := plugins[path]; contains {
 		return list, nil
 	}
-	return getPlugins(plainEnv), nil
+	return getPlugins(plainEnv)
 }

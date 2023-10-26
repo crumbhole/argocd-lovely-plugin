@@ -25,19 +25,27 @@ func (KustomizeProcessor) Enabled(_ string, path string) bool {
 	return reEntryInDir(path, regexp.MustCompile(`^kustomization\.ya?ml$`))
 }
 
+func (k KustomizeProcessor) getPath(path string) (string, error) {
+	kustYamlPath := path + "/kustomization.yaml"
+	if _, err := os.Stat(kustYamlPath); os.IsNotExist(err) {
+		kustYamlPath = path + "/kustomization.yml"
+		if _, err := os.Stat(kustYamlPath); os.IsNotExist(err) {
+			return "", err
+		}
+	}
+	return kustYamlPath, nil
+}
+
 // Generate create the text stream for this plugin
 func (k KustomizeProcessor) Generate(input *string, basePath string, path string) (*string, error) {
 	if !k.Enabled(basePath, path) {
 		return input, ErrDisabledProcessor
 	}
-	kustYamlPath := path + "/kustomization.yaml"
-	if _, err := os.Stat(kustYamlPath); os.IsNotExist(err) {
-		kustYamlPath = path + "/kustomization.yml"
-		if _, err := os.Stat(kustYamlPath); os.IsNotExist(err) {
-			return nil, err
-		}
+	kustYamlPath, err := k.getPath(path)
+	if err != nil {
+		return nil, err
 	}
-	err := MergeYaml(kustYamlPath, features.GetKustomizeMerge(), features.GetKustomizePatch())
+	err = MergeYaml(kustYamlPath, features.GetKustomizeMerge(), features.GetKustomizePatch())
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +85,11 @@ func (k KustomizeProcessor) Generate(input *string, basePath string, path string
 		}
 	}
 	params := []string{`build`, `--enable-helm`}
-	params = append(params, features.GetKustomizeParams()...)
+	extraParams, err := features.GetKustomizeParams()
+	if err != nil {
+		return nil, err
+	}
+	params = append(params, extraParams...)
 	params = append(params, path)
 	wd, err := os.Getwd()
 	if err != nil {

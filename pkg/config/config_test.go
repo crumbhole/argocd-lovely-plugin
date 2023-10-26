@@ -22,7 +22,10 @@ func TestParam(t *testing.T) {
 
 func TestParamList(t *testing.T) {
 	setupAll()
-	res := GetStringListParam(`LIST`, ``, ` `)
+	res, err := GetStringListParam(`LIST`, ``, ' ')
+	if err != nil {
+		t.Errorf("Didn't expect an error in GetStringListParam")
+	}
 	if len(res) != 2 {
 		t.Errorf("LIST is not length 2, is length %d", len(res))
 	}

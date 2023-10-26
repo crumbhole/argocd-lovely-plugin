@@ -64,9 +64,13 @@ func downloadableRepo(repourl string) bool {
 
 func (h HelmProcessor) repoEnsure(path string, name string, repourl string) error {
 	params := []string{`repo`, `add`, `--force-update`}
-	params = append(params, features.GetHelmRepoAddParams()...)
+	extraParams, err := features.GetHelmRepoAddParams()
+	if err != nil {
+		return err
+	}
+	params = append(params, extraParams...)
 	params = append(params, []string{name, repourl}...)
-	_, err := h.helmDo(path, params...)
+	_, err = h.helmDo(path, params...)
 	return err
 }
 
@@ -119,12 +123,20 @@ func (h HelmProcessor) Generate(input *string, basePath string, path string) (*s
 	if err != nil {
 		return nil, err
 	}
-	err = MergeYaml(path+"/"+features.GetHelmValues()[0], features.GetHelmMerge(), features.GetHelmPatch())
+	helmValues, err := features.GetHelmValues()
+	if err != nil {
+		return nil, err
+	}
+	err = MergeYaml(path+"/"+helmValues[0], features.GetHelmMerge(), features.GetHelmPatch())
 	if err != nil {
 		return nil, err
 	}
 	params := []string{`template`, `--include-crds`}
-	params = append(params, features.GetHelmTemplateParams()...)
+	extraParams, err := features.GetHelmTemplateParams()
+	if err != nil {
+		return nil, err
+	}
+	params = append(params, extraParams...)
 	if kubeVersion := os.Getenv(`KUBE_VERSION`); kubeVersion != "" && !contains(params, `--kube-version`) {
 		params = append(params, []string{`--kube-version`, kubeVersion}...)
 	}
@@ -135,7 +147,7 @@ func (h HelmProcessor) Generate(input *string, basePath string, path string) (*s
 		}
 	}
 	if features.GetHelmValuesSet() {
-		for _, valueFile := range features.GetHelmValues() {
+		for _, valueFile := range helmValues {
 			params = append(params, []string{`-f`, valueFile}...)
 		}
 	}

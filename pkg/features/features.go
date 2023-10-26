@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// FeatureID is an enum for each feature to output them in a controlled order for docs etc
 type FeatureID int
 
 // All the features/parameters this module supports
@@ -32,8 +33,9 @@ const (
 	HelmfilePath
 	HelmfileMerge
 	HelmfilePatch
+	HelmfileTemplateParams
 	FirstFeature = Plugins
-	LastFeature  = HelmfilePatch
+	LastFeature  = HelmfileTemplateParams
 )
 
 // Feature is an individual configurable element of the plugin
@@ -169,6 +171,11 @@ func Features() map[FeatureID]Feature {
 			Title:       `Helmfile Patch`,
 			Name:        `lovely_helmfile_patch`,
 			Description: "to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any helmfile.yaml used by Helmfile.",
+		},
+		HelmfileTemplateParams: {
+			Title:       `Helmfile Template Parameters`,
+			Name:        `lovely_helmfile_template_params`,
+			Description: "Space separated extra parameters to `Helmfile template` as you might use on the command line. You're on your own here if you pass rubbish parameters.",
 		},
 	}
 }
