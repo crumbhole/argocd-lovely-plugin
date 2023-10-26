@@ -50,9 +50,9 @@ func GetKustomizePath() string {
 
 // GetKustomizeParams returns extra parameters to pass to kustomize
 // Set LOVELY_KUSTOMIZE_PARAMS to extra parameters to pass to kustomize
-func GetKustomizeParams() []string {
+func GetKustomizeParams() ([]string, error) {
 	f := Features()[KustomizeParams]
-	return config.GetStringListParam(f.EnvName(), f.DefaultVal, ` `)
+	return config.GetStringListParam(f.EnvName(), f.DefaultVal, ' ')
 }
 
 // GetHelmPath returns the path to helm if overridden, otherwise we search the path
@@ -78,16 +78,16 @@ func GetHelmPatch() string {
 
 // GetHelmTemplateParams returns extra parameters to pass to helm template
 // Set LOVELY_HELM_TEMPLATE_PARAMS to extra parameters to pass to helm template
-func GetHelmTemplateParams() []string {
+func GetHelmTemplateParams() ([]string, error) {
 	f := Features()[HelmTemplateParams]
-	return config.GetStringListParam(f.EnvName(), f.DefaultVal, ` `)
+	return config.GetStringListParam(f.EnvName(), f.DefaultVal, ' ')
 }
 
 // GetHelmRepoAddParams returns extra parameters to pass to helm repo add
 // Set LOVELY_HELM_REPO_ADD_PARAMS to extra parameters to pass to helm template
-func GetHelmRepoAddParams() []string {
+func GetHelmRepoAddParams() ([]string, error) {
 	f := Features()[HelmRepoAddParams]
-	return config.GetStringListParam(f.EnvName(), f.DefaultVal, ` `)
+	return config.GetStringListParam(f.EnvName(), f.DefaultVal, ' ')
 }
 
 // GetKustomizeMerge returns the yaml to strategic merge into kustomization.yaml
@@ -138,15 +138,16 @@ func GetHelmNamespace() string {
 
 // GetHelmValues gives us the values file we're going to use for helm
 // Set LOVELY_HELM_VALUES to the path to use for the values file
-func GetHelmValues() []string {
+func GetHelmValues() ([]string, error) {
 	f := Features()[HelmValues]
-	return config.GetStringListParam(f.EnvName(), `values.yaml`, ` `)
+	return config.GetStringListParam(f.EnvName(), `values.yaml`, ' ')
 }
 
 // GetHelmValuesSet returns true if HelmValues() is explicily set
 func GetHelmValuesSet() bool {
 	f := Features()[HelmValues]
-	return len(config.GetStringListParam(f.EnvName(), f.DefaultVal, ` `)) != 0
+	helmValues, _ := config.GetStringListParam(f.EnvName(), f.DefaultVal, ' ')
+	return len(helmValues) != 0
 }
 
 // GetHelmfilePath returns the path to helm if overridden, otherwise we search the path
@@ -168,4 +169,11 @@ func GetHelmfileMerge() string {
 func GetHelmfilePatch() string {
 	f := Features()[HelmfilePatch]
 	return config.GetStringParam(f.EnvName(), f.DefaultVal)
+}
+
+// GetHelmfileTemplateParams returns extra parameters to pass to helmfile template
+// Set LOVELY_HELMFILE_TEMPLATE_PARAMS to extra parameters to pass to helmfile template
+func GetHelmfileTemplateParams() ([]string, error) {
+	f := Features()[HelmfileTemplateParams]
+	return config.GetStringListParam(f.EnvName(), f.DefaultVal, ' ')
 }

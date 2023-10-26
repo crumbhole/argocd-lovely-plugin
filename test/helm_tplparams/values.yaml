@@ -1,0 +1,5 @@
+opentelemetry-operator:
+  replicaCount: 2
+  manager:
+    verticalPodAutoscaler:
+      enabled: true
