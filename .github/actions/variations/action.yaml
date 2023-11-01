@@ -7,18 +7,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Build and Push argocd-lovely-plugin
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        file: variations/Dockerfile.legacy
-        push: true
-        platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/argocd-lovely-plugin:${{ inputs.version }}
-        build-args: |
-          VERSION=${{ inputs.version }}
-          PARENT=ghcr.io/crumbhole/argocd-lovely-plugin-cmp
-          NAME=argocd-lovely-plugin
     - name: Build and Push lovely
       uses: docker/build-push-action@v5
       with:
