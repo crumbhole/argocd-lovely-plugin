@@ -1,1 +1,0 @@
-This will install Argo CD with both [argocd-vault-replacer]() and argocd-lovely-plugin and will then configure argocd-vault-replacer as an argocd-lovely-plugin plugin.
