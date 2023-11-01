@@ -1,4 +1,3 @@
-argocd-lovely-plugin BASE Dockerfile.legacy
 lovely BASE Dockerfile.nover
 lovely-vault-ver BASE Dockerfile.vault
 lovely-vault lovely-vault-ver Dockerfile.nover

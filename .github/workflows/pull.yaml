@@ -75,7 +75,6 @@ jobs:
         argocd_version:
           - "2.9"
           - "2.8"
-          - "2.7"
       fail-fast: true
     steps:
       - uses: actions/checkout@v4
