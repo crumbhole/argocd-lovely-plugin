@@ -18,10 +18,10 @@ get: $(DEPS)
 	go get ./...
 
 test: get
-	go test ./...
+	go test -timeout 20m ./...
 
 test_verbose: get
-	go test -v ./...
+	go test -timeout 20m -v ./...
 
 generate: config.md .github/actions/variations/action.yaml
 
@@ -63,5 +63,5 @@ lint: $(DEPS) get
 	golangci-lint run
 
 coverage: $(DEPS) get
-	go test -v ./... -coverpkg=./... -coverprofile=coverage.out
+	go test -timeout 20m -v ./... -coverpkg=./... -coverprofile=coverage.out
 	go tool cover -html=coverage.out
