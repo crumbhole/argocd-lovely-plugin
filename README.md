@@ -34,8 +34,7 @@ We aim to match the [Argo CD supported versions](https://argo-cd.readthedocs.io/
 We offer many pre-built container options. We only support the use of these containers, the binaries provided are for convenience:
 
 - `argocd-lovely-plugin-cmp` to install as a sidecar plugin, which is versioned.
-- The deprecated `argocd-lovely-plugin` if you wish to install as an older-style configMap plugin.
-- [Variations](doc/variations.md) lists many other versions of the plugin, and explains versioning
+- [Variations](doc/variations.md) lists many other versions of the plugin, and explains versioning.
 
 ## Installing as an Argo CD Sidecar Plugin
 We recommend you install as an Argo CD CMP Sidecar Plugin. [Argo CD's documentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/config-management-plugins/#sidecar-plugin) has steps on how to achieve this, or you can see [our Kustomization example](examples/installation). You can also observe how we install Lovely for our CI tests in the [CI bootstrap directory](.github/workflows/assets/bootstrap) in this repo.
@@ -56,7 +55,7 @@ For more information, please refer to the [Argo CD Documentation on discovery](h
 
 ## Environment variables
 
-argocd-lovely-plugin is configured through environment variables and parameters. These can be set in both the sidecar (or for configmaps, the argocd-repo-server) and in the application itself.
+argocd-lovely-plugin is configured through environment variables and parameters. These can be set in both the sidecar and in the application itself.
 
 If you are passing the configuration in as application environment variables in Argo CD 2.4 or higher you must not put the `ARGOCD_ENV_` prefix on them, as Argo CD does that for you.
 

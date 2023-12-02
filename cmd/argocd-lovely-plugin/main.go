@@ -1,15 +1,11 @@
 package main
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
-	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
 	"github.com/crumbhole/argocd-lovely-plugin/pkg/processor"
-	"github.com/otiai10/copy"
 	"log"
 	"os"
-	"os/exec"
 	"path/filepath"
 )
 
@@ -90,71 +86,9 @@ func (c *Collection) processOneDir(path string) (string, error) {
 	return *result, nil
 }
 
-// We copy the directory in case we patch some of the files for kustomize or helm
-func (c *Collection) makeTmpCopy(path string) (string, error) {
-	tmpPath, err := os.MkdirTemp(os.TempDir(), "lovely-plugin-")
-	if err != nil {
-		return tmpPath, err
-	}
-	err = os.RemoveAll(tmpPath)
-	if err != nil {
-		return tmpPath, err
-	}
-	err = copy.Copy(path, tmpPath)
-	return tmpPath, err
-}
-
-func (c *Collection) gitClean(path string) error {
-	chkout := exec.Command("git", "checkout", "HEAD", "--", ".")
-	chkout.Dir = path
-	var stderr bytes.Buffer
-	chkout.Stderr = &stderr
-	_, err := chkout.Output()
-	if err != nil {
-		return fmt.Errorf("%w: %v", err, stderr.String())
-	}
-	clean := exec.Command("git", "clean", "-fdx", ".")
-	clean.Dir = path
-	clean.Stderr = &stderr
-	_, err = clean.Output()
-	if err != nil {
-		return fmt.Errorf("%w: %v", err, stderr.String())
-	}
-	return nil
-}
-
-func donothing(_ string) error {
-	return nil
-}
-
-// Ensure we have a clean working copy
-// ArgoCD doesn't guarantee us an unpatched copy when we run
-// as a configmap plugin. It does when as a sidecar.
-func (c *Collection) ensureClean(path string) (string, func(string) error, error) {
-	sidecar, got := os.LookupEnv(`LOVELY_SIDECAR`)
-	if got && sidecar == "true" {
-		return path, donothing, nil
-	}
-	if features.GetAllowGitCheckout() {
-		return path, c.gitClean, c.gitClean(path)
-	}
-	newPath, err := c.makeTmpCopy(path)
-	return newPath, os.RemoveAll, err
-}
-
 func (c *Collection) doAllDirs(path string) (string, error) {
-	workingPath, cleanup, err := c.ensureClean(path)
-	if err != nil {
-		return "", err
-	}
-	c.baseDir = workingPath
-	defer func() {
-		err := cleanup(workingPath)
-		if err != nil {
-			fmt.Printf("%s", err)
-		}
-	}()
-	err = c.scanDir(workingPath)
+	c.baseDir = path
+	err := c.scanDir(path)
 	if err != nil {
 		return "", err
 	}

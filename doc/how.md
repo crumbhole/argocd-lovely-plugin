@@ -26,18 +26,7 @@ flowchart LR
 
 ## Ensuring a clean copy
 
-Lovely's processing of a sub-application can modify files. As modifications made may not be idempotent, we need to ensure we are working on an unmodified copy of the files. Lovely has 3 strategies for dealing with this:
-* Sidecar: When running as a sidecar, we get a fresh copy, so lovely doesn't do anything special. The sidecar images set `LOVELY_SIDECAR=true`.
-* Configmap plugin: Normally lovely will copy the sub-application folder only to a temporary folder and process them there. This means that if you refer to files outside the sub-application folder then it will not work.
-* Configmap plugin with `LOVELY_ALLOW_GITCHECKOUT=true`. In this case we will perform a git checkout after processing to undo any changes made by lovely. Check [this documentation](doc/allow_git.md).
-
-```mermaid
-flowchart LR
-    start{LOVELY_SIDECAR} -->|true| nothing["Do no special process"]
-	start -->|not true| check{LOVELY_ALLOW_GITCHECKOUT}
-	check -->|not true| copy[Copy files to temporary dir]
-	check -->|true| git[Git checkout at end]
-```
+Lovely's processing of a sub-application can modify files. As modifications made may not be idempotent, we need to ensure we are working on an unmodified copy of the files. When running as a sidecar, we get a fresh copy, so lovely doesn't do anything special.
 
 ## Processing
 
