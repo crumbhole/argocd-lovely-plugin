@@ -80,7 +80,7 @@ Have a look at the [examples directory](examples/README.md) for a list of exampl
 ## What doesn't it do?
 This is not a templating tool, there are plenty of choices out there to that stuff. It just brings together external tools.
 
-There is no support for private repos in lovely of any kind.
+There is not [yet](https://github.com/crumbhole/argocd-lovely-plugin/issues/36) support for accessing private helm repos.
 
 # How does it work?
 For more details on what lovely does read [this](doc/how.md)
