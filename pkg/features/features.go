@@ -134,12 +134,6 @@ func Features() map[FeatureID]Feature {
 			Name:        `lovely_kustomize_patch`,
 			Description: "Set to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any kustomization.yaml found.",
 		},
-		AllowGitCheckout: {
-			Title:       `Allow Git Checkout`,
-			Name:        `lovely_allow_gitcheckout`,
-			DefaultVal:  `false`,
-			Description: `This is not necessary when using the plugin as a sidecar. Allows kustomize base paths to work. Do **not** just set this without reading [the documentation](allow_git.md)`,
-		},
 		HelmName: {
 			Title:       `Helm Name`,
 			Name:        `lovely_helm_name`,

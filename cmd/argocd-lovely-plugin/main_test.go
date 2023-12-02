@@ -138,19 +138,8 @@ func testDirs(t *testing.T, path string, errorsExpected bool) {
 	}
 }
 
-// Tests with copy
-func TestDirectoriesCopy(t *testing.T) {
-	testDirs(t, normalPath, false)
-}
-
-// Tests with git checkout/clean
-func TestDirectoriesGitCheckout(t *testing.T) {
-	t.Setenv(`LOVELY_ALLOW_GITCHECKOUT`, `true`)
-	testDirs(t, normalPath, false)
-}
-
-// Test as sidecar
-func TestDirectoriesSidecar(t *testing.T) {
+// Test as sidecar only
+func TestDirectories(t *testing.T) {
 	os.RemoveAll(copyPath)
 	opt := copy.Options{
 		OnDirExists: func(_ string, _ string) copy.DirExistsAction {
@@ -161,7 +150,6 @@ func TestDirectoriesSidecar(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	t.Setenv(`LOVELY_SIDECAR`, `true`)
 	testDirs(t, copyPath, false)
 	os.RemoveAll(copyPath)
 }

@@ -5,7 +5,6 @@ package features
 import (
 	"github.com/crumbhole/argocd-lovely-plugin/pkg/config"
 	"os"
-	"strconv"
 )
 
 // GetPlugins returns the list of plugins to run during the generate phase after main processing
@@ -102,17 +101,6 @@ func GetKustomizeMerge() string {
 func GetKustomizePatch() string {
 	f := Features()[KustomizePatch]
 	return config.GetStringParam(f.EnvName(), f.DefaultVal)
-}
-
-// GetAllowGitCheckout establishes if git is safe to use
-// Set ALLOW_GITCHECKOUT to true to say you've told Argo this is safe
-func GetAllowGitCheckout() bool {
-	f := Features()[AllowGitCheckout]
-	res, err := strconv.ParseBool(config.GetStringParam(f.EnvName(), f.DefaultVal))
-	if err != nil {
-		return false
-	}
-	return res
 }
 
 // GetHelmName gives us the application name for helm
