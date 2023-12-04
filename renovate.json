@@ -38,6 +38,10 @@
       "matchDepNames": ["argoproj/argo-cd"],
       "matchUpdateTypes": ["major", "minor"],
       "enabled": false
+    },
+    {
+      "packageNames": ["kubernetes-sigs/kustomize"],
+      "extractVersion": "^kustomize\\/v(?<version>\\d+\\.\\d+\\.\\d+)$"
     }
   ]
 }
