@@ -12,8 +12,8 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 	jaytaylor.com/html2text v0.0.0-20230321000545-74c2419ad056
 	k8s.io/apimachinery v0.28.4
-	sigs.k8s.io/kustomize/api v0.15.0
-	sigs.k8s.io/kustomize/kyaml v0.15.0
+	sigs.k8s.io/kustomize/api v0.16.0
+	sigs.k8s.io/kustomize/kyaml v0.16.0
 	sigs.k8s.io/yaml v1.4.0
 )
 
