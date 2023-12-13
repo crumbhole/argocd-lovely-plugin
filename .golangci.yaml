@@ -53,3 +53,23 @@ linters:
     # - varnamelen
     - wastedassign
     - whitespace
+linters-settings:
+  revive:
+    rules:
+      # https://github.com/mgechev/revive/blob/master/RULES_DESCRIPTIONS.md#exported
+      - name: exported
+        severity: warning
+        disabled: false
+        # arguments:
+        #   - "preserveScope"
+        #   - "checkPrivateReceivers"
+        #   - "sayRepetitiveInsteadOfStutters"
+issues:
+  max-issues-per-linter: 50
+  max-same-issues: 0
+  include:
+    - EXC0011
+    - EXC0012
+    - EXC0013
+    - EXC0014
+    - EXC0015

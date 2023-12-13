@@ -1,3 +1,4 @@
+// Package config contains some helpers for configuration of lovely
 package config
 
 import (

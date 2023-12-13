@@ -1,3 +1,4 @@
+// Package features contains all of the parameters that can configure lovely
 package features
 
 // The control of this is via environment variables, as that

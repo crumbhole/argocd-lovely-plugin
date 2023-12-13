@@ -1,3 +1,5 @@
+// Package processor contains an interface for all processing and implementations
+// of the processors which mangle the yaml
 package processor
 
 import (
