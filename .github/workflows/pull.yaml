@@ -61,7 +61,7 @@ jobs:
 
           docker tag k3d-registry.localhost:5000/lovely ghcr.io/crumbhole/argocd-lovely-plugin-cmp:ci
       - name: Temporarily save CMP Docker image
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: lovely-cmp-docker
           path: /tmp/lovely-cmp
