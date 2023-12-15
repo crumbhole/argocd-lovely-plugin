@@ -6,7 +6,6 @@ ENV PLUGIN_NAME="${NAME}"
 ENV LOVELY_PREPROCESSORS="python3 *.py"
 ENV LOVELY_DETECTION_REGEX="\.py$"
 USER 0
-RUN apk add --update --no-cache python3
-RUN python3 -m ensurepip
-RUN pip3 install hera[yaml]
+RUN apk add --update --no-cache python3 py3-pip
+RUN pip3 install hera[yaml] --break-system-packages
 USER 999
