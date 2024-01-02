@@ -23,7 +23,9 @@
   "packageRules": [
     {
       "matchPaths": [".github/workflows/assets/bootstrap/argocd-cmp-2.8/kustomization.yaml"],
-      "matchDepNames": ["argoproj/argo-cd"]
+      "matchDepNames": ["argoproj/argo-cd"],
+      "matchUpdateTypes": ["major", "minor"],
+      "enabled": false
     },
     {
       "matchPaths": [".github/workflows/assets/bootstrap/argocd-cmp-2.9/kustomization.yaml", "examples/installation/**"],
