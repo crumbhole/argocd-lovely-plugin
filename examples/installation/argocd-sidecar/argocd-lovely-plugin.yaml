@@ -9,7 +9,7 @@ spec:
       containers:
         - name: lovely-plugin
           # Choose your image here - this one has vault replacer in it
-          image: ghcr.io/crumbhole/lovely:0.19.7
+          image: ghcr.io/crumbhole/lovely:0.23.1
           # Here we are configuring default environment for every app - in this case vault
           envFrom:
             - secretRef:
