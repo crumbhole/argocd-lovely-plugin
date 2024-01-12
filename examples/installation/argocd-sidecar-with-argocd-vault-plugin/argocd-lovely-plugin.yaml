@@ -1,4 +1,3 @@
-# Downloads the plugin and moves it to /custom-tools, which is then mounted on the argocd-repo-server
 apiVersion: apps/v1
 kind: Deployment
 metadata:
