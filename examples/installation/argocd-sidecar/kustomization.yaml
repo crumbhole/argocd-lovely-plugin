@@ -7,7 +7,6 @@ namespace: argocd
 resources:
 - github.com/argoproj/argo-cd/manifests/ha/cluster-install?ref=v2.9.3
 - namespace.yaml
-- vault-env.yaml
 
 patches:
 - path: argo-cm.yaml
