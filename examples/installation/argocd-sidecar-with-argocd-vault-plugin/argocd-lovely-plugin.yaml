@@ -9,7 +9,7 @@ spec:
       containers:
         - name: lovely-plugin
           # Choose your image here - this one has the Argo CD Vault plugin in it
-          image: ghcr.io/crumbhole/lovely-vault-plugin:0.19.7
+          image: ghcr.io/crumbhole/lovely-vault-plugin:0.23.1
           # Here we are configuring default environment for every app - in this case vault
           envFrom:
             - secretRef:
