@@ -8,7 +8,7 @@ spec:
     spec:
       containers:
         - name: lovely-plugin
-          # Choose your image here - this one has vault replacer in it
+          # Choose your image here - see https://github.com/crumbhole/argocd-lovely-plugin/blob/main/variations/Variations.md
           image: ghcr.io/crumbhole/lovely:0.23.1
           # Here we are configuring default environment for every app - in this case vault
           envFrom:
