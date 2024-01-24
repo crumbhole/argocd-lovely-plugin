@@ -29,7 +29,7 @@ jobs:
         HELM_VERSION=v3.14.0
         # https://github.com/helmfile/helmfile/releases
         # renovate: datasource=github-releases depName=helmfile/helmfile
-        HELMFILE_VERSION=v0.160.0
+        HELMFILE_VERSION=v0.161.0
         # Install Helm
         curl -SL https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz | tar -xz linux-amd64/helm && mv linux-amd64/helm /usr/local/bin/
         # Install Kustomize
