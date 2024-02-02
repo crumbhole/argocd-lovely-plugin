@@ -41,7 +41,7 @@ COPY --from=builder /build/build/argocd-lovely-plugin /usr/local/bin/argocd-love
 RUN apk add git bash --no-cache
 
 USER 999
-RUN mkdir /tmp/.helm
+RUN mkdir -p /tmp/.helm
 COPY --from=builder --chown=999 /build/plugin_versioned.yaml /home/argocd/cmp-server/config/plugin.yaml
 COPY entrypoint.sh /entrypoint.sh
 # /var/run/argocd/argocd-cmp-server does NOT exist inside the image, must be mounted from argocd
