@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: helmfile
+  namespace: argocd
+spec:
+  destination:
+    namespace: helmfile
+    server: 'https://kubernetes.default.svc'
+  source:
+    path: test/helmfile_only
+    repoURL: 'https://github.com/crumbhole/argocd-lovely-plugin.git'
+    targetRevision: HEAD
+    plugin:
+      name: lovely
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - PrunePropagationPolicy=background
+      - CreateNamespace=true
