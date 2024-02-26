@@ -3,8 +3,9 @@ package features
 // The control of this is via environment variables, as that
 // is the way argocd allows you to control plugins
 import (
-	"github.com/crumbhole/argocd-lovely-plugin/pkg/config"
 	"os"
+
+	"github.com/crumbhole/argocd-lovely-plugin/pkg/config"
 )
 
 // GetPlugins returns the list of plugins to run during the generate phase after main processing
@@ -163,5 +164,12 @@ func GetHelmfilePatch() string {
 // Set LOVELY_HELMFILE_TEMPLATE_PARAMS to extra parameters to pass to helmfile template
 func GetHelmfileTemplateParams() ([]string, error) {
 	f := Features()[HelmfileTemplateParams]
+	return config.GetStringListParam(f.EnvName(), f.DefaultVal, ' ')
+}
+
+// GetIgnoreSubpaths returns paths of subapplications to ignore
+// Set LOVELY_IGNORE_SUBPATHS to paths of subapplications to ignore
+func GetIgnoreSubpaths() ([]string, error) {
+	f := Features()[IgnoreSubpaths]
 	return config.GetStringListParam(f.EnvName(), f.DefaultVal, ' ')
 }
