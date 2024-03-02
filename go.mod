@@ -8,7 +8,7 @@ require (
 	github.com/gomarkdown/markdown v0.0.0-20231222211730-1d6d20845b47
 	github.com/hexops/gotextdiff v1.0.3
 	github.com/otiai10/copy v1.14.0
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.9.0
 	gopkg.in/yaml.v3 v3.0.1
 	jaytaylor.com/html2text v0.0.0-20230321000545-74c2419ad056
 	k8s.io/apimachinery v0.29.2
