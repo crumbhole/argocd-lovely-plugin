@@ -1,8 +1,6 @@
 module github.com/crumbhole/argocd-lovely-plugin
 
-go 1.22.0
-
-toolchain go1.22.2
+go 1.22.2
 
 require (
 	github.com/evanphx/json-patch v5.9.0+incompatible
