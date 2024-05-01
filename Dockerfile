@@ -10,7 +10,7 @@ ARG KUSTOMIZE_VERSION=5.4.1
 ARG HELM_VERSION=v3.14.4
  # https://github.com/helmfile/helmfile/releases
  # renovate: datasource=github-releases depName=helmfile/helmfile
-ARG HELMFILE_VERSION=v0.163.1
+ARG HELMFILE_VERSION=v0.164.0
 
 ARG LOVELY_VERSION
 
