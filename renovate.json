@@ -25,12 +25,6 @@
   ],
   "packageRules": [
     {
-      "matchFileNames": [".github/workflows/assets/bootstrap/argocd-cmp-2.9/kustomization.yaml"],
-      "matchDepNames": ["argoproj/argo-cd"],
-      "matchUpdateTypes": ["major", "minor"],
-      "enabled": false
-    },
-    {
       "matchFileNames": [".github/workflows/assets/bootstrap/argocd-cmp-2.10/kustomization.yaml"],
       "matchDepNames": ["argoproj/argo-cd"],
       "matchUpdateTypes": ["major", "minor"],
