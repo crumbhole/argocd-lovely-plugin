@@ -1,7 +1,7 @@
 FROM golang:1.22.3 as builder
  # https://github.com/mikefarah/yq/releases
  # renovate: datasource=github-releases depName=mikefarah/yq
-ARG YQ_VERSION=v4.43.1
+ARG YQ_VERSION=v4.44.1
  # https://github.com/kubernetes-sigs/kustomize/releases
  # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize
 ARG KUSTOMIZE_VERSION=5.4.1
