@@ -11,6 +11,9 @@ ARG HELM_VERSION=v3.14.4
  # https://github.com/helmfile/helmfile/releases
  # renovate: datasource=github-releases depName=helmfile/helmfile
 ARG HELMFILE_VERSION=v0.164.0
+# https://github.com/helmwave/helmwave/releases
+# renovate: datasource=github-releases depName=helmwave/helmwave
+ARG HELMWAVE_VERSION=v0.36.3
 
 ARG LOVELY_VERSION
 
@@ -36,6 +39,7 @@ ENV HELM_DATA_HOME=/tmp/.helm
 COPY --from=builder /usr/local/bin/yq /usr/local/bin/yq
 COPY --from=builder /usr/local/bin/helm /usr/local/bin/helm
 COPY --from=builder /usr/local/bin/helmfile /usr/local/bin/helmfile
+COPY --from=builder /usr/local/bin/helmwave /usr/local/bin/helmwave
 COPY --from=builder /usr/local/bin/kustomize /usr/local/bin/kustomize
 COPY --from=builder /build/build/argocd-lovely-plugin /usr/local/bin/argocd-lovely-plugin
 RUN apk add git bash --no-cache
