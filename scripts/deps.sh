@@ -25,3 +25,6 @@ curl -L -s "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_l
 
 # Install Helmfile
 curl -SL https://github.com/helmfile/helmfile/releases/download/${HELMFILE_VERSION}/helmfile_${HELMFILE_VERSION:1}_linux_${ARCH}.tar.gz | tar -xzC ${DEST}
+
+# Install Helmwave
+curl -SL https://github.com/helmwave/helmwave/releases/download/${HELMWAVE_VERSION}/helmwave_${HELMWAVE_VERSION:1}_linux_${ARCH}.tar.gz | tar -xzC ${DEST}
