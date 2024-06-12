@@ -24,7 +24,7 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         goos: ${{ matrix.goos }}
         goarch: amd64
-        goversion: "https://golang.org/dl/go1.20.4.linux-amd64.tar.gz"
+        goversion: go.mod
         binary_name: "argocd-lovely-plugin"
         project_path: cmd/argocd-lovely-plugin
         extra_files: LICENSE README.md
