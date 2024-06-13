@@ -4,7 +4,7 @@ FROM ${PARENT}:${VERSION}
 ARG NAME
  # https://github.com/carvel-dev/ytt/releases
  # renovate: datasource=github-releases depName=carvel-dev/ytt
-ARG YTT_VERSION=v0.49.0
+ARG YTT_VERSION=v0.49.1
 ARG TARGETARCH
 ENV PLUGIN_NAME="${NAME}"
 USER 0
