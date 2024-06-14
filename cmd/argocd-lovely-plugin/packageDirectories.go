@@ -1,10 +1,12 @@
 package main
 
 import (
-	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
 	"os"
 	"path/filepath"
 	"regexp"
+	"strings"
+
+	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
 )
 
 // PackageDirectories is an array of sub-application paths
@@ -17,6 +19,23 @@ func (d *PackageDirectories) checkFile(path string, info os.DirEntry, err error)
 	if err != nil {
 		return err
 	}
+
+	// Check if path matches any ignored subpaths
+	ignoreSubpaths, err := features.GetIgnoreSubpaths()
+	if err != nil {
+		return err
+	}
+	for _, subpath := range ignoreSubpaths {
+		// Remove any leading "../" from the subpath
+		for strings.HasPrefix(subpath, "../") {
+			subpath = subpath[len("../"):]
+		}
+
+		if strings.Contains(path, filepath.Clean(subpath)) {
+			return nil // Skip processing if the path matches any ignored subpath
+		}
+	}
+
 	if !info.IsDir() {
 		yamlRegexp := regexp.MustCompile(features.GetDetectionRegex())
 		dir := filepath.Dir(path)

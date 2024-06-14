@@ -39,6 +39,7 @@ Environment variables, are conventionally ALL_CAPS, and for our purposes
 | Helmfile Merge | LOVELY_HELMFILE_MERGE | Set to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) into any helmfile.yaml used by helmfile. |  |
 | Helmfile Patch | LOVELY_HELMFILE_PATCH | to some yaml or json you'd like [json6902](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/) patched into any helmfile.yaml used by Helmfile. |  |
 | Helmfile Template Parameters | LOVELY_HELMFILE_TEMPLATE_PARAMS | Space separated extra parameters to `Helmfile template` as you might use on the command line. You're on your own here if you pass rubbish parameters. |  |
+| Ignore Subpaths | LOVELY_IGNORE_SUBPATHS | This can come useful when some sub-application is not to be processed by the plugin. This is a space separated list of paths to ignore. |  |
 ## Plugin Name
 
 You can set `PLUGIN_NAME` in the environment of the sidecar to override the default name of the plugin. This allows you to supply multiple pre-configured plugins (with different environment, but the same variation).
