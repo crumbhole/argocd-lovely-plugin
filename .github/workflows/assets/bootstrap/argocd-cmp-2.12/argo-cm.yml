@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  ui.bannercontent: "Security Goose says: This is a demo installation for the argocd-lovely-plugin. Not for production use."
+  ui.bannerpermanent: "true"
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+  name: argocd-cm
