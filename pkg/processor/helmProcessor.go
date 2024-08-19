@@ -131,7 +131,12 @@ func (h HelmProcessor) Generate(input *string, basePath string, path string) (*s
 	if err != nil {
 		return nil, err
 	}
-	params := []string{`template`, `--include-crds`}
+	params := []string{`template`}
+	if features.GetHelmCRDs() {
+		params = append(params, `--include-crds`)
+	} else {
+		params = append(params, `--skip-crds`)
+	}
 	extraParams, err := features.GetHelmTemplateParams()
 	if err != nil {
 		return nil, err

@@ -2,8 +2,10 @@
 package config
 
 import (
-	"github.com/go-andiamo/splitter"
 	"os"
+	"strconv"
+
+	"github.com/go-andiamo/splitter"
 )
 
 const paramPrefix = `PARAM_`
@@ -25,6 +27,17 @@ func GetStringParam(name string, defaultVal string) string {
 		return result
 	}
 	return defaultVal
+}
+
+// GetBoolParam returns a bool, coerced from GetStringParam's value
+// or the defaultVal if that fails
+func GetBoolParam(name string, defaultVal string) bool {
+	boolVal, err := strconv.ParseBool(GetStringParam(name, defaultVal))
+	if err != nil {
+		defaultBool, _ := strconv.ParseBool(defaultVal)
+		return defaultBool
+	}
+	return boolVal
 }
 
 // GetStringListParam returns a string array from the first available configuration source it can find
