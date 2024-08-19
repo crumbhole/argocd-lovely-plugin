@@ -25,6 +25,7 @@ const (
 	HelmPatch
 	HelmTemplateParams
 	HelmRepoAddParams
+	HelmCRDs
 	KustomizeMerge
 	KustomizePatch
 	AllowGitCheckout
@@ -124,6 +125,12 @@ func Features() map[FeatureID]Feature {
 			Title:       `Helm Repo Add Parameters`,
 			Name:        `lovely_helm_repo_add_params`,
 			Description: "Space separated extra parameters to `Helm repo add` as you might use on the command line. You're on your own here if you pass rubbish parameters. `--insecure-skip-tls-verify` if your helm chart is on an insecure HTTPS server.",
+		},
+		HelmCRDs: {
+			Title:       `Helm CRDs`,
+			Name:        `lovely_helm_crds`,
+			DefaultVal:  `true`,
+			Description: "Whether to include CRDs from a helm chart or skip them",
 		},
 		KustomizeMerge: {
 			Title:       `Kustomize Merge`,

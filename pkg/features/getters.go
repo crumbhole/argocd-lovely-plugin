@@ -89,6 +89,13 @@ func GetHelmRepoAddParams() ([]string, error) {
 	return config.GetStringListParam(f.EnvName(), f.DefaultVal, ' ')
 }
 
+// GetHelmCRDs returns whether to explicitly tell helm to include or skip CRDS
+// Set LOVELY_HELM_CRDS to configure this
+func GetHelmCRDs() bool {
+	f := Features()[HelmCRDs]
+	return config.GetBoolParam(f.EnvName(), f.DefaultVal)
+}
+
 // GetKustomizeMerge returns the yaml to strategic merge into kustomization.yaml
 // Set LOVELY_KUSTOMIZE_MERGE to some yaml you'd like strategic merged on any kustomization.yaml files used by kustomize
 func GetKustomizeMerge() string {
