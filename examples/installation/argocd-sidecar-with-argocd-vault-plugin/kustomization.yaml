@@ -6,7 +6,7 @@ kind: Kustomization
 namespace: argocd
 
 resources:
-  - github.com/argoproj/argo-cd/manifests/ha/cluster-install?ref=v2.12.1
+  - github.com/argoproj/argo-cd/manifests/ha/cluster-install?ref=v2.12.2
   - namespace.yaml
   - vault-env.yaml
 
