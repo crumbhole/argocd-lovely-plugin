@@ -83,9 +83,6 @@ jobs:
         with:
           name: lovely-cmp-docker
           path: /tmp/lovely-cmp
-      - name: Log in to Docker Hub
-        run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
       - uses: AbsaOSS/k3d-action@v2
         name: "Create single k3d Cluster and run Argocd/Lovely"
         with:
