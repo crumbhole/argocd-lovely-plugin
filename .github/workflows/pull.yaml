@@ -137,6 +137,7 @@ jobs:
     needs: [test-deploy-argocd-cmp-sidecar]
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       packages: write
     steps:
       - name: Check out the repo
@@ -151,6 +152,8 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Verify Login
+        run: docker info
       - name: Build sidecar image
         uses: docker/build-push-action@v6
         with:
