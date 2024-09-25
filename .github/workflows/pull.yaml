@@ -70,8 +70,6 @@ jobs:
   test-deploy-argocd-cmp-sidecar:
     runs-on: ubuntu-latest
     needs: build-ci-lovely-containers
-    permissions:
-      packages: write
     strategy:
       matrix:
         argocd_version:
@@ -138,6 +136,8 @@ jobs:
     name: Build sidecar docker image
     needs: [test-deploy-argocd-cmp-sidecar]
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
