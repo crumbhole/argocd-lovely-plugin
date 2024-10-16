@@ -1,6 +1,6 @@
 module github.com/crumbhole/argocd-lovely-plugin
 
-go 1.22.7
+go 1.23.2
 
 toolchain go1.23.2
 
