@@ -77,7 +77,7 @@ func matchExpected(path string, givenValue string) error {
 	if string(expected) == givenValue {
 		return nil
 	}
-	return fmt.Errorf(prettyDiff(string(expected), givenValue))
+	return fmt.Errorf("%s", prettyDiff(string(expected), givenValue))
 }
 
 func matchExpectedWithStore(path string, givenValue string) error {
