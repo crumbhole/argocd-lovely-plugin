@@ -1,6 +1,8 @@
 module github.com/crumbhole/argocd-lovely-plugin
 
-go 1.22.4
+go 1.22.7
+
+toolchain go1.23.2
 
 require (
 	github.com/evanphx/json-patch v5.9.0+incompatible
@@ -13,7 +15,7 @@ require (
 	jaytaylor.com/html2text v0.0.0-20230321000545-74c2419ad056
 	k8s.io/apimachinery v0.31.1
 	sigs.k8s.io/kustomize/api v0.17.3
-	sigs.k8s.io/kustomize/kyaml v0.17.2
+	sigs.k8s.io/kustomize/kyaml v0.18.1
 	sigs.k8s.io/yaml v1.4.0
 )
 
