@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	EnvPrefixArgoCD = "ARGOCD_ENV_"
+	envPrefixArgoCD = "ARGOCD_ENV_"
 )
 
 func execute(path string, command string, params ...string) (string, error) {
@@ -32,8 +32,8 @@ func execute(path string, command string, params ...string) (string, error) {
 }
 
 func filterEnvironment(env []string) []string {
-	var filtered []string
-	argoRegex := regexp.MustCompile(`^` + regexp.QuoteMeta(EnvPrefixArgoCD))
+	filtered := make([]string, 0, len(env))
+	argoRegex := regexp.MustCompile(`^` + regexp.QuoteMeta(envPrefixArgoCD))
 	for _, e := range env {
 		if argoRegex.MatchString(e) {
 			e = argoRegex.ReplaceAllString(e, "")
