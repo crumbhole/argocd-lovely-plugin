@@ -48,6 +48,9 @@ func (h HelmfileProcessor) Generate(input *string, basePath string, path string)
 		}
 	}
 	params := []string{`template`}
+	if features.GetHelmfileCRDs() {
+		params = append(params, `--include-crds`)
+	}
 	extraParams, err := features.GetHelmfileTemplateParams()
 	if err != nil {
 		return nil, err

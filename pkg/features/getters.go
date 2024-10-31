@@ -152,6 +152,13 @@ func GetHelmfilePath() string {
 	return config.GetStringParam(f.EnvName(), f.DefaultVal)
 }
 
+// GetHelmfileCRDs returns whether to explicitly tell helm to include or skip CRDS
+// Set LOVELY_HELM_CRDS to configure this
+func GetHelmfileCRDs() bool {
+	f := Features()[HelmfileCRDs]
+	return config.GetBoolParam(f.EnvName(), f.DefaultVal)
+}
+
 // GetHelmfileMerge returns the yaml to strategic merge into values.yaml
 // Set LOVELY_HELMFILE_MERGE to some yaml you'd like strategic merged into any helmfile.yaml files used by helmfile
 func GetHelmfileMerge() string {
