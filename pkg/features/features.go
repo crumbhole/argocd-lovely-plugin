@@ -33,6 +33,7 @@ const (
 	HelmNamespace
 	HelmValues
 	HelmfilePath
+	HelmfileCRDs
 	HelmfileMerge
 	HelmfilePatch
 	HelmfileTemplateParams
