@@ -36,8 +36,9 @@ const (
 	HelmfileMerge
 	HelmfilePatch
 	HelmfileTemplateParams
+	EnvPropagation
 	FirstFeature = Plugins
-	LastFeature  = HelmfileTemplateParams
+	LastFeature  = EnvPropagation
 )
 
 // Feature is an individual configurable element of the plugin
@@ -178,6 +179,12 @@ func Features() map[FeatureID]Feature {
 			Title:       `Helmfile Template Parameters`,
 			Name:        `lovely_helmfile_template_params`,
 			Description: "Space separated extra parameters to `Helmfile template` as you might use on the command line. You're on your own here if you pass rubbish parameters.",
+		},
+		EnvPropagation: {
+			Title:       `Environment variables propagation`,
+			Name:        `lovely_env_propagation`,
+			DefaultVal:  `false`,
+			Description: "Whether to propagate environment variables to downstream processor (Helm, Kustomize or Helmfile).",
 		},
 	}
 }

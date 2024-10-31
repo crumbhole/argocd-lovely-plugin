@@ -172,3 +172,10 @@ func GetHelmfileTemplateParams() ([]string, error) {
 	f := Features()[HelmfileTemplateParams]
 	return config.GetStringListParam(f.EnvName(), f.DefaultVal, ' ')
 }
+
+// GetEnvPropagation returns extra parameters to pass to processor stage
+// Set LOVELY_ENV_PROPAGATION to activate env propagation
+func GetEnvPropagation() bool {
+	f := Features()[EnvPropagation]
+	return config.GetBoolParam(f.EnvName(), f.DefaultVal)
+}
