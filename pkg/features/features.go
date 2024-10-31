@@ -184,7 +184,7 @@ func Features() map[FeatureID]Feature {
 			Title:       `Environment variables propagation`,
 			Name:        `lovely_env_propagation`,
 			DefaultVal:  `false`,
-			Description: "Whether to propagate environment variables to downstream processor (Helm, Kustomize or Helmfile).",
+			Description: "Whether to propagate and map ARGOCD_ENV_{VARIABLE} environment variables as {VARIABLE} to the downstream processor (Helm, Kustomize or Helmfile).",
 		},
 	}
 }
