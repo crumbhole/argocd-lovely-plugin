@@ -33,6 +33,7 @@ const (
 	HelmNamespace
 	HelmValues
 	HelmfilePath
+	HelmfileCRDs
 	HelmfileMerge
 	HelmfilePatch
 	HelmfileTemplateParams
@@ -163,6 +164,12 @@ func Features() map[FeatureID]Feature {
 			DefaultVal:  `helmfile`,
 			Description: "Path to the helmfile binary used for this application",
 			// CollectionType: Single,
+		},
+		HelmfileCRDs: {
+			Title:       `Helmfile CRDs`,
+			Name:        `lovely_helmfile_crds`,
+			DefaultVal:  `true`,
+			Description: "Whether to include CRDs from helmfile or skip them",
 		},
 		HelmfileMerge: {
 			Title:       `Helmfile Merge`,
