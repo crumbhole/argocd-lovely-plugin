@@ -37,8 +37,9 @@ const (
 	HelmfileMerge
 	HelmfilePatch
 	HelmfileTemplateParams
+	IgnoreSubpaths
 	FirstFeature = Plugins
-	LastFeature  = HelmfileTemplateParams
+	LastFeature  = IgnoreSubpaths
 )
 
 // Feature is an individual configurable element of the plugin
@@ -185,6 +186,11 @@ func Features() map[FeatureID]Feature {
 			Title:       `Helmfile Template Parameters`,
 			Name:        `lovely_helmfile_template_params`,
 			Description: "Space separated extra parameters to `Helmfile template` as you might use on the command line. You're on your own here if you pass rubbish parameters.",
+		},
+		IgnoreSubpaths: {
+			Title:       `Ignore Subpaths`,
+			Name:        `lovely_ignore_subpaths`,
+			Description: "This can come useful when some sub-application is not to be processed by the plugin. This is a space separated list of paths to ignore.",
 		},
 	}
 }
