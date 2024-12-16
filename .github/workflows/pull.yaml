@@ -26,7 +26,7 @@ jobs:
         KUSTOMIZE_VERSION=kustomize/v5.0.3
         # https://github.com/helm/helm/releases
         # renovate: datasource=github-releases depName=helm/helm
-        HELM_VERSION=v3.16.3
+        HELM_VERSION=v3.16.4
         # https://github.com/helmfile/helmfile/releases
         # renovate: datasource=github-releases depName=helmfile/helmfile
         HELMFILE_VERSION=v0.169.2
