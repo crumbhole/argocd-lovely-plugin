@@ -5,7 +5,7 @@ go 1.23.2
 require (
 	github.com/evanphx/json-patch v5.9.0+incompatible
 	github.com/go-andiamo/splitter v1.2.5
-	github.com/gomarkdown/markdown v0.0.0-20241105142532-d03b89096d81
+	github.com/gomarkdown/markdown v0.0.0-20241205020045-f7e15b2f3e62
 	github.com/hexops/gotextdiff v1.0.3
 	github.com/otiai10/copy v1.14.0
 	github.com/stretchr/testify v1.10.0
