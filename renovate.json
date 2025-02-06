@@ -25,13 +25,13 @@
   ],
   "packageRules": [
     {
-      "matchFileNames": [".github/workflows/assets/bootstrap/argocd-cmp-2.12/kustomization.yaml"],
+      "matchFileNames": [".github/workflows/assets/bootstrap/argocd-cmp-2.13/kustomization.yaml"],
       "matchDepNames": ["argoproj/argo-cd"],
       "matchUpdateTypes": ["major", "minor"],
       "enabled": false
     },
     {
-      "matchFileNames": [".github/workflows/assets/bootstrap/argocd-cmp-2.13/kustomization.yaml"],
+      "matchFileNames": [".github/workflows/assets/bootstrap/argocd-cmp-2.14/kustomization.yaml"],
       "matchDepNames": ["argoproj/argo-cd"],
       "matchUpdateTypes": ["major", "minor"],
       "enabled": false
