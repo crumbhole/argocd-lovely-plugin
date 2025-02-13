@@ -3,7 +3,7 @@ module github.com/crumbhole/argocd-lovely-plugin
 go 1.23.2
 
 require (
-	github.com/evanphx/json-patch v5.9.0+incompatible
+	github.com/evanphx/json-patch v5.9.11+incompatible
 	github.com/go-andiamo/splitter v1.2.5
 	github.com/gomarkdown/markdown v0.0.0-20241105142532-d03b89096d81
 	github.com/hexops/gotextdiff v1.0.3
