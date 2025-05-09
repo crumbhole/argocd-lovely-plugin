@@ -1,3 +1,4 @@
+version: "2"
 run:
   timeout: 5m
 linters:
@@ -42,9 +43,8 @@ linters:
     - reassign
     - revive
     - sqlclosecheck
-    - stylecheck
+    - staticcheck
     - tagliatelle
-    - tenv
     - thelper
     - tparallel
     - unconvert
@@ -67,9 +67,9 @@ linters-settings:
 issues:
   max-issues-per-linter: 50
   max-same-issues: 0
-  include:
-    - EXC0011
-    - EXC0012
-    - EXC0013
-    - EXC0014
-    - EXC0015
+  # include:
+  #   - EXC0011
+  #   - EXC0012
+  #   - EXC0013
+  #   - EXC0014
+  #   - EXC0015
