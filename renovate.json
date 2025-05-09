@@ -1,22 +1,36 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "kubernetes": {
-    "fileMatch": ["\\.yaml$", "\\.yml$"]
+    "managerFilePatterns": [
+      "/\\.yaml$/",
+      "/\\.yml$/"
+    ]
   },
   "extends": [
-    "config:base"
+    "config:recommended"
   ],
-  "ignorePaths": ["test_errors/**", "test/**"],
-  "regexManagers": [
+  "ignorePaths": [
+    "test_errors/**",
+    "test/**"
+  ],
+  "customManagers": [
     {
-      "fileMatch": ["^Dockerfile$", "\\.yaml$", "Dockerfile.*"],
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/^Dockerfile$/",
+        "/\\.yaml$/",
+        "/Dockerfile.*/"
+      ],
       "matchStrings": [
         "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\sARG .*?_VERSION=(?<currentValue>.*)\\s"
       ],
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     },
     {
-      "fileMatch": ["\\.yaml$"],
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/\\.yaml$/"
+      ],
       "matchStrings": [
         "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\s.*?_VERSION=(?<currentValue>.*)\\s"
       ],
@@ -25,27 +39,50 @@
   ],
   "packageRules": [
     {
-      "matchFileNames": [".github/workflows/assets/bootstrap/argocd-cmp-2.13/kustomization.yaml"],
-      "matchDepNames": ["argoproj/argo-cd"],
-      "matchUpdateTypes": ["major", "minor"],
+      "matchFileNames": [
+        ".github/workflows/assets/bootstrap/argocd-cmp-2.13/kustomization.yaml"
+      ],
+      "matchDepNames": [
+        "argoproj/argo-cd"
+      ],
+      "matchUpdateTypes": [
+        "major",
+        "minor"
+      ],
       "enabled": false
     },
     {
-      "matchFileNames": [".github/workflows/assets/bootstrap/argocd-cmp-2.14/kustomization.yaml"],
-      "matchDepNames": ["argoproj/argo-cd"],
-      "matchUpdateTypes": ["major", "minor"],
+      "matchFileNames": [
+        ".github/workflows/assets/bootstrap/argocd-cmp-2.14/kustomization.yaml"
+      ],
+      "matchDepNames": [
+        "argoproj/argo-cd"
+      ],
+      "matchUpdateTypes": [
+        "major",
+        "minor"
+      ],
       "enabled": false
     },
     {
-      "matchFileNames": ["examples/installation/**"],
-      "matchDepNames": ["argoproj/argo-cd"]
+      "matchFileNames": [
+        "examples/installation/**"
+      ],
+      "matchDepNames": [
+        "argoproj/argo-cd"
+      ]
     },
     {
-      "packageNames": ["kubernetes-sigs/kustomize"],
+      "matchPackageNames": [
+        "kubernetes-sigs/kustomize"
+      ],
       "extractVersion": "^kustomize\\/v(?<version>\\d+\\.\\d+\\.\\d+)$"
     },
     {
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "matchCurrentVersion": "!/^0/",
       "automerge": true
     }
