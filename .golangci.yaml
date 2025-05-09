@@ -1,6 +1,9 @@
 version: "2"
 run:
   timeout: 5m
+formatters:
+  enable:
+    - gofmt
 linters:
   enable:
     - asasalint
@@ -21,7 +24,6 @@ linters:
     - goconst
     - gocritic
     # - goerr113
-    - gofmt
     - goprintffuncname
     - gosec
     - grouper
