@@ -53,7 +53,7 @@ linters:
     # - varnamelen
     - wastedassign
     - whitespace
-linters:
+
   settings:
     revive:
       rules:
