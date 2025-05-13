@@ -1,5 +1,9 @@
+version: "2"
 run:
   timeout: 5m
+formatters:
+  enable:
+    - gofmt
 linters:
   enable:
     - asasalint
@@ -20,7 +24,6 @@ linters:
     - goconst
     - gocritic
     # - goerr113
-    - gofmt
     - goprintffuncname
     - gosec
     - grouper
@@ -42,9 +45,8 @@ linters:
     - reassign
     - revive
     - sqlclosecheck
-    - stylecheck
+    - staticcheck
     - tagliatelle
-    - tenv
     - thelper
     - tparallel
     - unconvert
@@ -53,23 +55,24 @@ linters:
     # - varnamelen
     - wastedassign
     - whitespace
-linters-settings:
-  revive:
-    rules:
-      # https://github.com/mgechev/revive/blob/master/RULES_DESCRIPTIONS.md#exported
-      - name: exported
-        severity: warning
-        disabled: false
-        # arguments:
-        #   - "preserveScope"
-        #   - "checkPrivateReceivers"
-        #   - "sayRepetitiveInsteadOfStutters"
+
+  settings:
+    revive:
+      rules:
+        # https://github.com/mgechev/revive/blob/master/RULES_DESCRIPTIONS.md#exported
+        - name: exported
+          severity: warning
+          disabled: false
+          # arguments:
+          #   - "preserveScope"
+          #   - "checkPrivateReceivers"
+          #   - "sayRepetitiveInsteadOfStutters"
 issues:
   max-issues-per-linter: 50
   max-same-issues: 0
-  include:
-    - EXC0011
-    - EXC0012
-    - EXC0013
-    - EXC0014
-    - EXC0015
+  # include:
+  #   - EXC0011
+  #   - EXC0012
+  #   - EXC0013
+  #   - EXC0014
+  #   - EXC0015
