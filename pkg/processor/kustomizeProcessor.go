@@ -46,68 +46,83 @@ func (k KustomizeProcessor) Generate(input *string, basePath string, path string
 	if err != nil {
 		return nil, err
 	}
-	err = MergeYaml(kustYamlPath, features.GetKustomizeMerge(), features.GetKustomizePatch())
-	if err != nil {
+	if err := MergeYaml(kustYamlPath, features.GetKustomizeMerge(), features.GetKustomizePatch()); err != nil {
 		return nil, err
 	}
 	if input != nil {
-		// Reading from 'stdin' - so put this on disk for kustomize
-		// #nosec - G304 we've chosen both parts of this
-		intermediateFile, err := os.Create(filepath.Join(path, kustomizeIntermediateFilename))
-		if err != nil {
-			return nil, err
-		}
-		if _, err := intermediateFile.WriteString(*input); err != nil {
-			_ = intermediateFile.Close()
-			return nil, err
-		}
-		err = intermediateFile.Close()
-		if err != nil {
-			return nil, err
-		}
-		// #nosec - G304 we've created this path
-		kustContents, err := os.ReadFile(kustYamlPath)
-		if err != nil {
-			return nil, err
-		}
-		var kust types.Kustomization
-		err = yaml.Unmarshal(kustContents, &kust)
-		if err != nil {
-			return nil, fmt.Errorf("error reading kustomization.yaml: %w", err)
-		}
-		kust.Resources = append(kust.Resources, kustomizeIntermediateFilename)
-
-		// #nosec - G304 we've created this path
-		kustomizationFile, err := os.OpenFile(kustYamlPath, os.O_WRONLY|os.O_TRUNC, 0600)
-		if err != nil {
-			return nil, err
-		}
-		defer func() {
-			_ = kustomizationFile.Close()
-		}()
-		kustYaml, err := yaml.Marshal(&kust)
-		if err != nil {
-			return nil, err
-		}
-		if _, err := kustomizationFile.Write(kustYaml); err != nil {
+		if err := k.handleIntermediateFile(input, path, kustYamlPath); err != nil {
 			return nil, err
 		}
 	}
-	params := []string{`build`, `--enable-helm`}
-	extraParams, err := features.GetKustomizeParams()
+	out, err := k.runKustomize(path)
 	if err != nil {
 		return nil, err
+	}
+	outstr := "---\n" + out
+	return &outstr, nil
+}
+
+// handleIntermediateFile writes the input to an intermediate file and updates kustomization.yaml
+func (k KustomizeProcessor) handleIntermediateFile(input *string, path, kustYamlPath string) error {
+	// #nosec - G304 we've chosen both parts of this
+	intermediateFile, err := os.Create(filepath.Join(path, kustomizeIntermediateFilename))
+	if err != nil {
+		return err
+	}
+	if _, err := intermediateFile.WriteString(*input); err != nil {
+		_ = intermediateFile.Close()
+		return err
+	}
+	if err := intermediateFile.Close(); err != nil {
+		return err
+	}
+	return k.addIntermediateToKustomization(kustYamlPath)
+}
+
+// addIntermediateToKustomization adds the intermediate file to the kustomization.yaml resources
+func (k KustomizeProcessor) addIntermediateToKustomization(kustYamlPath string) error {
+	// #nosec - G304 we've created this path
+	kustContents, err := os.ReadFile(kustYamlPath)
+	if err != nil {
+		return err
+	}
+	var kust types.Kustomization
+	if err := yaml.Unmarshal(kustContents, &kust); err != nil {
+		return fmt.Errorf("error reading kustomization.yaml: %w", err)
+	}
+	kust.Resources = append(kust.Resources, kustomizeIntermediateFilename)
+	// #nosec - G304 we've created this path
+	kustomizationFile, err := os.OpenFile(kustYamlPath, os.O_WRONLY|os.O_TRUNC, 0600)
+	if err != nil {
+		return err
+	}
+	defer func() { _ = kustomizationFile.Close() }()
+	kustYaml, err := yaml.Marshal(&kust)
+	if err != nil {
+		return err
+	}
+	if _, err := kustomizationFile.Write(kustYaml); err != nil {
+		return err
+	}
+	return nil
+}
+
+// runKustomize builds the kustomize output for the given path
+func (k KustomizeProcessor) runKustomize(path string) (string, error) {
+	params := []string{"build", "--enable-helm"}
+	extraParams, err := features.GetKustomizeParams()
+	if err != nil {
+		return "", err
 	}
 	params = append(params, extraParams...)
 	params = append(params, path)
 	wd, err := os.Getwd()
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	out, err := execute(wd, features.GetKustomizePath(), params...)
 	if err != nil {
-		return nil, fmt.Errorf("error running kustomize: %w", err)
+		return "", fmt.Errorf("error running kustomize: %w", err)
 	}
-	outstr := "---\n" + out
-	return &outstr, nil
+	return out, nil
 }
