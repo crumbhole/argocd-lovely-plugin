@@ -3,6 +3,7 @@ package processor
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"regexp"
 
 	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
@@ -51,15 +52,20 @@ func (k KustomizeProcessor) Generate(input *string, basePath string, path string
 	}
 	if input != nil {
 		// Reading from 'stdin' - so put this on disk for kustomize
-		intermediateFile, err := os.Create(path + "/" + kustomizeIntermediateFilename)
+		// #nosec - G304 we've chosen both parts of this
+		intermediateFile, err := os.Create(filepath.Join(path, kustomizeIntermediateFilename))
 		if err != nil {
 			return nil, err
 		}
 		if _, err := intermediateFile.WriteString(*input); err != nil {
-			intermediateFile.Close()
+			_ = intermediateFile.Close()
 			return nil, err
 		}
-		intermediateFile.Close()
+		err = intermediateFile.Close()
+		if err != nil {
+			return nil, err
+		}
+		// #nosec - G304 we've created this path
 		kustContents, err := os.ReadFile(kustYamlPath)
 		if err != nil {
 			return nil, err
@@ -71,11 +77,14 @@ func (k KustomizeProcessor) Generate(input *string, basePath string, path string
 		}
 		kust.Resources = append(kust.Resources, kustomizeIntermediateFilename)
 
-		kustomizationFile, err := os.OpenFile(kustYamlPath, os.O_WRONLY|os.O_TRUNC, 0644)
+		// #nosec - G304 we've created this path
+		kustomizationFile, err := os.OpenFile(kustYamlPath, os.O_WRONLY|os.O_TRUNC, 0600)
 		if err != nil {
 			return nil, err
 		}
-		defer kustomizationFile.Close()
+		defer func() {
+			_ = kustomizationFile.Close()
+		}()
 		kustYaml, err := yaml.Marshal(&kust)
 		if err != nil {
 			return nil, err

@@ -5,15 +5,16 @@ import (
 	"testing"
 )
 
-func setupAll() {
-	os.Setenv(`PARAM_TESTING_XXZ`, `p123`)
-	os.Setenv(`ARGOCD_ENV_TESTING_XXZ`, `e667`)
-	os.Setenv(`TESTING_XXZ`, `zxd`)
-	os.Setenv(`PARAM_LIST`, `abc def`)
+func setupAll(t *testing.T) {
+	t.Helper()
+	t.Setenv(`PARAM_TESTING_XXZ`, `p123`)
+	t.Setenv(`ARGOCD_ENV_TESTING_XXZ`, `e667`)
+	t.Setenv(`TESTING_XXZ`, `zxd`)
+	t.Setenv(`PARAM_LIST`, `abc def`)
 }
 
 func TestParam(t *testing.T) {
-	setupAll()
+	setupAll(t)
 	res := GetStringParam(`TESTING_XXZ`, `abc`)
 	if res != `p123` {
 		t.Errorf("PARAM param not returned, got %s, expected p123", res)
@@ -21,7 +22,7 @@ func TestParam(t *testing.T) {
 }
 
 func TestParamList(t *testing.T) {
-	setupAll()
+	setupAll(t)
 	res, err := GetStringListParam(`LIST`, ``, ' ')
 	if err != nil {
 		t.Errorf("Didn't expect an error in GetStringListParam")
@@ -38,8 +39,11 @@ func TestParamList(t *testing.T) {
 }
 
 func TestArgoCDEnv(t *testing.T) {
-	setupAll()
-	os.Unsetenv(`PARAM_TESTING_XXZ`)
+	setupAll(t)
+	err := os.Unsetenv(`PARAM_TESTING_XXZ`)
+	if err != nil {
+		t.Error(err)
+	}
 	res := GetStringParam(`TESTING_XXZ`, `abc`)
 	if res != `e667` {
 		t.Errorf("ARGOCD_ENV param not returned, got %s, expected e667", res)
@@ -47,9 +51,15 @@ func TestArgoCDEnv(t *testing.T) {
 }
 
 func TestEnv(t *testing.T) {
-	setupAll()
-	os.Unsetenv(`PARAM_TESTING_XXZ`)
-	os.Unsetenv(`ARGOCD_ENV_TESTING_XXZ`)
+	setupAll(t)
+	err := os.Unsetenv(`PARAM_TESTING_XXZ`)
+	if err != nil {
+		t.Error(err)
+	}
+	err = os.Unsetenv(`ARGOCD_ENV_TESTING_XXZ`)
+	if err != nil {
+		t.Error(err)
+	}
 	res := GetStringParam(`TESTING_XXZ`, `abc`)
 	if res != `zxd` {
 		t.Errorf("Env param not returned, got %s, expected zxd", res)
@@ -57,10 +67,19 @@ func TestEnv(t *testing.T) {
 }
 
 func TestDefault(t *testing.T) {
-	setupAll()
-	os.Unsetenv(`PARAM_TESTING_XXZ`)
-	os.Unsetenv(`ARGOCD_ENV_TESTING_XXZ`)
-	os.Unsetenv(`TESTING_XXZ`)
+	setupAll(t)
+	err := os.Unsetenv(`PARAM_TESTING_XXZ`)
+	if err != nil {
+		t.Error(err)
+	}
+	err = os.Unsetenv(`ARGOCD_ENV_TESTING_XXZ`)
+	if err != nil {
+		t.Error(err)
+	}
+	err = os.Unsetenv(`TESTING_XXZ`)
+	if err != nil {
+		t.Error(err)
+	}
 	res := GetStringParam(`TESTING_XXZ`, `abc`)
 	if res != `abc` {
 		t.Errorf("Default param not returned, got %s, expected abc", res)

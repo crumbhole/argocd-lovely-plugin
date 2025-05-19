@@ -44,6 +44,7 @@ func (v PreProcessor) Generate(basePath string, path string) error {
 		return err
 	}
 	for _, plugin := range plugins {
+		// #nosec - G204 the whole point is to run a user specified binary here
 		cmd := exec.Command(`bash`, `-c`, plugin)
 		cmd.Dir = path
 		out, err := cmd.CombinedOutput()

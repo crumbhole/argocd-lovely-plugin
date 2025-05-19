@@ -24,32 +24,29 @@ const (
 	errorsPath = "test_errors/"
 )
 
-func setupEnv(path string) (map[string]string, error) {
+func setupEnv(t *testing.T, path string) error {
+	t.Helper()
 	var envValues map[string]string
 	envFile := path + "/env.txt"
 	_, err := os.Stat(envFile)
 	if !errors.Is(err, os.ErrNotExist) {
+		// #nosec - G304 test framework only
 		envText, err := os.ReadFile(envFile)
 		if err != nil {
-			return envValues, err
+			return err
 		}
 		if err := yaml.Unmarshal(envText, &envValues); err != nil {
-			return envValues, err
+			return err
 		}
 		for k, v := range envValues {
-			os.Setenv(k, v)
+			t.Setenv(k, v)
 		}
 	}
-	return envValues, nil
-}
-
-func cleanupEnv(env map[string]string) {
-	for k := range env {
-		os.Unsetenv(k)
-	}
+	return nil
 }
 
 func matchREExpected(path string, givenValue string) error {
+	// #nosec - G304 test framework only
 	expected, err := os.ReadFile(path + "/regexp.txt")
 	var pathErr *os.PathError
 	if errors.As(err, &pathErr) {
@@ -66,6 +63,7 @@ func matchREExpected(path string, givenValue string) error {
 }
 
 func matchExpected(path string, givenValue string) error {
+	// #nosec - G304 test framework only
 	expected, err := os.ReadFile(path + "/expected.txt")
 	var pathErr *os.PathError
 	if errors.As(err, &pathErr) {
@@ -84,16 +82,19 @@ func matchExpectedWithStore(path string, givenValue string) error {
 	err := matchExpected(path, givenValue)
 	if err != nil {
 		got := path + "/got.txt"
-		os.Remove(got)
+		err := os.Remove(got)
+		if err != nil {
+			return err
+		}
 		// #nosec - G306 - this is just for test logging/helping
 		_ = os.WriteFile(got, []byte(givenValue), 0444)
 	}
 	return err
 }
 
-func checkDir(path string, errorsExpected bool) error {
-	env, err := setupEnv(path)
-	defer cleanupEnv(env)
+func checkDir(t *testing.T, path string, errorsExpected bool) error {
+	t.Helper()
+	err := setupEnv(t, path)
 	if err != nil {
 		return err
 	}
@@ -129,7 +130,7 @@ func testDirs(t *testing.T, path string, errorsExpected bool) {
 	for _, d := range dirs {
 		if d.IsDir() {
 			t.Run(d.Name(), func(t *testing.T) {
-				err := checkDir(path+d.Name(), errorsExpected)
+				err := checkDir(t, path+d.Name(), errorsExpected)
 				if err != nil {
 					t.Error(err)
 				}
@@ -140,18 +141,24 @@ func testDirs(t *testing.T, path string, errorsExpected bool) {
 
 // TestDirectories runs Tests as sidecar only
 func TestDirectories(t *testing.T) {
-	os.RemoveAll(copyPath)
+	err := os.RemoveAll(copyPath)
+	if err != nil {
+		t.Error(err)
+	}
 	opt := copy.Options{
 		OnDirExists: func(_ string, _ string) copy.DirExistsAction {
 			return copy.Replace
 		},
 	}
-	err := copy.Copy(normalPath, copyPath, opt)
+	err = copy.Copy(normalPath, copyPath, opt)
 	if err != nil {
 		t.Error(err)
 	}
 	testDirs(t, copyPath, false)
-	os.RemoveAll(copyPath)
+	err = os.RemoveAll(copyPath)
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 // TestDirectoriesError runs Error Tests with copy
