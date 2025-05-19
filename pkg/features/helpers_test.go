@@ -1,7 +1,6 @@
 package features
 
 import (
-	"os"
 	"testing"
 )
 
@@ -46,8 +45,7 @@ func TestGetYamlPlugins(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			envName := "TEST_YAML_PLUGINS"
-			os.Setenv(envName, tt.envValue)
-			defer os.Unsetenv(envName)
+			t.Setenv(envName, tt.envValue)
 
 			got, err := getYamlPlugins(envName)
 			if (err != nil) != tt.wantErr {
@@ -140,10 +138,8 @@ func TestPluginsForPath(t *testing.T) {
 			yamlEnvName := "TEST_YAML_PLUGINS"
 			plainEnvName := "TEST_PLAIN_PLUGINS"
 
-			os.Setenv(yamlEnvName, tt.yamlEnv)
-			os.Setenv(plainEnvName, tt.plainEnv)
-			defer os.Unsetenv(yamlEnvName)
-			defer os.Unsetenv(plainEnvName)
+			t.Setenv(yamlEnvName, tt.yamlEnv)
+			t.Setenv(plainEnvName, tt.plainEnv)
 
 			got, err := pluginsForPath(tt.path, yamlEnvName, plainEnvName)
 			if (err != nil) != tt.wantErr {
