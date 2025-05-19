@@ -85,7 +85,7 @@ func Features() map[FeatureID]Feature {
 		DetectRx: {
 			Title:       `Detection Regular Expression`,
 			Name:        `lovely_detection_regex`,
-			DefaultVal:  `\.ya?ml$`,
+			DefaultVal:  `\.ya?ml(\.gotmpl)?$`,
 			Description: "Allow applications to be detected using a different regex so that a PREPROCESSOR that works on non-yaml files can run on this application. The default is `\\.ya?ml$`. (Note: currently `helmfile.d/` will always trigger an application being detected, raise an issue if this needs configuring too). This is pointless to change unless you have a PREPROCESSOR defined.",
 			// CollectionType: Single,
 		},

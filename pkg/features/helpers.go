@@ -4,6 +4,7 @@ package features
 // is the way argocd allows you to control plugins
 import (
 	"fmt"
+
 	"github.com/crumbhole/argocd-lovely-plugin/pkg/config"
 	"gopkg.in/yaml.v3"
 )

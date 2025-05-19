@@ -32,7 +32,7 @@ func (HelmProcessor) Name() string {
 
 // Enabled returns true only if this proessor can do work
 func (HelmProcessor) Enabled(_ string, path string) bool {
-	return reEntryInDir(path, regexp.MustCompile(`^Chart\.ya?ml$`))
+	return reEntryInDir(path, regexp.MustCompile(`^Chart\.ya?ml$`)) != ""
 }
 
 func contains(s []string, str string) bool {
