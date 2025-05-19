@@ -25,30 +25,42 @@ func main() {
 }
 
 func parameterMarkdown() error {
-	f, err := os.OpenFile("doc/parameter.md", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+	f, err := os.OpenFile("doc/parameter.md", os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0600)
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer func() {
+		_ = f.Close()
+	}()
 	err = appendFile(f, "doc/.snippets/parameterHeader.md")
 	if err != nil {
 		return err
 	}
-	fmt.Fprintf(f, "|Name | Environment variable | Description | Default |\n")
-	fmt.Fprintf(f, "| ---- | -------------------- | ----------- | ------- |\n")
+	_, err = fmt.Fprintf(f, "|Name | Environment variable | Description | Default |\n")
+	if err != nil {
+		return err
+	}
+	_, err = fmt.Fprintf(f, "| ---- | -------------------- | ----------- | ------- |\n")
+	if err != nil {
+		return err
+	}
 	for featNum := features.FirstFeature; featNum <= features.LastFeature; featNum++ {
 		feature := features.Features()[featNum]
-		fmt.Fprintf(f, "| %s | %s | %s | %s |\n",
+		_, err = fmt.Fprintf(f, "| %s | %s | %s | %s |\n",
 			feature.Title,
 			feature.EnvName(),
 			feature.Description,
 			feature.DefaultVal)
+		if err != nil {
+			return err
+		}
 	}
 	err = appendFile(f, "doc/.snippets/parameterFooter.md")
 	return err
 }
 
 func appendFile(file *os.File, name string) error {
+	// #nosec - G304 documentation generator, not in product
 	content, err := os.ReadFile(name)
 	if err != nil {
 		return err

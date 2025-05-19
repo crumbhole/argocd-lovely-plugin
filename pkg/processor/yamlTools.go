@@ -19,6 +19,7 @@ func MergeYaml(path string, mergetext string, patchtext string) error {
 		return nil
 	}
 
+	// #nosec - G304 we've chosen this path
 	basetext, err := os.ReadFile(path)
 	if err != nil {
 		return err

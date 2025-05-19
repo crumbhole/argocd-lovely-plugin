@@ -31,6 +31,7 @@ func (y *YamlProcessor) scanFile(path string, info os.FileInfo, err error) error
 	}
 	yamlRegexp := regexp.MustCompile(`^[^\.].*\.ya?ml$`)
 	if yamlRegexp.MatchString(info.Name()) {
+		// #nosec - G304 we've chosen this file
 		yamlcontent, err := os.ReadFile(path)
 		if err != nil {
 			return err

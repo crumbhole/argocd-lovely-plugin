@@ -47,6 +47,7 @@ func (v PluginProcessor) Generate(input *string, basePath string, path string) (
 		return nil, err
 	}
 	for _, plugin := range plugins {
+		// #nosec - G204 the whole point is to run a user specified binary here
 		cmd := exec.Command(`bash`, `-c`, plugin)
 		cmd.Dir = path
 		stdin, err := cmd.StdinPipe()
@@ -56,7 +57,9 @@ func (v PluginProcessor) Generate(input *string, basePath string, path string) (
 			return nil, err
 		}
 		go func() {
-			defer stdin.Close()
+			defer func() {
+				_ = stdin.Close()
+			}()
 			_, _ = io.WriteString(stdin, currentText)
 		}()
 
