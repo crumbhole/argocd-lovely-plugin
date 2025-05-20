@@ -8,7 +8,7 @@ spec:
       containers:
         - name: lovely-plugin
           # Choose your image here - see https://github.com/crumbhole/argocd-lovely-plugin/blob/main/doc/variations.md
-          image: ghcr.io/crumbhole/lovely:1.2.0
+          image: ghcr.io/crumbhole/lovely:1.2.1
           securityContext:
             runAsNonRoot: true
             runAsUser: 999
