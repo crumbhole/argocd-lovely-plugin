@@ -19,18 +19,18 @@ type Processor interface {
 	Generate(input *string, basePath string, path string) (*string, error)
 }
 
-func reEntryInDir(path string, re *regexp.Regexp) bool {
+func reEntryInDir(path string, re *regexp.Regexp) string {
 	files, err := os.ReadDir(path)
 	if err != nil {
-		return false
+		return ""
 	}
 
 	for _, file := range files {
 		if re.MatchString(file.Name()) {
-			return true
+			return file.Name()
 		}
 	}
-	return false
+	return ""
 }
 
 // ErrDisabledProcessor is the error to return when attempting to use a disabled processor

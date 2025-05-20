@@ -2,6 +2,8 @@ package processor
 
 import (
 	"fmt"
+	"path/filepath"
+
 	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
 	"regexp"
 )
@@ -14,10 +16,12 @@ func (HelmfileProcessor) Name() string {
 	return "helmfile"
 }
 
+var helmfileRegex = regexp.MustCompile(`^helmfile\.yaml(\.gotmpl)?$`)
+
 // Enabled returns true only if this proessor can do work
 func (HelmfileProcessor) Enabled(_ string, path string) bool {
-	return reEntryInDir(path, regexp.MustCompile(`^helmfile\.ya?ml$`)) ||
-		reEntryInDir(path, regexp.MustCompile(`^helmfile\.d$`))
+	return reEntryInDir(path, helmfileRegex) != "" ||
+		reEntryInDir(path, regexp.MustCompile(`^helmfile\.d$`)) != ""
 }
 
 func (h HelmfileProcessor) helmfileDo(path string, params ...string) (string, error) {
@@ -41,8 +45,8 @@ func (h HelmfileProcessor) Generate(input *string, basePath string, path string)
 	if !h.Enabled(basePath, path) {
 		return input, ErrDisabledProcessor
 	}
-	if reEntryInDir(path, regexp.MustCompile(`^helmfile\.ya?ml$`)) {
-		err := MergeYaml(path+"/helmfile.yaml", features.GetHelmfileMerge(), features.GetHelmfilePatch())
+	if file := reEntryInDir(path, helmfileRegex); file != "" {
+		err := MergeYaml(filepath.Join(path, file), features.GetHelmfileMerge(), features.GetHelmfilePatch())
 		if err != nil {
 			return nil, err
 		}
