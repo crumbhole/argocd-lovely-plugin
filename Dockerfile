@@ -6,8 +6,8 @@ ARG YQ_VERSION=v4.45.4
  # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize
 ARG KUSTOMIZE_VERSION=5.6.0
  # https://github.com/helm/helm/releases
- # renovate: datasource=github-releases depName=helm/helm
-ARG HELM_VERSION=v3.18.0
+ # donotrenovatefornow: datasource=github-releases depName=helm/helm
+ARG HELM_VERSION=v3.17.3
  # https://github.com/helmfile/helmfile/releases
  # renovate: datasource=github-releases depName=helmfile/helmfile
 ARG HELMFILE_VERSION=v1.1.0
