@@ -5,7 +5,7 @@ kind: Kustomization
 namespace: argocd
 
 resources:
-- github.com/argoproj/argo-cd/manifests/ha/cluster-install?ref=v3.0.3
+- github.com/argoproj/argo-cd/manifests/ha/cluster-install?ref=v3.0.4
 - namespace.yaml
 
 patches:
