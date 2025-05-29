@@ -110,11 +110,20 @@ func (k KustomizeProcessor) addIntermediateToKustomization(kustYamlPath string) 
 // runKustomize builds the kustomize output for the given path
 func (k KustomizeProcessor) runKustomize(path string) (string, error) {
 	params := []string{"build", "--enable-helm"}
+	  
 	extraParams, err := features.GetKustomizeParams()
 	if err != nil {
 		return "", err
 	}
+	
 	params = append(params, extraParams...)
+	if v := os.Getenv("KUBE_VERSION"); v != "" && !contains(params, "--helm-kube-version") {
+		params = append(params, fmt.Sprintf("--helm-kube-version=%s", v))
+	}
+	if v := os.Getenv("KUBE_API_VERSIONS"); v != "" && !contains(params, "--helm-api-versions") {
+		params = append(params, fmt.Sprintf("--helm-api-versions=%s", v))
+	}
+	
 	params = append(params, path)
 	wd, err := os.Getwd()
 	if err != nil {
