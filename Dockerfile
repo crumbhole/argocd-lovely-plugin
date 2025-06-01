@@ -10,7 +10,7 @@ ARG KUSTOMIZE_VERSION=5.6.0
 ARG HELM_VERSION=v3.18.1
  # https://github.com/helmfile/helmfile/releases
  # renovate: datasource=github-releases depName=helmfile/helmfile
-ARG HELMFILE_VERSION=v1.1.0
+ARG HELMFILE_VERSION=v1.1.1
 
 ARG LOVELY_VERSION
 
@@ -23,7 +23,7 @@ RUN /build/scripts/deps.sh
 
 RUN make plugin_versioned.yaml all -j4
 
-FROM alpine:3.21.3
+FROM alpine:3.22.0
 ENV LOVELY_HELM_PATH=/usr/local/bin/helm
 ENV LOVELY_HELMFILE_PATH=/usr/local/bin/helmfile
 ENV LOVELY_KUSTOMIZE_PATH=/usr/local/bin/kustomize
