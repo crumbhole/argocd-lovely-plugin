@@ -102,5 +102,5 @@ replace (
 	k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.33.1
 
 	// workaround for https://github.com/jaytaylor/html2text/issues/67
-	github.com/olekukonko/tablewriter => github.com/olekukonko/tablewriter v0.0.5
+	github.com/olekukonko/tablewriter => github.com/olekukonko/tablewriter v1.0.7
 )
