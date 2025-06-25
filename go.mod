@@ -16,7 +16,7 @@ require (
 	k8s.io/apimachinery v0.33.2
 	sigs.k8s.io/kustomize/api v0.19.0
 	sigs.k8s.io/kustomize/kyaml v0.19.0
-	sigs.k8s.io/yaml v1.4.0
+	sigs.k8s.io/yaml v1.5.0
 )
 
 require (
@@ -46,6 +46,8 @@ require (
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/ssor/bom v0.0.0-20170718123548-6386211fdfcf // indirect
 	github.com/x448/float16 v0.8.4 // indirect
+	go.yaml.in/yaml/v2 v2.4.2 // indirect
+	go.yaml.in/yaml/v3 v3.0.3 // indirect
 	golang.org/x/net v0.40.0 // indirect
 	golang.org/x/sync v0.14.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
@@ -61,6 +63,9 @@ require (
 )
 
 replace (
+
+	// workaround for https://github.com/jaytaylor/html2text/issues/67
+	github.com/olekukonko/tablewriter => github.com/olekukonko/tablewriter v0.0.5
 	// // https://github.com/golang/go/issues/33546#issuecomment-519656923
 	// github.com/go-check/check => github.com/go-check/check v0.0.0-20180628173108-788fd7840127
 
@@ -100,7 +105,4 @@ replace (
 	k8s.io/mount-utils => k8s.io/mount-utils v0.33.2
 	k8s.io/pod-security-admission => k8s.io/pod-security-admission v0.33.2
 	k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.33.2
-
-	// workaround for https://github.com/jaytaylor/html2text/issues/67
-	github.com/olekukonko/tablewriter => github.com/olekukonko/tablewriter v0.0.5
 )
