@@ -15,7 +15,7 @@ require (
 	jaytaylor.com/html2text v0.0.0-20230321000545-74c2419ad056
 	k8s.io/apimachinery v0.33.2
 	sigs.k8s.io/kustomize/api v0.19.0
-	sigs.k8s.io/kustomize/kyaml v0.19.0
+	sigs.k8s.io/kustomize/kyaml v0.20.0
 	sigs.k8s.io/yaml v1.5.0
 )
 
