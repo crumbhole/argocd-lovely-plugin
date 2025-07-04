@@ -64,7 +64,7 @@ require (
 
 replace (
 	// workaround for https://github.com/jaytaylor/html2text/issues/67
-	github.com/olekukonko/tablewriter => github.com/olekukonko/tablewriter v0.0.5
+	github.com/olekukonko/tablewriter => github.com/olekukonko/tablewriter v1.0.8
 	// // https://github.com/golang/go/issues/33546#issuecomment-519656923
 	// github.com/go-check/check => github.com/go-check/check v0.0.0-20180628173108-788fd7840127
 
