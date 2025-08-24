@@ -10,7 +10,7 @@ require (
 	github.com/gomarkdown/markdown v0.0.0-20250731182530-5d03d1963446
 	github.com/hexops/gotextdiff v1.0.3
 	github.com/otiai10/copy v1.14.1
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.0
 	gopkg.in/yaml.v3 v3.0.1
 	jaytaylor.com/html2text v0.0.0-20230321000545-74c2419ad056
 	k8s.io/apimachinery v0.33.4
