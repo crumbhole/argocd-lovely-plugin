@@ -2,13 +2,14 @@ package processor
 
 import (
 	"fmt"
-	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
-	"gopkg.in/yaml.v3"
 	"net/url"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
+	"gopkg.in/yaml.v3"
 )
 
 // Dependency is one repository that this chart is dependent upon
@@ -125,14 +126,42 @@ func (h HelmProcessor) Generate(input *string, basePath string, path string) (*s
 	if err != nil {
 		return nil, err
 	}
-	helmValues, err := features.GetHelmValues()
+	rawHelmValues, err := features.GetHelmValues()
 	if err != nil {
 		return nil, err
 	}
-	err = MergeYaml(path+"/"+helmValues[0], features.GetHelmMerge(), features.GetHelmPatch())
-	if err != nil {
-		return nil, err
+
+	helmValues := []string{}
+	for _, rawHelmValueFile := range rawHelmValues {
+		if features.GetHelmIgnoreMissingValueFiles() {
+			_, err = os.Stat(path + "/" + rawHelmValueFile)
+			if !os.IsNotExist(err) {
+				helmValues = append(helmValues, rawHelmValueFile)
+			}
+		} else {
+			helmValues = append(helmValues, rawHelmValueFile)
+		}
 	}
+
+	if features.GetHelmMerge() != `` || features.GetHelmPatch() != `` {
+		var mergeTarget string
+		if len(helmValues) > 0 {
+			mergeTarget = helmValues[0]
+		} else {
+			// Special case: if you specify non-default values files, but none
+			// of them exist (and you ask to ignore that), we should merge into
+			// values.yaml instead. (If that doesn't exist either, it's an
+			// error, though it might be a good idea to eventually make that
+			// work?)
+			mergeTarget = "values.yaml"
+		}
+
+		err = MergeYaml(path+"/"+mergeTarget, features.GetHelmMerge(), features.GetHelmPatch())
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	params := []string{`template`}
 	if features.GetHelmCRDs() {
 		params = append(params, `--include-crds`)

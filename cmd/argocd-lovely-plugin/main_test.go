@@ -3,14 +3,15 @@ package main
 import (
 	"errors"
 	"fmt"
+	"os"
+	"regexp"
+	"testing"
+
 	"github.com/hexops/gotextdiff"
 	"github.com/hexops/gotextdiff/myers"
 	"github.com/hexops/gotextdiff/span"
 	"github.com/otiai10/copy"
 	"gopkg.in/yaml.v3"
-	"os"
-	"regexp"
-	"testing"
 )
 
 func prettyDiff(expected, got string) string {
@@ -83,7 +84,7 @@ func matchExpectedWithStore(path string, givenValue string) error {
 	if err != nil {
 		got := path + "/got.txt"
 		err := os.Remove(got)
-		if err != nil {
+		if err != nil && !os.IsNotExist(err) {
 			return err
 		}
 		// #nosec - G306 - this is just for test logging/helping
