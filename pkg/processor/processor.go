@@ -3,6 +3,7 @@
 package processor
 
 import (
+	"context"
 	"errors"
 	"os"
 	"regexp"
@@ -16,7 +17,7 @@ import (
 type Processor interface {
 	Name() string
 	Enabled(basePath string, path string) bool
-	Generate(input *string, basePath string, path string) (*string, error)
+	Generate(ctx context.Context, input *string, basePath string, path string) (*string, error)
 }
 
 func reEntryInDir(path string, re *regexp.Regexp) string {

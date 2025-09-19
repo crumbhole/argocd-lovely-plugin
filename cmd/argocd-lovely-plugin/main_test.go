@@ -1,16 +1,18 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"os"
+	"regexp"
+	"testing"
+
 	"github.com/hexops/gotextdiff"
 	"github.com/hexops/gotextdiff/myers"
 	"github.com/hexops/gotextdiff/span"
 	"github.com/otiai10/copy"
 	"gopkg.in/yaml.v3"
-	"os"
-	"regexp"
-	"testing"
 )
 
 func prettyDiff(expected, got string) string {
@@ -99,8 +101,9 @@ func checkDir(t *testing.T, path string, errorsExpected bool) error {
 		return err
 	}
 	c := Collection{}
+	ctx := context.Background()
 
-	out, fullError := c.doAllDirs(path)
+	out, fullError := c.doAllDirs(ctx, path)
 	if errorsExpected {
 		// We expect an error and the error
 		// should match expected.txt

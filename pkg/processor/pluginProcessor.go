@@ -4,11 +4,13 @@ package processor
 // is the way argocd allows you to control plugins
 import (
 	"bytes"
+	"context"
 	"fmt"
-	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
 	"io"
 	"os/exec"
 	"path/filepath"
+
+	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
 )
 
 // PluginProcessor runs post processing plugins on a stream of yaml text
@@ -37,7 +39,7 @@ func (PluginProcessor) Enabled(basePath string, path string) bool {
 }
 
 // Generate create the text stream for this plugin
-func (v PluginProcessor) Generate(input *string, basePath string, path string) (*string, error) {
+func (v PluginProcessor) Generate(ctx context.Context, input *string, basePath string, path string) (*string, error) {
 	if !v.Enabled(basePath, path) {
 		return input, ErrDisabledProcessor
 	}
@@ -48,7 +50,7 @@ func (v PluginProcessor) Generate(input *string, basePath string, path string) (
 	}
 	for _, plugin := range plugins {
 		// #nosec - G204 the whole point is to run a user specified binary here
-		cmd := exec.Command(`bash`, `-c`, plugin)
+		cmd := exec.CommandContext(ctx, `bash`, `-c`, plugin)
 		cmd.Dir = path
 		stdin, err := cmd.StdinPipe()
 		var stderr bytes.Buffer

@@ -1,6 +1,7 @@
 package processor
 
 import (
+	"context"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -46,7 +47,7 @@ func (y *YamlProcessor) scanFile(path string, info os.FileInfo, err error) error
 }
 
 // Generate create the text stream for this plugin
-func (y YamlProcessor) Generate(input *string, basePath string, path string) (*string, error) {
+func (y YamlProcessor) Generate(_ context.Context, input *string, basePath string, path string) (*string, error) {
 	if !y.Enabled(basePath, path) {
 		return input, ErrDisabledProcessor
 	}
