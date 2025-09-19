@@ -1,12 +1,14 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
-	"github.com/crumbhole/argocd-lovely-plugin/pkg/processor"
 	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/crumbhole/argocd-lovely-plugin/pkg/processor"
 )
 
 // Collection is a list of sub-applications making up this application
@@ -32,10 +34,10 @@ func (c *Collection) scanDir(path string) error {
 	return filepath.WalkDir(path, c.scanFile)
 }
 
-func (c *Collection) processAllDirs() (string, error) {
+func (c *Collection) processAllDirs(ctx context.Context) (string, error) {
 	result := ""
 	for _, path := range c.dirs.GetPackages() {
-		output, err := c.processOneDir(path)
+		output, err := c.processOneDir(ctx, path)
 		if err != nil {
 			return "", err
 		}
@@ -55,11 +57,11 @@ func (c *Collection) checkExclusive(path string) error {
 	return nil
 }
 
-func (c *Collection) processOneDir(path string) (string, error) {
+func (c *Collection) processOneDir(ctx context.Context, path string) (string, error) {
 	var result *string
 	pre := processor.PreProcessor{}
 	if pre.Enabled(c.baseDir, path) {
-		err := pre.Generate(c.baseDir, path)
+		err := pre.Generate(ctx, c.baseDir, path)
 		if err != nil {
 			return "", err
 		}
@@ -76,7 +78,7 @@ func (c *Collection) processOneDir(path string) (string, error) {
 		processor.PluginProcessor{},
 	} {
 		if processor.Enabled(c.baseDir, path) {
-			out, err := processor.Generate(result, c.baseDir, path)
+			out, err := processor.Generate(ctx, result, c.baseDir, path)
 			if err != nil {
 				return "", err
 			}
@@ -86,13 +88,13 @@ func (c *Collection) processOneDir(path string) (string, error) {
 	return *result, nil
 }
 
-func (c *Collection) doAllDirs(path string) (string, error) {
+func (c *Collection) doAllDirs(ctx context.Context, path string) (string, error) {
 	c.baseDir = path
 	err := c.scanDir(path)
 	if err != nil {
 		return "", err
 	}
-	output, err := c.processAllDirs()
+	output, err := c.processAllDirs(ctx)
 	if err != nil {
 		return "", err
 	}
@@ -100,12 +102,13 @@ func (c *Collection) doAllDirs(path string) (string, error) {
 }
 
 func main() {
+	ctx := context.Background()
 	dir, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
 	}
 	c := Collection{}
-	output, err := c.doAllDirs(dir)
+	output, err := c.doAllDirs(ctx, dir)
 	if err != nil {
 		log.Fatal(err)
 	}

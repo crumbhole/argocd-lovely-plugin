@@ -1,6 +1,7 @@
 package processor
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -38,7 +39,7 @@ func (k KustomizeProcessor) getPath(path string) (string, error) {
 }
 
 // Generate create the text stream for this plugin
-func (k KustomizeProcessor) Generate(input *string, basePath string, path string) (*string, error) {
+func (k KustomizeProcessor) Generate(ctx context.Context, input *string, basePath string, path string) (*string, error) {
 	if !k.Enabled(basePath, path) {
 		return input, ErrDisabledProcessor
 	}
@@ -54,7 +55,7 @@ func (k KustomizeProcessor) Generate(input *string, basePath string, path string
 			return nil, err
 		}
 	}
-	out, err := k.runKustomize(path)
+	out, err := k.runKustomize(ctx, path)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +109,7 @@ func (k KustomizeProcessor) addIntermediateToKustomization(kustYamlPath string) 
 }
 
 // runKustomize builds the kustomize output for the given path
-func (k KustomizeProcessor) runKustomize(path string) (string, error) {
+func (k KustomizeProcessor) runKustomize(ctx context.Context, path string) (string, error) {
 	params := []string{"build", "--enable-helm"}
 	extraParams, err := features.GetKustomizeParams()
 	if err != nil {
@@ -120,7 +121,7 @@ func (k KustomizeProcessor) runKustomize(path string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	out, err := execute(wd, features.GetKustomizePath(), params...)
+	out, err := execute(ctx, wd, features.GetKustomizePath(), params...)
 	if err != nil {
 		return "", fmt.Errorf("error running kustomize: %w", err)
 	}

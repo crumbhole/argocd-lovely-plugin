@@ -2,19 +2,21 @@ package processor
 
 import (
 	"bytes"
+	"context"
 	"fmt"
-	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
 	"os"
 	"os/exec"
 	"regexp"
+
+	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
 )
 
 const (
 	envPrefixArgoCD = "ARGOCD_ENV_"
 )
 
-func execute(path string, command string, params ...string) (string, error) {
-	cmd := exec.Command(command, params...)
+func execute(ctx context.Context, path string, command string, params ...string) (string, error) {
+	cmd := exec.CommandContext(ctx, command, params...)
 	cmd.Dir = path
 
 	if features.GetEnvPropagation() {

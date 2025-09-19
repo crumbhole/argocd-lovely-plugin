@@ -3,10 +3,12 @@ package processor
 // The control of this is via environment variables, as that
 // is the way argocd allows you to control plugins
 import (
+	"context"
 	"fmt"
-	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
 	"os/exec"
 	"path/filepath"
+
+	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
 )
 
 // PreProcessor is not a strict processor, as it handles files on disk
@@ -35,7 +37,7 @@ func (PreProcessor) Enabled(basePath string, path string) bool {
 }
 
 // Generate create the text stream for this plugin
-func (v PreProcessor) Generate(basePath string, path string) error {
+func (v PreProcessor) Generate(ctx context.Context, basePath string, path string) error {
 	if !v.Enabled(basePath, path) {
 		return ErrDisabledProcessor
 	}
@@ -45,7 +47,7 @@ func (v PreProcessor) Generate(basePath string, path string) error {
 	}
 	for _, plugin := range plugins {
 		// #nosec - G204 the whole point is to run a user specified binary here
-		cmd := exec.Command(`bash`, `-c`, plugin)
+		cmd := exec.CommandContext(ctx, `bash`, `-c`, plugin)
 		cmd.Dir = path
 		out, err := cmd.CombinedOutput()
 		if err != nil {

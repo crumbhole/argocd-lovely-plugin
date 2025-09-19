@@ -1,14 +1,16 @@
 package processor
 
 import (
+	"context"
 	"fmt"
-	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
-	"gopkg.in/yaml.v3"
 	"net/url"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
+	"gopkg.in/yaml.v3"
 )
 
 // Dependency is one repository that this chart is dependent upon
@@ -44,10 +46,10 @@ func contains(s []string, str string) bool {
 	return false
 }
 
-func (h HelmProcessor) helmDo(path string, params ...string) (string, error) {
+func (h HelmProcessor) helmDo(ctx context.Context, path string, params ...string) (string, error) {
 	baseParams := [6]string{`--registry-config`, `/tmp/.helm/registry.json`, `--repository-cache`, `/tmp/.helm/cache/repository`, `--repository-config`, `/tmp/.helm/repositories.json`}
 	cmdArray := append(baseParams[:], params...)
-	return execute(path, features.GetHelmPath(), cmdArray...)
+	return execute(ctx, path, features.GetHelmPath(), cmdArray...)
 }
 
 func downloadableRepo(repourl string) bool {
@@ -63,7 +65,7 @@ func downloadableRepo(repourl string) bool {
 	return true
 }
 
-func (h HelmProcessor) repoEnsure(path string, name string, repourl string) error {
+func (h HelmProcessor) repoEnsure(ctx context.Context, path string, name string, repourl string) error {
 	params := []string{`repo`, `add`, `--force-update`}
 	extraParams, err := features.GetHelmRepoAddParams()
 	if err != nil {
@@ -71,11 +73,11 @@ func (h HelmProcessor) repoEnsure(path string, name string, repourl string) erro
 	}
 	params = append(params, extraParams...)
 	params = append(params, []string{name, repourl}...)
-	_, err = h.helmDo(path, params...)
+	_, err = h.helmDo(ctx, path, params...)
 	return err
 }
 
-func (h HelmProcessor) reposEnsure(path string) error {
+func (h HelmProcessor) reposEnsure(ctx context.Context, path string) error {
 	for _, reqsFile := range [...]string{
 		`requirements.yaml`,
 		`requirements.yml`,
@@ -94,7 +96,7 @@ func (h HelmProcessor) reposEnsure(path string) error {
 		updateRepos := 0
 		for _, dep := range deps.Dependencies {
 			if downloadableRepo(dep.Repository) {
-				err := h.repoEnsure(path, dep.Name, dep.Repository)
+				err := h.repoEnsure(ctx, path, dep.Name, dep.Repository)
 				if err != nil {
 					return err
 				}
@@ -105,7 +107,7 @@ func (h HelmProcessor) reposEnsure(path string) error {
 			// Add won't cause an update, so we do an update as well.
 			// This is a sledgehammer update all as per-repo update isn't in until helm 3.7
 			// and argo ships with 3.6
-			_, err := h.helmDo(path, `repo`, `update`)
+			_, err := h.helmDo(ctx, path, `repo`, `update`)
 			return err
 		}
 	}
@@ -113,15 +115,15 @@ func (h HelmProcessor) reposEnsure(path string) error {
 }
 
 // Generate create the text stream for this plugin
-func (h HelmProcessor) Generate(input *string, basePath string, path string) (*string, error) {
+func (h HelmProcessor) Generate(ctx context.Context, input *string, basePath string, path string) (*string, error) {
 	if !h.Enabled(basePath, path) {
 		return input, ErrDisabledProcessor
 	}
-	err := h.reposEnsure(path)
+	err := h.reposEnsure(ctx, path)
 	if err != nil {
 		return nil, err
 	}
-	_, err = h.helmDo(path, `dependency`, `build`)
+	_, err = h.helmDo(ctx, path, `dependency`, `build`)
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +161,7 @@ func (h HelmProcessor) Generate(input *string, basePath string, path string) (*s
 		}
 	}
 	params = append(params, []string{`-n`, features.GetHelmNamespace(), features.GetHelmName(), `.`}...)
-	out, err := h.helmDo(path, params...)
+	out, err := h.helmDo(ctx, path, params...)
 	if err != nil {
 		return nil, fmt.Errorf("error running helm: %w", err)
 	}

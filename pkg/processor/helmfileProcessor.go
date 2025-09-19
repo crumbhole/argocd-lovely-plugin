@@ -1,11 +1,12 @@
 package processor
 
 import (
+	"context"
 	"fmt"
 	"path/filepath"
+	"regexp"
 
 	"github.com/crumbhole/argocd-lovely-plugin/pkg/features"
-	"regexp"
 )
 
 // HelmfileProcessor handles Chart,yaml files via helm
@@ -24,8 +25,8 @@ func (HelmfileProcessor) Enabled(_ string, path string) bool {
 		reEntryInDir(path, regexp.MustCompile(`^helmfile\.d$`)) != ""
 }
 
-func (h HelmfileProcessor) helmfileDo(path string, params ...string) (string, error) {
-	return execute(path, features.GetHelmfilePath(), params...)
+func (h HelmfileProcessor) helmfileDo(ctx context.Context, path string, params ...string) (string, error) {
+	return execute(ctx, path, features.GetHelmfilePath(), params...)
 }
 
 func stripQuotes(in string) string {
@@ -41,7 +42,7 @@ func stripQuotes(in string) string {
 }
 
 // Generate create the text stream for this plugin
-func (h HelmfileProcessor) Generate(input *string, basePath string, path string) (*string, error) {
+func (h HelmfileProcessor) Generate(ctx context.Context, input *string, basePath string, path string) (*string, error) {
 	if !h.Enabled(basePath, path) {
 		return input, ErrDisabledProcessor
 	}
@@ -63,7 +64,7 @@ func (h HelmfileProcessor) Generate(input *string, basePath string, path string)
 		extraParams[i] = stripQuotes(extraParams[i])
 	}
 	params = append(params, extraParams...)
-	out, err := h.helmfileDo(path, params...)
+	out, err := h.helmfileDo(ctx, path, params...)
 	if err != nil {
 		return nil, fmt.Errorf("error running helmfile: %w", err)
 	}
