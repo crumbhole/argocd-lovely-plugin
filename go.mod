@@ -39,7 +39,7 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.3-0.20250322232337-35a7c28c31ee // indirect
 	github.com/olekukonko/errors v1.1.0 // indirect
-	github.com/olekukonko/ll v0.0.8 // indirect
+	github.com/olekukonko/ll v0.0.9 // indirect
 	github.com/olekukonko/tablewriter v1.0.6 // indirect
 	github.com/otiai10/mint v1.6.3 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
@@ -65,7 +65,7 @@ require (
 
 replace (
 	// workaround for https://github.com/jaytaylor/html2text/issues/67
-	github.com/olekukonko/tablewriter => github.com/olekukonko/tablewriter v0.0.5
+	github.com/olekukonko/tablewriter => github.com/olekukonko/tablewriter v1.1.0
 	// // https://github.com/golang/go/issues/33546#issuecomment-519656923
 	// github.com/go-check/check => github.com/go-check/check v0.0.0-20180628173108-788fd7840127
 
