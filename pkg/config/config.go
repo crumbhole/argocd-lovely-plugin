@@ -15,15 +15,15 @@ const argoPrefix = `ARGOCD_ENV_`
 // or the defaultVal if that fails
 func GetStringParam(name string, defaultVal string) string {
 	result, got := os.LookupEnv(paramPrefix + name)
-	if got {
+	if got && result != "" {
 		return result
 	}
 	result, got = os.LookupEnv(argoPrefix + name)
-	if got {
+	if got && result != "" {
 		return result
 	}
 	result, got = os.LookupEnv(name)
-	if got {
+	if got && result != "" {
 		return result
 	}
 	return defaultVal
