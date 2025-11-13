@@ -35,7 +35,8 @@ Environment variables, are conventionally ALL_CAPS, and for our purposes
 |  |  |  |  |
 | Helm Name | LOVELY_HELM_NAME | This can be used to set the Helm 'name' in the same way as releaseName works in Argo CD's standard Helm processing. (`ARGOCD_APP_NAME` used to be overridable in old versions of ArgoCD, but is no longer). Will default to ARGOCD_APP_NAME from the application. |  |
 | Helm Namespace | LOVELY_HELM_NAMESPACE |  This can be used to set the Helm 'namespace' it will apply. Will default to ARGOCD_APP_NAMESPACE from the application. |  |
-| Helm Values | LOVELY_HELM_VALUES | This is a space separated list values files you'd like to use when rendering the helm chart. Defaults to `values.yaml` if that exists, but its fine if it doesn't. If you override this the file *must* exist. MERGE and PATCH will be applied to the first file in this list. |  |
+| Helm Values | LOVELY_HELM_VALUES | This is a space separated list values files you'd like to use when rendering the helm chart. Defaults to `values.yaml` if that exists, but its fine if it doesn't. If you override this the file *must* exist (unless `LOVELY_HELM_IGNORE_MISSING_VALUE_FILES` is set). MERGE and PATCH will be applied to the first file in this list. |  |
+| Helm Ignore Missing Value Files | LOVELY_HELM_IGNORE_MISSING_VALUE_FILES | If true, the plugin will skip value files listed in `LOVELY_HELM_VALUES` that do not exist without an error. | false |
 | Helmfile Path | LOVELY_HELMFILE_PATH | Path to the helmfile binary used for this application | helmfile |
 | Helmfile CRDs | LOVELY_HELMFILE_CRDS | Whether to include CRDs from helmfile or skip them | true |
 | Helmfile Merge | LOVELY_HELMFILE_MERGE | Set to some yaml you'd like [strategic merged](https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/) into any helmfile.yaml used by helmfile. |  |
