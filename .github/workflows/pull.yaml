@@ -136,6 +136,9 @@ jobs:
     name: Build sidecar docker image
     needs: [test-deploy-argocd-cmp-sidecar]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Check out the repo
         uses: actions/checkout@v6
@@ -147,8 +150,8 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.CR_PAT }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build sidecar image
         uses: docker/build-push-action@v6
         with:
@@ -163,6 +166,9 @@ jobs:
     name: Build variation docker images
     needs: [build_sidecar]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Check out the repo
         uses: actions/checkout@v6
@@ -174,8 +180,8 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.CR_PAT }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - uses: ./.github/actions/variations
         with:
           version: ${{ github.sha }}
