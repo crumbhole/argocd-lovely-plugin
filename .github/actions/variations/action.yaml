@@ -8,6 +8,10 @@ inputs:
     description: 'Push images to registry'
     required: false
     default: 'true'
+  registry:
+    description: 'Registry prefix for images (e.g., ghcr.io/crumbhole or localhost:5000)'
+    required: false
+    default: 'ghcr.io/crumbhole'
 runs:
   using: "composite"
   steps:
@@ -18,10 +22,10 @@ runs:
         file: variations/Dockerfile.nover
         push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/lovely:${{ inputs.version }}
+        tags: ${{ inputs.registry }}/lovely:${{ inputs.version }}
         build-args: |
           VERSION=${{ inputs.version }}
-          PARENT=ghcr.io/crumbhole/argocd-lovely-plugin-cmp
+          PARENT=${{ inputs.registry }}/argocd-lovely-plugin-cmp
           NAME=lovely
     - name: Build and Push lovely-vault-ver
       uses: docker/build-push-action@v6
@@ -30,10 +34,10 @@ runs:
         file: variations/Dockerfile.vault
         push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/lovely-vault-ver:${{ inputs.version }}
+        tags: ${{ inputs.registry }}/lovely-vault-ver:${{ inputs.version }}
         build-args: |
           VERSION=${{ inputs.version }}
-          PARENT=ghcr.io/crumbhole/argocd-lovely-plugin-cmp
+          PARENT=${{ inputs.registry }}/argocd-lovely-plugin-cmp
           NAME=lovely-vault-ver
     - name: Build and Push lovely-vault
       uses: docker/build-push-action@v6
@@ -42,10 +46,10 @@ runs:
         file: variations/Dockerfile.nover
         push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/lovely-vault:${{ inputs.version }}
+        tags: ${{ inputs.registry }}/lovely-vault:${{ inputs.version }}
         build-args: |
           VERSION=${{ inputs.version }}
-          PARENT=ghcr.io/crumbhole/lovely-vault-ver
+          PARENT=${{ inputs.registry }}/lovely-vault-ver
           NAME=lovely-vault
     - name: Build and Push lovely-vault-plugin-ver
       uses: docker/build-push-action@v6
@@ -54,10 +58,10 @@ runs:
         file: variations/Dockerfile.vault-plugin
         push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/lovely-vault-plugin-ver:${{ inputs.version }}
+        tags: ${{ inputs.registry }}/lovely-vault-plugin-ver:${{ inputs.version }}
         build-args: |
           VERSION=${{ inputs.version }}
-          PARENT=ghcr.io/crumbhole/argocd-lovely-plugin-cmp
+          PARENT=${{ inputs.registry }}/argocd-lovely-plugin-cmp
           NAME=lovely-vault-plugin-ver
     - name: Build and Push lovely-vault-plugin
       uses: docker/build-push-action@v6
@@ -66,10 +70,10 @@ runs:
         file: variations/Dockerfile.nover
         push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/lovely-vault-plugin:${{ inputs.version }}
+        tags: ${{ inputs.registry }}/lovely-vault-plugin:${{ inputs.version }}
         build-args: |
           VERSION=${{ inputs.version }}
-          PARENT=ghcr.io/crumbhole/lovely-vault-plugin-ver
+          PARENT=${{ inputs.registry }}/lovely-vault-plugin-ver
           NAME=lovely-vault-plugin
     - name: Build and Push lovely-hera-ver
       uses: docker/build-push-action@v6
@@ -78,10 +82,10 @@ runs:
         file: variations/Dockerfile.hera
         push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/lovely-hera-ver:${{ inputs.version }}
+        tags: ${{ inputs.registry }}/lovely-hera-ver:${{ inputs.version }}
         build-args: |
           VERSION=${{ inputs.version }}
-          PARENT=ghcr.io/crumbhole/argocd-lovely-plugin-cmp
+          PARENT=${{ inputs.registry }}/argocd-lovely-plugin-cmp
           NAME=lovely-hera-ver
     - name: Build and Push lovely-hera
       uses: docker/build-push-action@v6
@@ -90,10 +94,10 @@ runs:
         file: variations/Dockerfile.nover
         push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/lovely-hera:${{ inputs.version }}
+        tags: ${{ inputs.registry }}/lovely-hera:${{ inputs.version }}
         build-args: |
           VERSION=${{ inputs.version }}
-          PARENT=ghcr.io/crumbhole/lovely-hera-ver
+          PARENT=${{ inputs.registry }}/lovely-hera-ver
           NAME=lovely-hera
     - name: Build and Push lovely-hera-vault-ver
       uses: docker/build-push-action@v6
@@ -102,10 +106,10 @@ runs:
         file: variations/Dockerfile.vault
         push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/lovely-hera-vault-ver:${{ inputs.version }}
+        tags: ${{ inputs.registry }}/lovely-hera-vault-ver:${{ inputs.version }}
         build-args: |
           VERSION=${{ inputs.version }}
-          PARENT=ghcr.io/crumbhole/lovely-hera-ver
+          PARENT=${{ inputs.registry }}/lovely-hera-ver
           NAME=lovely-hera-vault-ver
     - name: Build and Push lovely-hera-vault
       uses: docker/build-push-action@v6
@@ -114,10 +118,10 @@ runs:
         file: variations/Dockerfile.nover
         push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/lovely-hera-vault:${{ inputs.version }}
+        tags: ${{ inputs.registry }}/lovely-hera-vault:${{ inputs.version }}
         build-args: |
           VERSION=${{ inputs.version }}
-          PARENT=ghcr.io/crumbhole/lovely-hera-vault-ver
+          PARENT=${{ inputs.registry }}/lovely-hera-vault-ver
           NAME=lovely-hera-vault
     - name: Build and Push lovely-hera-vault-plugin-ver
       uses: docker/build-push-action@v6
@@ -126,10 +130,10 @@ runs:
         file: variations/Dockerfile.vault-plugin
         push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/lovely-hera-vault-plugin-ver:${{ inputs.version }}
+        tags: ${{ inputs.registry }}/lovely-hera-vault-plugin-ver:${{ inputs.version }}
         build-args: |
           VERSION=${{ inputs.version }}
-          PARENT=ghcr.io/crumbhole/lovely-hera-ver
+          PARENT=${{ inputs.registry }}/lovely-hera-ver
           NAME=lovely-hera-vault-plugin-ver
     - name: Build and Push lovely-hera-vault-plugin
       uses: docker/build-push-action@v6
@@ -138,10 +142,10 @@ runs:
         file: variations/Dockerfile.nover
         push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/lovely-hera-vault-plugin:${{ inputs.version }}
+        tags: ${{ inputs.registry }}/lovely-hera-vault-plugin:${{ inputs.version }}
         build-args: |
           VERSION=${{ inputs.version }}
-          PARENT=ghcr.io/crumbhole/lovely-hera-vault-plugin-ver
+          PARENT=${{ inputs.registry }}/lovely-hera-vault-plugin-ver
           NAME=lovely-hera-vault-plugin
     - name: Build and Push lovely-ytt-ver
       uses: docker/build-push-action@v6
@@ -150,10 +154,10 @@ runs:
         file: variations/Dockerfile.ytt
         push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/lovely-ytt-ver:${{ inputs.version }}
+        tags: ${{ inputs.registry }}/lovely-ytt-ver:${{ inputs.version }}
         build-args: |
           VERSION=${{ inputs.version }}
-          PARENT=ghcr.io/crumbhole/argocd-lovely-plugin-cmp
+          PARENT=${{ inputs.registry }}/argocd-lovely-plugin-cmp
           NAME=lovely-ytt-ver
     - name: Build and Push lovely-ytt
       uses: docker/build-push-action@v6
@@ -162,8 +166,8 @@ runs:
         file: variations/Dockerfile.nover
         push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
-        tags: ghcr.io/crumbhole/lovely-ytt:${{ inputs.version }}
+        tags: ${{ inputs.registry }}/lovely-ytt:${{ inputs.version }}
         build-args: |
           VERSION=${{ inputs.version }}
-          PARENT=ghcr.io/crumbhole/lovely-ytt-ver
+          PARENT=${{ inputs.registry }}/lovely-ytt-ver
           NAME=lovely-ytt
