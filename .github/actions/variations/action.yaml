@@ -4,6 +4,10 @@ inputs:
   version:
     description: 'Version to build'
     required: true
+  push:
+    description: 'Push images to registry'
+    required: false
+    default: 'true'
 runs:
   using: "composite"
   steps:
@@ -12,7 +16,7 @@ runs:
       with:
         context: .
         file: variations/Dockerfile.nover
-        push: true
+        push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
         tags: ghcr.io/crumbhole/lovely:${{ inputs.version }}
         build-args: |
@@ -24,7 +28,7 @@ runs:
       with:
         context: .
         file: variations/Dockerfile.vault
-        push: true
+        push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
         tags: ghcr.io/crumbhole/lovely-vault-ver:${{ inputs.version }}
         build-args: |
@@ -36,7 +40,7 @@ runs:
       with:
         context: .
         file: variations/Dockerfile.nover
-        push: true
+        push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
         tags: ghcr.io/crumbhole/lovely-vault:${{ inputs.version }}
         build-args: |
@@ -48,7 +52,7 @@ runs:
       with:
         context: .
         file: variations/Dockerfile.vault-plugin
-        push: true
+        push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
         tags: ghcr.io/crumbhole/lovely-vault-plugin-ver:${{ inputs.version }}
         build-args: |
@@ -60,7 +64,7 @@ runs:
       with:
         context: .
         file: variations/Dockerfile.nover
-        push: true
+        push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
         tags: ghcr.io/crumbhole/lovely-vault-plugin:${{ inputs.version }}
         build-args: |
@@ -72,7 +76,7 @@ runs:
       with:
         context: .
         file: variations/Dockerfile.hera
-        push: true
+        push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
         tags: ghcr.io/crumbhole/lovely-hera-ver:${{ inputs.version }}
         build-args: |
@@ -84,7 +88,7 @@ runs:
       with:
         context: .
         file: variations/Dockerfile.nover
-        push: true
+        push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
         tags: ghcr.io/crumbhole/lovely-hera:${{ inputs.version }}
         build-args: |
@@ -96,7 +100,7 @@ runs:
       with:
         context: .
         file: variations/Dockerfile.vault
-        push: true
+        push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
         tags: ghcr.io/crumbhole/lovely-hera-vault-ver:${{ inputs.version }}
         build-args: |
@@ -108,7 +112,7 @@ runs:
       with:
         context: .
         file: variations/Dockerfile.nover
-        push: true
+        push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
         tags: ghcr.io/crumbhole/lovely-hera-vault:${{ inputs.version }}
         build-args: |
@@ -120,7 +124,7 @@ runs:
       with:
         context: .
         file: variations/Dockerfile.vault-plugin
-        push: true
+        push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
         tags: ghcr.io/crumbhole/lovely-hera-vault-plugin-ver:${{ inputs.version }}
         build-args: |
@@ -132,7 +136,7 @@ runs:
       with:
         context: .
         file: variations/Dockerfile.nover
-        push: true
+        push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
         tags: ghcr.io/crumbhole/lovely-hera-vault-plugin:${{ inputs.version }}
         build-args: |
@@ -144,7 +148,7 @@ runs:
       with:
         context: .
         file: variations/Dockerfile.ytt
-        push: true
+        push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
         tags: ghcr.io/crumbhole/lovely-ytt-ver:${{ inputs.version }}
         build-args: |
@@ -156,7 +160,7 @@ runs:
       with:
         context: .
         file: variations/Dockerfile.nover
-        push: true
+        push: ${{ inputs.push }}
         platforms: ${{ env.PLATFORMS }}
         tags: ghcr.io/crumbhole/lovely-ytt:${{ inputs.version }}
         build-args: |

@@ -157,7 +157,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          push: true
+          push: ${{ github.event_name == 'push' }}
           platforms: ${{ env.PLATFORMS }}
           tags: ghcr.io/crumbhole/argocd-lovely-plugin-cmp:${{ github.sha }}
           build-args: VERSION=${{ github.sha }}
@@ -185,3 +185,4 @@ jobs:
       - uses: ./.github/actions/variations
         with:
           version: ${{ github.sha }}
+          push: ${{ github.event_name == 'push' }}
