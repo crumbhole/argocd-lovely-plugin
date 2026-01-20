@@ -1,0 +1,75 @@
+---
+# Source: hello-world/charts/hello-world/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: test-hello-world
+  labels:
+    helm.sh/chart: hello-world-0.1.0
+    app.kubernetes.io/name: hello-world
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: hello-world/charts/hello-world/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-hello-world
+  labels:
+    helm.sh/chart: hello-world-0.1.0
+    app.kubernetes.io/name: hello-world
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: hello-world
+    app.kubernetes.io/instance: test
+---
+# Source: hello-world/charts/hello-world/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-hello-world
+  labels:
+    helm.sh/chart: hello-world-0.1.0
+    app.kubernetes.io/name: hello-world
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: hello-world
+      app.kubernetes.io/instance: test
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: hello-world
+        app.kubernetes.io/instance: test
+    spec:
+      serviceAccountName: test-hello-world
+      containers:
+        - name: hello-world
+          image: "nginx:1.16.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
