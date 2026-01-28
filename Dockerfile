@@ -23,7 +23,7 @@ RUN /build/scripts/deps.sh
 
 RUN make plugin_versioned.yaml all -j4
 
-FROM alpine:3.23.2
+FROM alpine:3.23.3
 ENV LOVELY_HELM_PATH=/usr/local/bin/helm
 ENV LOVELY_HELMFILE_PATH=/usr/local/bin/helmfile
 ENV LOVELY_KUSTOMIZE_PATH=/usr/local/bin/kustomize
