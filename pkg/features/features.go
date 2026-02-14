@@ -32,6 +32,7 @@ const (
 	HelmName
 	HelmNamespace
 	HelmValues
+	HelmIgnoreMissingValueFiles
 	HelmfilePath
 	HelmfileCRDs
 	HelmfileMerge
@@ -157,7 +158,13 @@ func Features() map[FeatureID]Feature {
 		HelmValues: {
 			Title:       `Helm Values`,
 			Name:        `lovely_helm_values`,
-			Description: "This is a space separated list values files you'd like to use when rendering the helm chart. Defaults to `values.yaml` if that exists, but its fine if it doesn't. If you override this the file *must* exist. MERGE and PATCH will be applied to the first file in this list.",
+			Description: "This is a space separated list values files you'd like to use when rendering the helm chart. Defaults to `values.yaml` if that exists, but its fine if it doesn't. If you override this the file *must* exist (unless `LOVELY_HELM_IGNORE_MISSING_VALUE_FILES` is set). MERGE and PATCH will be applied to the first file in this list.",
+		},
+		HelmIgnoreMissingValueFiles: {
+			Title:       `Helm Ignore Missing Value Files`,
+			Name:        `lovely_helm_ignore_missing_value_files`,
+			DefaultVal:  `false`,
+			Description: "If true, the plugin will skip value files listed in `LOVELY_HELM_VALUES` that do not exist without an error.",
 		},
 		HelmfilePath: {
 			Title:       `Helmfile Path`,
