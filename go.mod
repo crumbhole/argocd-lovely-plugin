@@ -7,7 +7,7 @@ toolchain go1.25.7
 require (
 	github.com/evanphx/json-patch v5.9.11+incompatible
 	github.com/go-andiamo/splitter v1.2.5
-	github.com/gomarkdown/markdown v0.0.0-20250810172220-2e2c11897d1a
+	github.com/gomarkdown/markdown v0.0.0-20260217112301-37c66b85d6ab
 	github.com/hexops/gotextdiff v1.0.3
 	github.com/otiai10/copy v1.14.1
 	github.com/stretchr/testify v1.11.1
