@@ -3,8 +3,9 @@ package features
 // The control of this is via environment variables, as that
 // is the way argocd allows you to control plugins
 import (
-	"github.com/crumbhole/argocd-lovely-plugin/pkg/config"
 	"os"
+
+	"github.com/crumbhole/argocd-lovely-plugin/pkg/config"
 )
 
 // GetPlugins returns the list of plugins to run during the generate phase after main processing
@@ -143,6 +144,13 @@ func GetHelmValuesSet() bool {
 	f := Features()[HelmValues]
 	helmValues, _ := config.GetStringListParam(f.EnvName(), f.DefaultVal, ' ')
 	return len(helmValues) != 0
+}
+
+// GetHelmIgnoreMissingValueFiles returns whether to filter out non-existent
+// files from LOVELY_HELM_FILES.
+func GetHelmIgnoreMissingValueFiles() bool {
+	f := Features()[HelmIgnoreMissingValueFiles]
+	return config.GetBoolParam(f.EnvName(), f.DefaultVal)
 }
 
 // GetHelmfilePath returns the path to helm if overridden, otherwise we search the path
