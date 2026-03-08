@@ -16,7 +16,7 @@ runs:
   using: "composite"
   steps:
     - name: Build and Push lovely
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@v7
       with:
         context: .
         file: variations/Dockerfile.nover
@@ -28,7 +28,7 @@ runs:
           PARENT=${{ inputs.registry }}/argocd-lovely-plugin-cmp
           NAME=lovely
     - name: Build and Push lovely-vault-ver
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@v7
       with:
         context: .
         file: variations/Dockerfile.vault
@@ -40,7 +40,7 @@ runs:
           PARENT=${{ inputs.registry }}/argocd-lovely-plugin-cmp
           NAME=lovely-vault-ver
     - name: Build and Push lovely-vault
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@v7
       with:
         context: .
         file: variations/Dockerfile.nover
@@ -52,7 +52,7 @@ runs:
           PARENT=${{ inputs.registry }}/lovely-vault-ver
           NAME=lovely-vault
     - name: Build and Push lovely-vault-plugin-ver
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@v7
       with:
         context: .
         file: variations/Dockerfile.vault-plugin
@@ -64,7 +64,7 @@ runs:
           PARENT=${{ inputs.registry }}/argocd-lovely-plugin-cmp
           NAME=lovely-vault-plugin-ver
     - name: Build and Push lovely-vault-plugin
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@v7
       with:
         context: .
         file: variations/Dockerfile.nover
@@ -76,7 +76,7 @@ runs:
           PARENT=${{ inputs.registry }}/lovely-vault-plugin-ver
           NAME=lovely-vault-plugin
     - name: Build and Push lovely-hera-ver
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@v7
       with:
         context: .
         file: variations/Dockerfile.hera
@@ -88,7 +88,7 @@ runs:
           PARENT=${{ inputs.registry }}/argocd-lovely-plugin-cmp
           NAME=lovely-hera-ver
     - name: Build and Push lovely-hera
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@v7
       with:
         context: .
         file: variations/Dockerfile.nover
@@ -100,7 +100,7 @@ runs:
           PARENT=${{ inputs.registry }}/lovely-hera-ver
           NAME=lovely-hera
     - name: Build and Push lovely-hera-vault-ver
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@v7
       with:
         context: .
         file: variations/Dockerfile.vault
@@ -112,7 +112,7 @@ runs:
           PARENT=${{ inputs.registry }}/lovely-hera-ver
           NAME=lovely-hera-vault-ver
     - name: Build and Push lovely-hera-vault
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@v7
       with:
         context: .
         file: variations/Dockerfile.nover
@@ -124,7 +124,7 @@ runs:
           PARENT=${{ inputs.registry }}/lovely-hera-vault-ver
           NAME=lovely-hera-vault
     - name: Build and Push lovely-hera-vault-plugin-ver
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@v7
       with:
         context: .
         file: variations/Dockerfile.vault-plugin
@@ -136,7 +136,7 @@ runs:
           PARENT=${{ inputs.registry }}/lovely-hera-ver
           NAME=lovely-hera-vault-plugin-ver
     - name: Build and Push lovely-hera-vault-plugin
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@v7
       with:
         context: .
         file: variations/Dockerfile.nover
@@ -148,7 +148,7 @@ runs:
           PARENT=${{ inputs.registry }}/lovely-hera-vault-plugin-ver
           NAME=lovely-hera-vault-plugin
     - name: Build and Push lovely-ytt-ver
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@v7
       with:
         context: .
         file: variations/Dockerfile.ytt
@@ -160,7 +160,7 @@ runs:
           PARENT=${{ inputs.registry }}/argocd-lovely-plugin-cmp
           NAME=lovely-ytt-ver
     - name: Build and Push lovely-ytt
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@v7
       with:
         context: .
         file: variations/Dockerfile.nover
