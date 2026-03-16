@@ -9,6 +9,9 @@
   "extends": [
     "config:recommended"
   ],
+  "postUpdateOptions": [
+    "gomodTidy"
+  ],
   "ignorePaths": [
     "test_errors/**",
     "test/**"
