@@ -128,7 +128,7 @@ jobs:
     needs: [test-deploy-argocd-cmp-sidecar]
     steps:
       - name: delete-artifact
-        uses: geekyeggo/delete-artifact@v5
+        uses: geekyeggo/delete-artifact@v6
         with:
             name: lovely-cmp-docker
 
