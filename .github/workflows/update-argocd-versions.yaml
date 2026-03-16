@@ -1,0 +1,188 @@
+name: Update Argo CD test versions
+
+on:
+  schedule:
+    - cron: '0 8 * * 1' # Weekly on Monday at 8am UTC
+  workflow_dispatch:
+
+jobs:
+  update-argocd-versions:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Determine latest Argo CD versions
+        id: versions
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Fetch all stable release tags from Argo CD
+          versions=$(gh api repos/argoproj/argo-cd/releases --paginate --jq \
+            '.[] | select(.prerelease == false and .draft == false) | .tag_name' | \
+            grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | \
+            sort -V)
+
+          # Build map of minor version -> latest patch
+          declare -A minor_latest
+          while IFS= read -r v; do
+            minor="${v%.*}"  # v3.0.12 -> v3.0
+            minor_latest["$minor"]="$v"
+          done <<< "$versions"
+
+          # Get the two latest minor versions
+          mapfile -t sorted_minors < <(printf '%s\n' "${!minor_latest[@]}" | sort -V)
+          num_minors=${#sorted_minors[@]}
+
+          latest_minor="${sorted_minors[$((num_minors-1))]}"
+          previous_minor="${sorted_minors[$((num_minors-2))]}"
+
+          # Strip the 'v' prefix for directory names (v3.0 -> 3.0)
+          latest_dir="${latest_minor#v}"
+          previous_dir="${previous_minor#v}"
+
+          echo "latest_dir=$latest_dir" >> "$GITHUB_OUTPUT"
+          echo "previous_dir=$previous_dir" >> "$GITHUB_OUTPUT"
+          echo "latest_version=${minor_latest[$latest_minor]}" >> "$GITHUB_OUTPUT"
+          echo "previous_version=${minor_latest[$previous_minor]}" >> "$GITHUB_OUTPUT"
+
+          echo "Latest minor: $latest_dir (${minor_latest[$latest_minor]})"
+          echo "Previous minor: $previous_dir (${minor_latest[$previous_minor]})"
+
+      - name: Check if update is needed
+        id: check
+        env:
+          LATEST_DIR: ${{ steps.versions.outputs.latest_dir }}
+          PREVIOUS_DIR: ${{ steps.versions.outputs.previous_dir }}
+        run: |
+          BOOTSTRAP=".github/workflows/assets/bootstrap"
+          current_dirs=$(ls -d "$BOOTSTRAP"/argocd-cmp-* 2>/dev/null | sed 's|.*/argocd-cmp-||' | sort -V | tr '\n' ' ' | xargs)
+          desired_dirs=$(printf '%s\n' "$PREVIOUS_DIR" "$LATEST_DIR" | sort -V | tr '\n' ' ' | xargs)
+
+          echo "Current: $current_dirs"
+          echo "Desired: $desired_dirs"
+
+          if [ "$current_dirs" = "$desired_dirs" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No minor version change needed"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Minor version update needed"
+          fi
+
+      - name: Update bootstrap directories and CI matrix
+        if: steps.check.outputs.changed == 'true'
+        env:
+          LATEST_DIR: ${{ steps.versions.outputs.latest_dir }}
+          PREVIOUS_DIR: ${{ steps.versions.outputs.previous_dir }}
+          LATEST_VERSION: ${{ steps.versions.outputs.latest_version }}
+          PREVIOUS_VERSION: ${{ steps.versions.outputs.previous_version }}
+        run: |
+          BOOTSTRAP=".github/workflows/assets/bootstrap"
+
+          # Save template files from an existing directory before removing anything
+          template_source=$(ls -d "$BOOTSTRAP"/argocd-cmp-* | head -1)
+          tmp_template=$(mktemp -d)
+          cp "$template_source"/argo-cm.yml "$tmp_template/"
+          cp "$template_source"/sidecar-plugin.yml "$tmp_template/"
+          cp "$template_source"/namespace.yml "$tmp_template/"
+
+          # Remove all existing bootstrap directories
+          rm -rf "$BOOTSTRAP"/argocd-cmp-*
+
+          # Create directories for both versions
+          for pair in "$PREVIOUS_DIR:$PREVIOUS_VERSION" "$LATEST_DIR:$LATEST_VERSION"; do
+            minor="${pair%%:*}"
+            version="${pair##*:}"
+            dir="$BOOTSTRAP/argocd-cmp-$minor"
+
+            mkdir -p "$dir"
+            cp "$tmp_template"/argo-cm.yml "$dir/"
+            cp "$tmp_template"/sidecar-plugin.yml "$dir/"
+            cp "$tmp_template"/namespace.yml "$dir/"
+
+            cat > "$dir/kustomization.yaml" <<EOF
+          apiVersion: kustomize.config.k8s.io/v1beta1
+          kind: Kustomization
+          namespace: argocd
+
+          resources:
+          - github.com/argoproj/argo-cd/manifests/cluster-install?ref=${version}
+          - namespace.yml
+
+          patches:
+          - path: argo-cm.yml
+            target:
+              kind: ConfigMap
+              name: argocd-cm
+          - path: sidecar-plugin.yml
+            target:
+              kind: Deployment
+              name: argocd-repo-server
+          EOF
+          done
+
+          rm -rf "$tmp_template"
+
+          # Update pull.yaml CI matrix
+          python3 << 'PYEOF'
+          import os, re
+
+          latest = os.environ['LATEST_DIR']
+          previous = os.environ['PREVIOUS_DIR']
+
+          with open('.github/workflows/pull.yaml', 'r') as f:
+              content = f.read()
+
+          pattern = r'(argocd_version:\n)((?:\s+-\s+"[^"]+"\n)+)'
+          versions = sorted([latest, previous], key=lambda v: list(map(int, v.split('.'))))
+          replacement = r'\1' + ''.join(f'          - "{v}"\n' for v in reversed(versions))
+          content = re.sub(pattern, replacement, content)
+
+          with open('.github/workflows/pull.yaml', 'w') as f:
+              f.write(content)
+          PYEOF
+
+          echo "Updated bootstrap directories and CI matrix"
+
+      - name: Create pull request
+        if: steps.check.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LATEST_DIR: ${{ steps.versions.outputs.latest_dir }}
+          PREVIOUS_DIR: ${{ steps.versions.outputs.previous_dir }}
+          LATEST_VERSION: ${{ steps.versions.outputs.latest_version }}
+          PREVIOUS_VERSION: ${{ steps.versions.outputs.previous_version }}
+        run: |
+          branch="automation/update-argocd-test-versions"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add -A
+          git commit -m "chore: update Argo CD test versions to ${LATEST_DIR} and ${PREVIOUS_DIR}"
+          git push -u origin "$branch" --force-with-lease
+
+          pr_title="Update Argo CD test versions to ${LATEST_DIR} and ${PREVIOUS_DIR}"
+          pr_body="$(cat <<EOF
+          Automated update of Argo CD test versions.
+
+          - Latest minor: **${LATEST_DIR}** (${LATEST_VERSION})
+          - Previous minor: **${PREVIOUS_DIR}** (${PREVIOUS_VERSION})
+
+          This PR updates:
+          - Bootstrap directories in \`.github/workflows/assets/bootstrap/\`
+          - CI test matrix in \`pull.yaml\`
+
+          Renovate will keep patch versions up to date within each minor version line.
+          EOF
+          )"
+
+          existing_pr=$(gh pr list --head "$branch" --json number --jq '.[0].number')
+          if [ -n "$existing_pr" ]; then
+            gh pr edit "$existing_pr" --title "$pr_title" --body "$pr_body"
+            echo "Updated existing PR #$existing_pr"
+          else
+            gh pr create --title "$pr_title" --body "$pr_body"
+          fi

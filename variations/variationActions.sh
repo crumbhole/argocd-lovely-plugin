@@ -2,6 +2,9 @@
 
 set -e
 
+# renovate: datasource=github-tags depName=docker/build-push-action
+DOCKER_BUILD_PUSH_VERSION=v6
+
 {
 	echo "name: Variations"
 	echo "description: Build variations of lovely"
@@ -31,7 +34,7 @@ set -e
 		dockerfile="${linesplit[2]}"
 
 		echo "    - name: Build and Push ${target}"
-        echo "      uses: docker/build-push-action@v6"
+        echo "      uses: docker/build-push-action@${DOCKER_BUILD_PUSH_VERSION}"
         echo "      with:"
         echo "        context: ."
         echo "        file: variations/${dockerfile}"
