@@ -161,7 +161,7 @@ jobs:
           git checkout -b "$branch"
           git add -A
           git commit -m "chore: update Argo CD test versions to ${LATEST_DIR} and ${PREVIOUS_DIR}"
-          git push -u origin "$branch" --force-with-lease
+          git push -u origin "$branch" --force
 
           pr_title="Update Argo CD test versions to ${LATEST_DIR} and ${PREVIOUS_DIR}"
           pr_body="$(cat <<EOF
