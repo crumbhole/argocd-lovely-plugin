@@ -67,6 +67,12 @@
       "extractVersion": "^kustomize\\/v(?<version>\\d+\\.\\d+\\.\\d+)$"
     },
     {
+      "matchDepNames": [
+        "docker/build-push-action"
+      ],
+      "groupName": "docker-build-push-action"
+    },
+    {
       "matchUpdateTypes": [
         "minor",
         "patch"
