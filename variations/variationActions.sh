@@ -3,7 +3,7 @@
 set -e
 
 # renovate: datasource=github-tags depName=docker/build-push-action versioning=docker
-DOCKER_BUILD_PUSH_VERSION=v6
+DOCKER_BUILD_PUSH_VERSION=v7
 
 {
 	echo "name: Variations"
