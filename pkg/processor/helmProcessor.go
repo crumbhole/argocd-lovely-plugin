@@ -66,13 +66,14 @@ func downloadableRepo(repourl string) bool {
 }
 
 func (h HelmProcessor) repoEnsure(ctx context.Context, path string, name string, repourl string) error {
-	params := []string{`repo`, `add`, `--force-update`}
 	extraParams, err := features.GetHelmRepoAddParams()
 	if err != nil {
 		return err
 	}
+	params := make([]string, 0, 3+len(extraParams)+2)
+	params = append(params, `repo`, `add`, `--force-update`)
 	params = append(params, extraParams...)
-	params = append(params, []string{name, repourl}...)
+	params = append(params, name, repourl)
 	_, err = h.helmDo(ctx, path, params...)
 	return err
 }
