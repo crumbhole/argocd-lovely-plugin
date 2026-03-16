@@ -2,7 +2,7 @@ name: Update Argo CD test versions
 
 on:
   schedule:
-    - cron: '0 8 * * 1' # Weekly on Monday at 8am UTC
+    - cron: '0 8 * * *' # Daily at 8am UTC
   workflow_dispatch:
 
 jobs:
