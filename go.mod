@@ -2,8 +2,6 @@ module github.com/crumbhole/argocd-lovely-plugin
 
 go 1.26.1
 
-toolchain go1.26.1
-
 require (
 	github.com/evanphx/json-patch v5.9.11+incompatible
 	github.com/go-andiamo/splitter v1.2.5

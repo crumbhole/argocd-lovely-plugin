@@ -10,8 +10,7 @@
     "config:recommended"
   ],
   "postUpdateOptions": [
-    "gomodTidy",
-    "gomodGoVersionUpdate"
+    "gomodTidy"
   ],
   "ignorePaths": [
     "test_errors/**",
