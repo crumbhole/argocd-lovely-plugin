@@ -41,7 +41,7 @@
   "packageRules": [
     {
       "matchFileNames": [
-        ".github/test-assets/bootstrap/argocd-cmp-*/kustomization.yaml"
+        ".github/workflows/assets/bootstrap/argocd-cmp-*/kustomization.yaml"
       ],
       "matchDepNames": [
         "argoproj/argo-cd"

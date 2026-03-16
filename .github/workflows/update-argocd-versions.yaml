@@ -8,16 +8,15 @@ on:
 jobs:
   update-argocd-versions:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
     steps:
       - uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.WORKFLOW_PAT }}
 
       - name: Determine latest Argo CD versions
         id: versions
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
         run: |
           # Fetch all stable release tags from Argo CD
           versions=$(gh api repos/argoproj/argo-cd/releases --paginate --jq \
@@ -57,7 +56,7 @@ jobs:
           LATEST_DIR: ${{ steps.versions.outputs.latest_dir }}
           PREVIOUS_DIR: ${{ steps.versions.outputs.previous_dir }}
         run: |
-          BOOTSTRAP=".github/test-assets/bootstrap"
+          BOOTSTRAP=".github/workflows/assets/bootstrap"
           current_dirs=$(ls -d "$BOOTSTRAP"/argocd-cmp-* 2>/dev/null | sed 's|.*/argocd-cmp-||' | sort -V | tr '\n' ' ' | xargs)
           desired_dirs=$(printf '%s\n' "$PREVIOUS_DIR" "$LATEST_DIR" | sort -V | tr '\n' ' ' | xargs)
 
@@ -80,7 +79,7 @@ jobs:
           LATEST_VERSION: ${{ steps.versions.outputs.latest_version }}
           PREVIOUS_VERSION: ${{ steps.versions.outputs.previous_version }}
         run: |
-          BOOTSTRAP=".github/test-assets/bootstrap"
+          BOOTSTRAP=".github/workflows/assets/bootstrap"
 
           # Save template files from an existing directory before removing anything
           template_source=$(ls -d "$BOOTSTRAP"/argocd-cmp-* | head -1)
@@ -150,7 +149,7 @@ jobs:
       - name: Create pull request
         if: steps.check.outputs.changed == 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.WORKFLOW_PAT }}
           LATEST_DIR: ${{ steps.versions.outputs.latest_dir }}
           PREVIOUS_DIR: ${{ steps.versions.outputs.previous_dir }}
           LATEST_VERSION: ${{ steps.versions.outputs.latest_version }}
@@ -172,7 +171,7 @@ jobs:
           - Previous minor: **${PREVIOUS_DIR}** (${PREVIOUS_VERSION})
 
           This PR updates:
-          - Bootstrap directories in \`.github/test-assets/bootstrap/\`
+          - Bootstrap directories in \`.github/workflows/assets/bootstrap/\`
           - CI test matrix in \`pull.yaml\`
 
           Renovate will keep patch versions up to date within each minor version line.

@@ -28,7 +28,7 @@ argocd-lovely-plugin does not support jsonnet as we do not use jsonnet, and have
 All the yaml in the directory and all subdirectories will be used as part of the application only if it is not a kustomize or helm chart. `.hidden` yaml files are not included.
 
 ## Supported Argo CD Versions
-We aim to match the [Argo CD supported versions](https://argo-cd.readthedocs.io/en/stable/operator-manual/installation/#supported-versions) by testing against the Argo CD N and N -1 versions of Argo CD. You can see the current versions of Argo CD that we test against by looking in the [CI bootstrap directory](.github/test-assets/bootstrap) in this repo.
+We aim to match the [Argo CD supported versions](https://argo-cd.readthedocs.io/en/stable/operator-manual/installation/#supported-versions) by testing against the Argo CD N and N -1 versions of Argo CD. You can see the current versions of Argo CD that we test against by looking in the [CI bootstrap directory](.github/workflows/assets/bootstrap) in this repo.
 
 # Installing
 We offer many pre-built container options. We only support the use of these containers, the binaries provided are for convenience:
@@ -37,7 +37,7 @@ We offer many pre-built container options. We only support the use of these cont
 - [Variations](doc/variations.md) lists many other versions of the plugin, and explains versioning.
 
 ## Installing as an Argo CD Sidecar Plugin
-We recommend you install as an Argo CD CMP Sidecar Plugin. [Argo CD's documentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/config-management-plugins/#sidecar-plugin) has steps on how to achieve this, or you can see [our Kustomization example](examples/installation). You can also observe how we install Lovely for our CI tests in the [CI bootstrap directory](.github/test-assets/bootstrap) in this repo.
+We recommend you install as an Argo CD CMP Sidecar Plugin. [Argo CD's documentation](https://argo-cd.readthedocs.io/en/stable/operator-manual/config-management-plugins/#sidecar-plugin) has steps on how to achieve this, or you can see [our Kustomization example](examples/installation). You can also observe how we install Lovely for our CI tests in the [CI bootstrap directory](.github/workflows/assets/bootstrap) in this repo.
 
 argocd-lovely-plugin has no discovery rules, so will not run by default. You must reference the plugin by name in your application spec. For example:
 
