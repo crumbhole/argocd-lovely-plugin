@@ -2,7 +2,7 @@
 
 set -e
 
-# renovate: datasource=github-tags depName=docker/build-push-action
+# renovate: datasource=github-tags depName=docker/build-push-action versioning=docker
 DOCKER_BUILD_PUSH_VERSION=v6
 
 {
