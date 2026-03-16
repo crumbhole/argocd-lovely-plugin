@@ -93,7 +93,7 @@ jobs:
         run: |
           docker load < /tmp/lovely-cmp/lovely-cmp.tar
           docker push k3d-registry.localhost:5000/lovely
-          kubectl apply -k .github/workflows/assets/bootstrap/argocd-cmp-${{ matrix.argocd_version }}
+          kubectl apply --server-side -k .github/workflows/assets/bootstrap/argocd-cmp-${{ matrix.argocd_version }}
           kubectl -n argocd rollout status statefulset/argocd-application-controller
           kubectl -n argocd rollout status deployment/argocd-repo-server
           kubectl -n argocd apply -f .github/workflows/assets/applications/helm_only_in_kustomize.yaml
