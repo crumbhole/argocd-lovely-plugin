@@ -110,11 +110,12 @@ func (k KustomizeProcessor) addIntermediateToKustomization(kustYamlPath string) 
 
 // runKustomize builds the kustomize output for the given path
 func (k KustomizeProcessor) runKustomize(ctx context.Context, path string) (string, error) {
-	params := []string{"build", "--enable-helm"}
 	extraParams, err := features.GetKustomizeParams()
 	if err != nil {
 		return "", err
 	}
+	params := make([]string, 0, 2+len(extraParams)+1)
+	params = append(params, "build", "--enable-helm")
 	params = append(params, extraParams...)
 	params = append(params, path)
 	wd, err := os.Getwd()

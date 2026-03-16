@@ -16,7 +16,7 @@ const (
 )
 
 func execute(ctx context.Context, path string, command string, params ...string) (string, error) {
-	cmd := exec.CommandContext(ctx, command, params...)
+	cmd := exec.CommandContext(ctx, command, params...) // #nosec G204 - command execution is the core purpose of this plugin
 	cmd.Dir = path
 
 	if features.GetEnvPropagation() {
