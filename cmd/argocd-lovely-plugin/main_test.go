@@ -85,7 +85,7 @@ func matchExpectedWithStore(path string, givenValue string) error {
 	if err != nil {
 		got := path + "/got.txt"
 		err := os.Remove(got)
-		if err != nil {
+		if err != nil && !errors.Is(err, os.ErrNotExist) {
 			return err
 		}
 		// #nosec - G306 - this is just for test logging/helping
