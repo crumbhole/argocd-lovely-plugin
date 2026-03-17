@@ -139,8 +139,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-      id-token: write
-      attestations: write
     services:
       registry:
         image: registry:3
@@ -161,7 +159,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.CR_PAT }}
       - name: Build and push to local registry
         uses: docker/build-push-action@v7
         with:
