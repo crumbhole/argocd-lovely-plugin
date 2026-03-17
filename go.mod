@@ -76,7 +76,6 @@ replace (
 	k8s.io/apimachinery => k8s.io/apimachinery v0.35.2
 	k8s.io/apiserver => k8s.io/apiserver v0.35.2
 	k8s.io/cli-runtime => k8s.io/cli-runtime v0.35.2
-	k8s.io/client-go => k8s.io/client-go v11.0.0+incompatible
 	k8s.io/cloud-provider => k8s.io/cloud-provider v0.35.2
 	k8s.io/cluster-bootstrap => k8s.io/cluster-bootstrap v0.35.2
 	k8s.io/code-generator => k8s.io/code-generator v0.35.2
