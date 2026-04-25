@@ -2,6 +2,9 @@
 
 set -e
 
+# renovate: datasource=github-tags depName=docker/build-push-action versioning=docker
+DOCKER_BUILD_PUSH_VERSION=v7
+
 {
 	echo "name: Variations"
 	echo "description: Build variations of lovely"
@@ -9,6 +12,14 @@ set -e
 	echo "  version:"
     echo "    description: 'Version to build'"
     echo "    required: true"
+	echo "  push:"
+    echo "    description: 'Push images to registry'"
+    echo "    required: false"
+    echo "    default: 'true'"
+	echo "  registry:"
+    echo "    description: 'Registry prefix for images (e.g., ghcr.io/crumbhole or localhost:5000)'"
+    echo "    required: false"
+    echo "    default: 'ghcr.io/crumbhole'"
 	echo "runs:"
 	echo "  using: \"composite\""
 	echo "  steps:"
@@ -23,16 +34,16 @@ set -e
 		dockerfile="${linesplit[2]}"
 
 		echo "    - name: Build and Push ${target}"
-        echo "      uses: docker/build-push-action@v6"
+        echo "      uses: docker/build-push-action@${DOCKER_BUILD_PUSH_VERSION}"
         echo "      with:"
         echo "        context: ."
         echo "        file: variations/${dockerfile}"
-        echo "        push: true"
+        echo "        push: \${{ inputs.push }}"
         echo "        platforms: \${{ env.PLATFORMS }}"
-        echo "        tags: ghcr.io/crumbhole/${target}:\${{ inputs.version }}"
+        echo "        tags: \${{ inputs.registry }}/${target}:\${{ inputs.version }}"
         echo "        build-args: |"
 		echo "          VERSION=\${{ inputs.version }}"
-		echo "          PARENT=ghcr.io/crumbhole/${source}"
+		echo "          PARENT=\${{ inputs.registry }}/${source}"
 		echo "          NAME=${target}"
 #		echo "  variation: ${target} from ${source} using ${dockerfile}"
 	done < variations/variations.txt

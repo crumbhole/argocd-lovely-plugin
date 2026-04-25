@@ -1,16 +1,16 @@
-FROM golang:1.25.4 AS builder
+FROM golang:1.26.2 AS builder
  # https://github.com/mikefarah/yq/releases
  # renovate: datasource=github-releases depName=mikefarah/yq
-ARG YQ_VERSION=v4.48.1
+ARG YQ_VERSION=v4.53.2
  # https://github.com/kubernetes-sigs/kustomize/releases
  # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize
-ARG KUSTOMIZE_VERSION=5.8.0
+ARG KUSTOMIZE_VERSION=5.8.1
  # https://github.com/helm/helm/releases
  # donotrenovatefornow: datasource=github-releases depName=helm/helm
-ARG HELM_VERSION=v3.18.6
+ARG HELM_VERSION=v3.20.2
  # https://github.com/helmfile/helmfile/releases
  # renovate: datasource=github-releases depName=helmfile/helmfile
-ARG HELMFILE_VERSION=v1.1.9
+ARG HELMFILE_VERSION=v1.4.4
 
 ARG LOVELY_VERSION
 
@@ -23,7 +23,7 @@ RUN /build/scripts/deps.sh
 
 RUN make plugin_versioned.yaml all -j4
 
-FROM alpine:3.22.2
+FROM alpine:3.23.4
 ENV LOVELY_HELM_PATH=/usr/local/bin/helm
 ENV LOVELY_HELMFILE_PATH=/usr/local/bin/helmfile
 ENV LOVELY_KUSTOMIZE_PATH=/usr/local/bin/kustomize

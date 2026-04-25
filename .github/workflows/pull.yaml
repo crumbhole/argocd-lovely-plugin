@@ -13,7 +13,7 @@ jobs:
   unittest:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - name: Set up Go
       uses: actions/setup-go@v6
       with:
@@ -26,10 +26,10 @@ jobs:
         KUSTOMIZE_VERSION=kustomize/v5.0.3
         # https://github.com/helm/helm/releases
         # renovate: datasource=github-releases depName=helm/helm
-        HELM_VERSION=v3.18.6
+        HELM_VERSION=v3.20.2
         # https://github.com/helmfile/helmfile/releases
         # renovate: datasource=github-releases depName=helmfile/helmfile
-        HELMFILE_VERSION=v1.1.9
+        HELMFILE_VERSION=v1.4.4
         # Install Helm
         curl -SL https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz | tar -xz linux-amd64/helm && mv linux-amd64/helm /usr/local/bin/
         # Install Kustomize
@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: unittest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: "build-lovely-containers"
         run: |
           docker build -f Dockerfile -t lovely-ver .
@@ -61,7 +61,7 @@ jobs:
 
           docker tag k3d-registry.localhost:5000/lovely ghcr.io/crumbhole/argocd-lovely-plugin-cmp:ci
       - name: Temporarily save CMP Docker image
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: lovely-cmp-docker
           path: /tmp/lovely-cmp
@@ -73,13 +73,13 @@ jobs:
     strategy:
       matrix:
         argocd_version:
-          - "3.0"
-          - "2.14"
+          - "3.3"
+          - "3.2"
       fail-fast: true
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Retrieve saved Docker image
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           name: lovely-cmp-docker
           path: /tmp/lovely-cmp
@@ -93,7 +93,7 @@ jobs:
         run: |
           docker load < /tmp/lovely-cmp/lovely-cmp.tar
           docker push k3d-registry.localhost:5000/lovely
-          kubectl apply -k .github/workflows/assets/bootstrap/argocd-cmp-${{ matrix.argocd_version }}
+          kubectl apply --server-side -k .github/workflows/assets/bootstrap/argocd-cmp-${{ matrix.argocd_version }}
           kubectl -n argocd rollout status statefulset/argocd-application-controller
           kubectl -n argocd rollout status deployment/argocd-repo-server
           kubectl -n argocd apply -f .github/workflows/assets/applications/helm_only_in_kustomize.yaml
@@ -128,7 +128,7 @@ jobs:
     needs: [test-deploy-argocd-cmp-sidecar]
     steps:
       - name: delete-artifact
-        uses: geekyeggo/delete-artifact@v5
+        uses: geekyeggo/delete-artifact@v6
         with:
             name: lovely-cmp-docker
 
@@ -136,21 +136,42 @@ jobs:
     name: Build sidecar docker image
     needs: [test-deploy-argocd-cmp-sidecar]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    services:
+      registry:
+        image: registry:3
+        ports:
+          - 5000:5000
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
+        with:
+          driver-opts: network=host
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        if: github.event_name == 'push'
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
+          username: ${{ github.actor }}
           password: ${{ secrets.CR_PAT }}
-      - name: Build sidecar image
-        uses: docker/build-push-action@v6
+      - name: Build and push to local registry
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          platforms: ${{ env.PLATFORMS }}
+          tags: localhost:5000/argocd-lovely-plugin-cmp:${{ github.sha }}
+          build-args: VERSION=${{ github.sha }}
+      - name: Push to GHCR
+        if: github.event_name == 'push'
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: ./Dockerfile
@@ -158,24 +179,16 @@ jobs:
           platforms: ${{ env.PLATFORMS }}
           tags: ghcr.io/crumbhole/argocd-lovely-plugin-cmp:${{ github.sha }}
           build-args: VERSION=${{ github.sha }}
-
-  build_variations:
-    name: Build variation docker images
-    needs: [build_sidecar]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v5
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.CR_PAT }}
-      - uses: ./.github/actions/variations
+      - name: Build variations to local registry
+        uses: ./.github/actions/variations
         with:
           version: ${{ github.sha }}
+          push: true
+          registry: localhost:5000
+      - name: Push variations to GHCR
+        if: github.event_name == 'push'
+        uses: ./.github/actions/variations
+        with:
+          version: ${{ github.sha }}
+          push: true
+          registry: ghcr.io/crumbhole

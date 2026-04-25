@@ -65,7 +65,7 @@ func MergeYaml(path string, mergetext string, patchtext string) error {
 		mergedtext = string(patchedtext)
 	}
 
-	// #nosec - G306 - this needs to be readable by argocd
+	// #nosec G306 G703 - this needs to be readable by argocd, path is trusted
 	err = os.WriteFile(path, []byte(mergedtext), 0644)
 	return err
 }
