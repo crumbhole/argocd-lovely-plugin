@@ -18,8 +18,8 @@ func TestFilterEnvironment(t *testing.T) {
 		},
 		{
 			name:     "no argocd variables",
-			env:      []string{"PATH=/usr/bin", "HOME=/home/user"},
-			expected: []string{"PATH=/usr/bin", "HOME=/home/user"},
+			env:      []string{"PATH=/usr/bin", "HOME=/home/user"}, //nolint:goconst
+			expected: []string{"PATH=/usr/bin", "HOME=/home/user"}, //nolint:goconst
 		},
 		{
 			name:     "argocd variables only",
@@ -28,8 +28,8 @@ func TestFilterEnvironment(t *testing.T) {
 		},
 		{
 			name:     "mixed environment",
-			env:      []string{"PATH=/usr/bin", "ARGOCD_ENV_FOO=bar", "HOME=/home/user", "ARGOCD_ENV_BAZ=qux"},
-			expected: []string{"PATH=/usr/bin", "FOO=bar", "HOME=/home/user", "BAZ=qux"},
+			env:      []string{"PATH=/usr/bin", "ARGOCD_ENV_FOO=bar", "HOME=/home/user", "ARGOCD_ENV_BAZ=qux"}, //nolint:goconst
+			expected: []string{"PATH=/usr/bin", "FOO=bar", "HOME=/home/user", "BAZ=qux"},                        //nolint:goconst
 		},
 	}
 
