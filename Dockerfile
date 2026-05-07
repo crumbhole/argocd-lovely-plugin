@@ -1,4 +1,4 @@
-FROM golang:1.26.2 AS builder
+FROM golang:1.26.3 AS builder
  # https://github.com/mikefarah/yq/releases
  # renovate: datasource=github-releases depName=mikefarah/yq
 ARG YQ_VERSION=v4.53.2
