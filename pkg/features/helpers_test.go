@@ -19,9 +19,9 @@ func TestGetYamlPlugins(t *testing.T) {
 		},
 		{
 			name:     "valid yaml with single path",
-			envValue: "path/to/app:\n  - plugin1\n  - plugin2",
+			envValue: "path/to/app:\n  - plugin1\n  - plugin2", //nolint:goconst
 			want: pluginYaml{
-				"path/to/app": {"plugin1", "plugin2"},
+				"path/to/app": {"plugin1", "plugin2"}, //nolint:goconst
 			},
 			wantErr: false,
 		},
@@ -29,7 +29,7 @@ func TestGetYamlPlugins(t *testing.T) {
 			name:     "valid yaml with multiple paths",
 			envValue: "path1:\n  - plugin1\npath2:\n  - plugin2\n  - plugin3",
 			want: pluginYaml{
-				"path1": {"plugin1"},
+				"path1": {"plugin1"}, //nolint:goconst
 				"path2": {"plugin2", "plugin3"},
 			},
 			wantErr: false,
@@ -94,30 +94,30 @@ func TestPluginsForPath(t *testing.T) {
 		{
 			name:     "path found in yaml",
 			path:     "path/to/app",
-			yamlEnv:  "path/to/app:\n  - plugin1\n  - plugin2",
+			yamlEnv:  "path/to/app:\n  - plugin1\n  - plugin2", //nolint:goconst
 			plainEnv: "plugin3,plugin4",
-			want:     []string{"plugin1", "plugin2"},
+			want:     []string{"plugin1", "plugin2"}, //nolint:goconst
 			wantErr:  false,
 		},
 		{
 			name:     "path not in yaml, using plain env",
 			path:     "other/path",
-			yamlEnv:  "path/to/app:\n  - plugin1\n  - plugin2",
+			yamlEnv:  "path/to/app:\n  - plugin1\n  - plugin2", //nolint:goconst
 			plainEnv: "plugin3,plugin4",
 			want:     []string{"plugin3", "plugin4"},
 			wantErr:  false,
 		},
 		{
 			name:     "empty yaml, using plain env",
-			path:     "any/path",
+			path:     "any/path", //nolint:goconst
 			yamlEnv:  "",
 			plainEnv: "plugin1,plugin2",
-			want:     []string{"plugin1", "plugin2"},
+			want:     []string{"plugin1", "plugin2"}, //nolint:goconst
 			wantErr:  false,
 		},
 		{
 			name:     "invalid yaml",
-			path:     "any/path",
+			path:     "any/path", //nolint:goconst
 			yamlEnv:  "this is not yaml",
 			plainEnv: "plugin1,plugin2",
 			want:     nil,
@@ -125,7 +125,7 @@ func TestPluginsForPath(t *testing.T) {
 		},
 		{
 			name:     "both envs empty",
-			path:     "any/path",
+			path:     "any/path", //nolint:goconst
 			yamlEnv:  "",
 			plainEnv: "",
 			want:     []string{},
