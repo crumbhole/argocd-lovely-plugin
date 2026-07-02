@@ -91,7 +91,7 @@ jobs:
           # checksums.txt asset; k3d's current install.sh requires one,
           # so installing the default version 404s.
           # renovate: datasource=github-releases depName=k3d-io/k3d
-          k3d-version: v5.8.3
+          k3d-version: v5.9.0
           args: >-
             --config=.github/workflows/k3d.conf
       - name: "Deploy Argocd/Lovely"
