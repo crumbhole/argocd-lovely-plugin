@@ -87,6 +87,11 @@ jobs:
         name: "Create single k3d Cluster and run Argocd/Lovely"
         with:
           cluster-name: lovely
+          # The action defaults to k3d v5.4.6, whose release has no
+          # checksums.txt asset; k3d's current install.sh requires one,
+          # so installing the default version 404s.
+          # renovate: datasource=github-releases depName=k3d-io/k3d
+          k3d-version: v5.8.3
           args: >-
             --config=.github/workflows/k3d.conf
       - name: "Deploy Argocd/Lovely"
