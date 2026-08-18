@@ -34,6 +34,8 @@ github.com/gomarkdown/markdown v0.0.0-20260417124207-7d523f7318df h1:Mwihr/o+v4L
 github.com/gomarkdown/markdown v0.0.0-20260417124207-7d523f7318df/go.mod h1:JDGcbDT52eL4fju3sZ4TeHGsQwhG9nbDV21aMyhwPoA=
 github.com/gomarkdown/markdown v0.0.0-20260614204949-e08cff860f76 h1:Ltt9ldIaSYEsjA7sPY2c8r9dOmnKM1vlzhh3dxlhBHM=
 github.com/gomarkdown/markdown v0.0.0-20260614204949-e08cff860f76/go.mod h1:JDGcbDT52eL4fju3sZ4TeHGsQwhG9nbDV21aMyhwPoA=
+github.com/gomarkdown/markdown v0.0.0-20260818103853-6d1f24fc3a11 h1:ot6/Kp6yjtsQjxQVufBPmTNUKrnFZ88UD9gKV38dwFw=
+github.com/gomarkdown/markdown v0.0.0-20260818103853-6d1f24fc3a11/go.mod h1:JDGcbDT52eL4fju3sZ4TeHGsQwhG9nbDV21aMyhwPoA=
 github.com/google/gnostic-models v0.7.0 h1:qwTtogB15McXDaNqTZdzPJRHvaVJlAl+HVQnLmJEJxo=
 github.com/google/gnostic-models v0.7.0/go.mod h1:whL5G0m6dmc5cPxKc5bdKdEN3UjI7OUGxBlw57miDrQ=
 github.com/google/go-cmp v0.7.0 h1:wk8382ETsv4JYUZwIsn6YpYiWiBsYLSJiTsyBybVuN8=
