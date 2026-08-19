@@ -77,6 +77,14 @@
       "groupName": "docker-build-push-action"
     },
     {
+      "description": "Keep the bundled helm3 binary on the latest v3 release",
+      "matchDepNames": [
+        "helm/helm"
+      ],
+      "matchCurrentVersion": "/^v3\\./",
+      "allowedVersions": "<4.0.0"
+    },
+    {
       "matchUpdateTypes": [
         "minor",
         "patch"

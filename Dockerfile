@@ -6,8 +6,12 @@ ARG YQ_VERSION=v4.53.4
  # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize
 ARG KUSTOMIZE_VERSION=5.8.1
  # https://github.com/helm/helm/releases
- # donotrenovatefornow: datasource=github-releases depName=helm/helm
-ARG HELM_VERSION=v3.21.4
+ # renovate: datasource=github-releases depName=helm/helm
+ARG HELM_VERSION=v4.2.4
+ # Helm v3, shipped alongside v4 as /usr/local/bin/helm3
+ # https://github.com/helm/helm/releases
+ # renovate: datasource=github-releases depName=helm/helm
+ARG HELM3_VERSION=v3.21.4
  # https://github.com/helmfile/helmfile/releases
  # renovate: datasource=github-releases depName=helmfile/helmfile
 ARG HELMFILE_VERSION=v1.7.4
@@ -35,6 +39,7 @@ ENV HELM_CACHE_HOME=/tmp/.helm
 ENV HELM_DATA_HOME=/tmp/.helm
 COPY --from=builder /usr/local/bin/yq /usr/local/bin/yq
 COPY --from=builder /usr/local/bin/helm /usr/local/bin/helm
+COPY --from=builder /usr/local/bin/helm3 /usr/local/bin/helm3
 COPY --from=builder /usr/local/bin/helmfile /usr/local/bin/helmfile
 COPY --from=builder /usr/local/bin/kustomize /usr/local/bin/kustomize
 COPY --from=builder /build/build/argocd-lovely-plugin /usr/local/bin/argocd-lovely-plugin
