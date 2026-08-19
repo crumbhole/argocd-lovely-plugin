@@ -1,6 +1,6 @@
 # Lovely variations
 
-All lovely plugin containers have helm, kustomize, helmfile, bash, git, and yq built in to them.
+All lovely plugin containers have helm, kustomize, helmfile, bash, git, and yq built in to them. Helm v4 is the system helm; helm v3 is also included as `helm3` — see [Helm versions](helm3.md).
 
 | Container name | Versioned | Contains |
 |----------------|-----------|----------|
