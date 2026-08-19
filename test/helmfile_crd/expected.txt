@@ -7978,6 +7978,7 @@ metadata:
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/instance: test
     app.kubernetes.io/component: controller-manager
+
 ---
 # Source: opentelemetry-operator/templates/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -8200,6 +8201,9 @@ rules:
       - patch
       - update
       - watch
+
+
+
 ---
 # Source: opentelemetry-operator/templates/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -8218,6 +8222,7 @@ rules:
       - /metrics
     verbs:
       - get
+
 ---
 # Source: opentelemetry-operator/templates/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -8244,6 +8249,8 @@ rules:
       - subjectaccessreviews
     verbs:
       - create
+
+
 ---
 # Source: opentelemetry-operator/templates/clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -8265,6 +8272,9 @@ subjects:
   - kind: ServiceAccount
     name: opentelemetry-operator
     namespace: default
+
+
+
 ---
 # Source: opentelemetry-operator/templates/clusterrolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -8286,6 +8296,8 @@ subjects:
   - kind: ServiceAccount
     name: opentelemetry-operator
     namespace: default
+
+
 ---
 # Source: opentelemetry-operator/templates/role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -8328,6 +8340,7 @@ rules:
     verbs:
       - create
       - patch
+
 ---
 # Source: opentelemetry-operator/templates/rolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -8350,6 +8363,7 @@ subjects:
   - kind: ServiceAccount
     name: opentelemetry-operator
     namespace: default
+
 ---
 # Source: opentelemetry-operator/templates/service.yaml
 apiVersion: v1
@@ -8377,6 +8391,7 @@ spec:
   selector:
       app.kubernetes.io/name: opentelemetry-operator
       app.kubernetes.io/component: controller-manager
+
 ---
 # Source: opentelemetry-operator/templates/service.yaml
 apiVersion: v1
@@ -8399,6 +8414,7 @@ spec:
   selector:
       app.kubernetes.io/name: opentelemetry-operator
       app.kubernetes.io/component: controller-manager
+
 ---
 # Source: opentelemetry-operator/templates/deployment.yaml
 apiVersion: apps/v1
@@ -8503,47 +8519,7 @@ spec:
         runAsGroup: 65532
         runAsNonRoot: true
         runAsUser: 65532
----
-# Source: opentelemetry-operator/templates/certmanager.yaml
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  labels:
-    helm.sh/chart: opentelemetry-operator-0.41.0
-    app.kubernetes.io/name: opentelemetry-operator
-    app.kubernetes.io/version: "0.87.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/instance: test
-    app.kubernetes.io/component: webhook
-  name: test-opentelemetry-operator-serving-cert
-  namespace: default
-spec:
-  dnsNames:
-    - test-opentelemetry-operator-webhook.default.svc
-    - test-opentelemetry-operator-webhook.default.svc.cluster.local
-  issuerRef:
-    kind: Issuer
-    name: test-opentelemetry-operator-selfsigned-issuer
-  secretName: test-opentelemetry-operator-controller-manager-service-cert
-  subject:
-    organizationalUnits:
-      - test-opentelemetry-operator
----
-# Source: opentelemetry-operator/templates/certmanager.yaml
-apiVersion: cert-manager.io/v1
-kind: Issuer
-metadata:
-  labels:
-    helm.sh/chart: opentelemetry-operator-0.41.0
-    app.kubernetes.io/name: opentelemetry-operator
-    app.kubernetes.io/version: "0.87.0"
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/instance: test
-    app.kubernetes.io/component: webhook
-  name: test-opentelemetry-operator-selfsigned-issuer
-  namespace: default
-spec:
-  selfSigned: {}
+
 ---
 # Source: opentelemetry-operator/templates/admission-webhooks/operator-webhook-with-cert-manager.yaml
 apiVersion: admissionregistration.k8s.io/v1
@@ -8623,6 +8599,7 @@ webhooks:
           - pods
     sideEffects: None
     timeoutSeconds: 10
+
 ---
 # Source: opentelemetry-operator/templates/admission-webhooks/operator-webhook-with-cert-manager.yaml
 apiVersion: admissionregistration.k8s.io/v1
@@ -8721,6 +8698,49 @@ webhooks:
           - opentelemetrycollectors
     sideEffects: None
     timeoutSeconds: 10
+
+---
+# Source: opentelemetry-operator/templates/certmanager.yaml
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  labels:
+    helm.sh/chart: opentelemetry-operator-0.41.0
+    app.kubernetes.io/name: opentelemetry-operator
+    app.kubernetes.io/version: "0.87.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/component: webhook
+  name: test-opentelemetry-operator-serving-cert
+  namespace: default
+spec:
+  dnsNames:
+    - test-opentelemetry-operator-webhook.default.svc
+    - test-opentelemetry-operator-webhook.default.svc.cluster.local
+  issuerRef:
+    kind: Issuer
+    name: test-opentelemetry-operator-selfsigned-issuer
+  secretName: test-opentelemetry-operator-controller-manager-service-cert
+  subject:
+    organizationalUnits:
+      - test-opentelemetry-operator
+
+---
+# Source: opentelemetry-operator/templates/certmanager.yaml
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  labels:
+    helm.sh/chart: opentelemetry-operator-0.41.0
+    app.kubernetes.io/name: opentelemetry-operator
+    app.kubernetes.io/version: "0.87.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/component: webhook
+  name: test-opentelemetry-operator-selfsigned-issuer
+  namespace: default
+spec:
+  selfSigned: {}
 ---
 # Source: opentelemetry-operator/templates/tests/test-certmanager-connection.yaml
 apiVersion: v1
@@ -8758,6 +8778,7 @@ spec:
           else exit 1
           fi
   restartPolicy: Never
+
 ---
 # Source: opentelemetry-operator/templates/tests/test-service-connection.yaml
 apiVersion: v1
@@ -8795,6 +8816,7 @@ spec:
           else exit 1
           fi
   restartPolicy: Never
+
 ---
 # Source: opentelemetry-operator/templates/tests/test-service-connection.yaml
 apiVersion: v1
@@ -8832,4 +8854,6 @@ spec:
           else exit 1
           fi
   restartPolicy: Never
+
+
 
