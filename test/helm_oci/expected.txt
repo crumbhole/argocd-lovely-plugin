@@ -596,6 +596,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: karpenter
       app.kubernetes.io/instance: test
+
 ---
 # Source: karpenter/charts/karpenter/templates/serviceaccount.yaml
 apiVersion: v1
@@ -623,6 +624,7 @@ metadata:
     app.kubernetes.io/version: "0.22.1"
     app.kubernetes.io/managed-by: Helm
 data: {} # Injected by karpenter-webhook
+
 ---
 # Source: karpenter/charts/karpenter/templates/configmap-logging.yaml
 apiVersion: v1
@@ -663,6 +665,7 @@ data:
       }
     }
   loglevel.webhook: "error"
+
 ---
 # Source: karpenter/charts/karpenter/templates/configmap.yaml
 apiVersion: v1
@@ -688,6 +691,7 @@ data:
   "aws.vmMemoryOverheadPercent": "0.075"
   "batchIdleDuration": "1s"
   "batchMaxDuration": "10s"
+
 ---
 # Source: karpenter/charts/karpenter/templates/aggregate-clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -708,6 +712,7 @@ rules:
   - apiGroups: ["karpenter.k8s.aws"]
     resources: ["awsnodetemplates"]
     verbs: ["get", "list", "watch", "create", "delete", "patch"]
+
 ---
 # Source: karpenter/charts/karpenter/templates/clusterrole-core.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -761,6 +766,7 @@ rules:
     resources: ["mutatingwebhookconfigurations"]
     verbs: ["update"]
     resourceNames: ["defaulting.webhook.karpenter.sh"]
+
 ---
 # Source: karpenter/charts/karpenter/templates/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -786,6 +792,7 @@ rules:
     resources: ["mutatingwebhookconfigurations"]
     verbs: ["update"]
     resourceNames: ["defaulting.webhook.karpenter.k8s.aws"]
+
 ---
 # Source: karpenter/charts/karpenter/templates/clusterrole-core.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -806,6 +813,7 @@ subjects:
   - kind: ServiceAccount
     name: test-karpenter
     namespace: testnamespace
+
 ---
 # Source: karpenter/charts/karpenter/templates/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -826,6 +834,7 @@ subjects:
   - kind: ServiceAccount
     name: test-karpenter
     namespace: testnamespace
+
 ---
 # Source: karpenter/charts/karpenter/templates/role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -875,6 +884,7 @@ rules:
   - apiGroups: [""]
     resources: ["configmaps"]
     verbs: ["create"]
+
 ---
 # Source: karpenter/charts/karpenter/templates/role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -894,6 +904,7 @@ rules:
     resources: ["services"]
     resourceNames: ["kube-dns"]
     verbs: ["get"]
+
 ---
 # Source: karpenter/charts/karpenter/templates/rolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -915,6 +926,7 @@ subjects:
   - kind: ServiceAccount
     name: test-karpenter
     namespace: testnamespace
+
 ---
 # Source: karpenter/charts/karpenter/templates/rolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -963,6 +975,7 @@ spec:
   selector:
     app.kubernetes.io/name: karpenter
     app.kubernetes.io/instance: test
+
 ---
 # Source: karpenter/charts/karpenter/templates/deployment.yaml
 apiVersion: apps/v1
@@ -1067,6 +1080,7 @@ spec:
             matchLabels:
               app.kubernetes.io/name: karpenter
               app.kubernetes.io/instance: test
+
 ---
 # Source: karpenter/charts/karpenter/templates/webhooks-core.yaml
 apiVersion: admissionregistration.k8s.io/v1
@@ -1099,6 +1113,7 @@ webhooks:
         operations:
           - CREATE
           - UPDATE
+
 ---
 # Source: karpenter/charts/karpenter/templates/webhooks.yaml
 apiVersion: admissionregistration.k8s.io/v1
@@ -1142,6 +1157,7 @@ webhooks:
         operations:
           - CREATE
           - UPDATE
+
 ---
 # Source: karpenter/charts/karpenter/templates/webhooks-core.yaml
 apiVersion: admissionregistration.k8s.io/v1
@@ -1175,6 +1191,7 @@ webhooks:
           - CREATE
           - UPDATE
           - DELETE
+
 ---
 # Source: karpenter/charts/karpenter/templates/webhooks-core.yaml
 apiVersion: admissionregistration.k8s.io/v1
@@ -1199,6 +1216,7 @@ webhooks:
     objectSelector:
       matchLabels:
         app.kubernetes.io/part-of: karpenter
+
 ---
 # Source: karpenter/charts/karpenter/templates/webhooks.yaml
 apiVersion: admissionregistration.k8s.io/v1

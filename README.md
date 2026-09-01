@@ -65,6 +65,10 @@ argocd-lovely-plugin is designed for minimal configuration and to do the right t
 
 See [this](doc/parameter.md) for more details on how to configure it using parameters and a list of parameters.
 
+## Helm versions
+
+The containers use Helm v4 as the standard version of helm. Helm v3 is also included for charts that don't work with v4 yet; see [the Helm versions documentation](doc/helm3.md) for how to select it globally or per application.
+
 ## Kustomize
 
 You can use the [helm chart inflation generator](https://kubectl.docs.kubernetes.io/references/kustomize/builtins/#_helmchartinflationgenerator_) of kustomize this way. See [the test](test/helm_only_in_kustomize) for an example of this. If you do this none of the helm environment variables will have any effect as you can set those in your kustomization.yaml instead. There is no way to merge/patch your values.yaml with lovely only (you should run a preprocessor for that). Despite this, that is the recommended way to use helm and kustomize together. `LOVELY_HELM_NAME` will also have no effect here.
