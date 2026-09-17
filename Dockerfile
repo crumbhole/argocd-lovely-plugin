@@ -1,7 +1,7 @@
-FROM golang:1.26.6 AS builder
+FROM golang:1.27.1 AS builder
  # https://github.com/mikefarah/yq/releases
  # renovate: datasource=github-releases depName=mikefarah/yq
-ARG YQ_VERSION=v4.53.4
+ARG YQ_VERSION=v4.53.6
  # https://github.com/kubernetes-sigs/kustomize/releases
  # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize
 ARG KUSTOMIZE_VERSION=5.8.1
@@ -11,10 +11,10 @@ ARG HELM_VERSION=v4.2.4
  # Helm v3, shipped alongside v4 as /usr/local/bin/helm3
  # https://github.com/helm/helm/releases
  # renovate: datasource=github-releases depName=helm/helm
-ARG HELM3_VERSION=v3.21.4
+ARG HELM3_VERSION=v3.22.0
  # https://github.com/helmfile/helmfile/releases
  # renovate: datasource=github-releases depName=helmfile/helmfile
-ARG HELMFILE_VERSION=v1.7.4
+ARG HELMFILE_VERSION=v1.8.0
 
 ARG LOVELY_VERSION
 
