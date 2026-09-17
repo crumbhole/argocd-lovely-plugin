@@ -7,7 +7,7 @@ ARG YQ_VERSION=v4.53.6
 ARG KUSTOMIZE_VERSION=5.8.1
  # https://github.com/helm/helm/releases
  # renovate: datasource=github-releases depName=helm/helm
-ARG HELM_VERSION=v4.2.4
+ARG HELM_VERSION=v4.3.0
  # Helm v3, shipped alongside v4 as /usr/local/bin/helm3
  # https://github.com/helm/helm/releases
  # renovate: datasource=github-releases depName=helm/helm
