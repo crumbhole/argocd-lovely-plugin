@@ -10,6 +10,7 @@ metadata:
     app.kubernetes.io/instance: test
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
+
 ---
 # Source: hello-world/charts/hello-world/templates/service.yaml
 apiVersion: v1
@@ -32,6 +33,7 @@ spec:
   selector:
     app.kubernetes.io/name: hello-world
     app.kubernetes.io/instance: test
+
 ---
 # Source: hello-world/charts/hello-world/templates/deployment.yaml
 apiVersion: apps/v1
