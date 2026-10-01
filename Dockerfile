@@ -14,7 +14,7 @@ ARG HELM_VERSION=v4.3.0
 ARG HELM3_VERSION=v3.22.0
  # https://github.com/helmfile/helmfile/releases
  # renovate: datasource=github-releases depName=helmfile/helmfile
-ARG HELMFILE_VERSION=v1.8.0
+ARG HELMFILE_VERSION=v1.8.1
 
 ARG LOVELY_VERSION
 
