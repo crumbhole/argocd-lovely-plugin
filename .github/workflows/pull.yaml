@@ -23,7 +23,7 @@ jobs:
       run: |
         # https://github.com/kubernetes-sigs/kustomize/releases
         # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize
-        KUSTOMIZE_VERSION=5.8.1
+        KUSTOMIZE_VERSION=5.8.2
         # https://github.com/helm/helm/releases
         # renovate: datasource=github-releases depName=helm/helm
         HELM_VERSION=v4.3.0

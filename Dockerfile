@@ -4,7 +4,7 @@ FROM golang:1.27.1 AS builder
 ARG YQ_VERSION=v4.53.6
  # https://github.com/kubernetes-sigs/kustomize/releases
  # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize
-ARG KUSTOMIZE_VERSION=5.8.1
+ARG KUSTOMIZE_VERSION=5.8.2
  # https://github.com/helm/helm/releases
  # renovate: datasource=github-releases depName=helm/helm
 ARG HELM_VERSION=v4.3.0
