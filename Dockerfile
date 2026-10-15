@@ -11,7 +11,7 @@ ARG HELM_VERSION=v4.3.1
  # Helm v3, shipped alongside v4 as /usr/local/bin/helm3
  # https://github.com/helm/helm/releases
  # renovate: datasource=github-releases depName=helm/helm
-ARG HELM3_VERSION=v3.22.0
+ARG HELM3_VERSION=v3.22.1
  # https://github.com/helmfile/helmfile/releases
  # renovate: datasource=github-releases depName=helmfile/helmfile
 ARG HELMFILE_VERSION=v1.8.1
